@@ -1,0 +1,48 @@
+/* Application styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+main,
+div#root {
+    min-height: 100vh;
+}
+
+@layer components {
+    .btn {
+        @apply rounded-lg p-2 hover:cursor-pointer hover:font-bold;
+    }
+
+    .btn-primary {
+        @apply bg-blue;
+    }
+
+    .btn-warning {
+        @apply bg-orange-dark hover:bg-orange-light;
+    }
+
+    .btn-danger {
+        @apply bg-red-dark hover:bg-red-light;
+    }
+
+    .alert-success {
+        @apply text-lime-500;
+    }
+
+    .alert-warning {
+        @apply text-orange;
+    }
+
+    .alert-danger, .invalid-feedback {
+        @apply text-red;
+    }
+
+    .form-field-text {
+        @apply rounded-md py-2 pl-2 bg-dark0;
+    }
+
+    .code {
+        @apply rounded-md bg-dark0 p-2;
+    }
+}
