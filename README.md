@@ -1,4 +1,4 @@
-# Simple App
+# Automata Games
 
 > *For some definition of simple*
 
@@ -20,12 +20,12 @@ Either Linux, WSL (Windows Subsystem for Linux), or Mac will work best.
 
     SSH
     ```
-    git clone git@github.com:kyle-rader/simple-app
+    git clone git@github.com:kyle-rader/automata.games
     ```
-    
+
     HTTPS
     ```
-    git clone https://github.com/kyle-rader/simple-app
+    git clone https://github.com/kyle-rader/automata.games
     ```
 
 1. Confirm you have `bundle` and `npm` on your path (installed with Ruby, and NodeJS).
@@ -39,9 +39,9 @@ Either Linux, WSL (Windows Subsystem for Linux), or Mac will work best.
     ```
     bundle install
     ```
-    _Note_ that you may need to install `libpq-dev` in order to install the `pg` (Postgres) gem. 
-    
-    On Linux or WSL this can be done with 
+    _Note_ that you may need to install `libpq-dev` in order to install the `pg` (Postgres) gem.
+
+    On Linux or WSL this can be done with
     ```
     sudo apt install libpq-dev
     ```
@@ -68,22 +68,6 @@ Either Linux, WSL (Windows Subsystem for Linux), or Mac will work best.
     npm start
     ```
     _Note_ this just calls `heroku local -f Procfile.dev` simulating a Heroku deployment. You could also use the `foreman` gem for this.
-    
-## Demo App
-Coming Soon
-
-## The Stack
-TBD
-
-## Road Map
-- [x] Create initial app with `inertia-rails` and `vite-rails`
-- [ ] TBD
-
-### General
-* [ ] Heroku Deployment
-* [ ] Azure Deployment guide?
-* [ ] AWS Deployment guide?
-* [ ] Digital Ocean Deployment guide?
 
 [Rails]:https://rubyonrails.org/
 [PostgreSQL]:https://www.postgresql.org/

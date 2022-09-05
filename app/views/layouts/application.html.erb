@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Simple App <%= ": #{@page_title}" if @page_title %></title>
+    <title>Automata Games <%= ": #{@page_title}" if @page_title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <%= csrf_meta_tags %>
@@ -16,10 +16,10 @@
 
   <body class="bg-bgmain text-fgmain flex flex-col">
     <%= render "shared/header" %>
-    
+
     <div class="flex-grow">
       <%= yield %>
-      
+
       <div class="text-center mt-2">
         <% if notice %>
           <div class="alert alert-success"><%= notice %></div>
@@ -29,7 +29,7 @@
         <% end %>
       </div>
     </div>
-    
+
     <%= render "shared/footer" %>
   </body>
 </html>
