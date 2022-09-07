@@ -34,6 +34,21 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
+  if !ENV["SENDGRID_API_KEY"]
+    raise "Missing SENDGRID_API_KEY env var!"
+  end
+
+  ActionMailer::Base.smtp_settings = {
+      :user_name => 'apikey', # This is the string literal 'apikey', NOT the ID of your API key
+      :password => ENV["SENDGRID_API_KEY"], # This is the secret sendgrid API key which was issued during API key creation
+      :domain => 'automata.games',
+      :address => 'smtp.sendgrid.net',
+      :port => 587,
+      :authentication => :plain,
+      :enable_starttls_auto => true
+  }
+  config.action_mailer.default_url_options = { host: 'https://automata.games' }
+
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
   # config.action_cable.url = "wss://example.com/cable"

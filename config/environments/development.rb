@@ -36,11 +36,25 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  if ENV["SENDGRID_API_KEY"]
+    sendgrid_api_key = ENV["SENDGRID_API_KEY"]
 
-  config.action_mailer.perform_caching = false
+    if sendgrid_api_key
+      ActionMailer::Base.smtp_settings = {
+        :user_name => 'apikey', # This is the string literal 'apikey', NOT the ID of your API key
+        :password => ENV["SENDGRID_API_KEY"], # This is the secret sendgrid API key which was issued during API key creation
+        :domain => 'automata.games',
+        :address => 'smtp.sendgrid.net',
+        :port => 587,
+        :authentication => :plain,
+        :enable_starttls_auto => true
+      }
+    end
+  else
+    config.action_mailer.raise_delivery_errors = false
+    config.action_mailer.perform_caching = false
+  end
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
