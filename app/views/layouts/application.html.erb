@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>(Alpha) Automata Games <%= ": #{@page_title}" if @page_title %></title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <%= csrf_meta_tags %>
@@ -12,6 +13,7 @@
     <% if @inertia_app %>
       <%= vite_javascript_tag @inertia_app %>
     <% end %>
+
   </head>
 
   <body class="bg-bgmain text-fgmain flex flex-col">
