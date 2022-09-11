@@ -31,10 +31,12 @@
 
         <hr class="mt-2"/>
 
-        <%= form.label "alias", "Alias", class: "form-label" %>
+        <%= form.label "alias", "Alias / Display Name", class: "form-label" %>
         <%= form.text_field "alias", placeholder: "Your public alias", value: "", id: "alias", required: true, class: "form-field-text" %>
-        <p class="text-sm">Your alias is your only public facing identifier visible to other players.</p>
+        <p class="text-sm">Your alias is public and visible to other players.</p>
+
         <%= form.submit rodauth.create_account_button, class: "btn btn-primary w-full mt-2" %>
+
       </div>
     <% end %>
   <% end %>
