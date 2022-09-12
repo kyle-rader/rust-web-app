@@ -8,6 +8,7 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # See the Rodauth documentation for the list of available config options:
     # http://rodauth.jeremyevans.net/documentation.html
+    create_account_route "register"
 
     # ==> General
     # The secret key used for hashing public-facing tokens for various features.
@@ -22,25 +23,46 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Store account status in an integer column without foreign key constraint.
     account_status_column :status
-
     # Store password hash in a column instead of a separate table.
     account_password_hash_column :password_hash
-
     # Set password when creating account instead of when verifying.
     verify_account_set_password? false
-
     # Redirect back to originally requested location after authentication.
     login_return_to_requested_location? true
-    # two_factor_auth_return_to_requested_location? true # if using MFA
-
     # Do not AutoLogin on creation
     create_account_autologin? false
 
-    # Autologin the user after they have reset their password.
-    # reset_password_autologin? true
+    # ==> Hooks
+    # Validate custom fields in the create account form.
+    before_create_account do
+      # Validate display_name
+      unless display_name = param_or_nil("display_name")
+        throw_error_status(422, "display_name", "must be present")
+      end
+
+      if Words.banned?(display_name)
+        throw_error_status(422, "display_name", "value not allowed")
+      end
+
+      # assign display_name to account instance
+      account[:display_name] = display_name
+    end
+
+    # Perform additional actions after the account is created.
+    after_create_account do
+      # Profile.create!(account_id: account_id, name: param("name"))
+    end
+
+    # Do additional cleanup after the account is closed.
+    # after_close_account do
+    #   Profile.find_by!(account_id: account_id).destroy
+    # end
 
     # Delete the account record when the user has closed their account.
     # delete_account_on_close? true
+
+    # Autologin the user after they have reset their password.
+    # reset_password_autologin? true
 
     # Redirect to the app from login and registration pages if already logged in.
     already_logged_in { redirect login_redirect }
@@ -102,22 +124,6 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Extend user's remember period when remembered via a cookie
     extend_remember_deadline? true
-
-    # ==> Hooks
-    # Validate custom fields in the create account form.
-    before_create_account do
-      throw_error_status(422, "name", "must be present") if param("name").empty?
-    end
-
-    # Perform additional actions after the account is created.
-    after_create_account do
-      Profile.create!(account_id: account_id, name: param("name"))
-    end
-
-    # Do additional cleanup after the account is closed.
-    # after_close_account do
-    #   Profile.find_by!(account_id: account_id).destroy
-    # end
 
     # ==> Redirects
     # Redirect to home page after logout.

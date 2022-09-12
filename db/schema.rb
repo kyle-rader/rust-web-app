@@ -42,8 +42,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_15_015149) do
     t.integer "status", default: 1, null: false
     t.citext "email", null: false
     t.string "password_hash"
-    t.citext "alias", null: false
-    t.index ["alias"], name: "index_accounts_on_alias", unique: true
+    t.citext "display_name", null: false
+    t.index ["display_name"], name: "index_accounts_on_display_name", unique: true
     t.index ["email"], name: "index_accounts_on_email", unique: true
   end
 

@@ -4,14 +4,14 @@ class CreateRodauth < ActiveRecord::Migration[7.0]
 
     create_table :accounts do |t|
       t.integer :status, null: false, default: 1
-      
+
       t.citext :email, null: false
       t.index :email, unique: true
-      
+
       t.string :password_hash
 
-      t.citext :alias, null:false
-      t.index :alias, unique:true
+      t.citext :display_name, null:false
+      t.index :display_name, unique:true
     end
 
     # Used by the password reset feature

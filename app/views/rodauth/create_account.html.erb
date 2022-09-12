@@ -2,7 +2,7 @@
   <%= render layout: 'layouts/unless_logged_in' do %>
     <%= form_with url: rodauth.create_account_path, method: :post, data: { turbo: false } do |form| %>
       <div class="grid grid-cols-1 gap-2">
-        <h1 class="text-xl text-center">Sign Up</h1>
+        <h1 class="text-xl text-center">Register</h1>
         <%= form.label "login", "Email", class: "form-label" %>
         <%= form.email_field rodauth.login_param, placeholder: "email", value: params[rodauth.login_param], id: "login", autocomplete: "email", required: true, class: "form-field-text #{"is-invalid" if rodauth.field_error(rodauth.login_param)}", aria: ({ invalid: true, describedby: "login_error_message" } if rodauth.field_error(rodauth.login_param)) %>
         <%= content_tag(:span, rodauth.field_error(rodauth.login_param), class: "invalid-feedback", id: "login_error_message") if rodauth.field_error(rodauth.login_param) %>
@@ -31,9 +31,9 @@
 
         <hr class="mt-2"/>
 
-        <%= form.label "alias", "Alias / Display Name", class: "form-label" %>
-        <%= form.text_field "alias", placeholder: "Your public alias", value: "", id: "alias", required: true, class: "form-field-text" %>
-        <p class="text-sm">Your alias is public and visible to other players.</p>
+        <%= form.label "display_name", "Display Name", class: "form-label" %>
+        <%= form.text_field "display_name", placeholder: "Your public display name", value: "", id: "display_name", required: true, class: "form-field-text" %>
+        <p class="text-sm">Your display name is public and visible to other players.</p>
 
         <%= form.submit rodauth.create_account_button, class: "btn btn-primary w-full mt-2" %>
 

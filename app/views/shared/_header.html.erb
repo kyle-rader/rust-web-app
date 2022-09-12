@@ -6,8 +6,8 @@
 
     <div class="w-1/2 flex flex-row-reverse">
     <% unless rodauth.logged_in? %>
-        <a href="<%= rodauth.login_path %>" class="rounded-lg px-4 py-2 hover:bg-blue">Sign in</a>
-        <a href="<%= rodauth.create_account_path %>" class="rounded-lg px-4 py-2 hover:bg-blue">Sign up</a>
+        <a href="<%= rodauth.login_path %>" class="rounded-lg px-4 py-2 hover:bg-blue">Log in</a>
+        <a href="<%= rodauth.create_account_path %>" class="rounded-lg px-4 py-2 hover:bg-blue">Register</a>
     <% else %>
         <a href="/logout" class="rounded-lg px-4 py-2 hover:bg-blue">Logout</a>
     <% end %>
