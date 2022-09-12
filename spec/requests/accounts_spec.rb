@@ -12,11 +12,13 @@ RSpec.describe "Accounts", type: :request do
       bob = Account.find_by email: bob_email
       expect(bob[:display_name]).to eq bob_display_name
       expect(bob[:status]).to eq "unverified"
+      bob.destroy!
     end
 
     it "cannot use banned words for display name" do
       create_account bob_email, bob_password, "shit"
       expect(response.status).to eq 422
+      expect(response.body).to match "There was an error creating your account"
     end
   end
 

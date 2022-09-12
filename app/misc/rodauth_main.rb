@@ -37,11 +37,12 @@ class RodauthMain < Rodauth::Rails::Auth
     before_create_account do
       # Validate display_name
       unless display_name = param_or_nil("display_name")
+        flash.now[:alert] = "Display name not allowed"
         throw_error_status(422, "display_name", "must be present")
       end
 
       if Words.banned?(display_name)
-        throw_error_status(422, "display_name", "value not allowed")
+        throw_error_status(422, "display_name", "That display name is not allowed")
       end
 
       # assign display_name to account instance
@@ -50,13 +51,11 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Perform additional actions after the account is created.
     after_create_account do
-      # Profile.create!(account_id: account_id, name: param("name"))
     end
 
     # Do additional cleanup after the account is closed.
-    # after_close_account do
-    #   Profile.find_by!(account_id: account_id).destroy
-    # end
+    after_close_account do
+    end
 
     # Delete the account record when the user has closed their account.
     # delete_account_on_close? true
