@@ -13,6 +13,11 @@ RSpec.describe "Accounts", type: :request do
       expect(bob[:display_name]).to eq bob_display_name
       expect(bob[:status]).to eq "unverified"
     end
+
+    it "cannot use banned words for display name" do
+      create_account bob_email, bob_password, "shit"
+      expect(response.status).to eq 422
+    end
   end
 
   def create_account(email, password, display_name)
