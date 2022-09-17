@@ -3,9 +3,9 @@ class ApplicationController < ActionController::Base
         if rodauth.logged_in?
             @inertia_app = 'main'
             puts "Current account is #{current_account.email}"
-            
+
             render inertia: 'main/index', props: {
-                user: current_account.email
+                user: current_account.display_name
             }
         elsif
             render template: 'index'

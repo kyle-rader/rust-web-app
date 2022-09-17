@@ -10,7 +10,7 @@ class ChatChannel < ApplicationCable::Channel
   end
 
   def receive(data)
-    data['from'] = current_user.email.split('@')[0]
+    data['from'] = current_user.display_name
     ActionCable.server.broadcast("chat_main", data)
   end
 end
