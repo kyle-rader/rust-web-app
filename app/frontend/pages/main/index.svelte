@@ -10,8 +10,11 @@
   </p>
 
   <h1 class="text-xl mt-4 p-2">Mini Apps</h1>
-  <div class="flex flex-wrap">
-    <div class="w-25">
+  <div class="flex flex-wrap gap-4">
+    <div class="w-25 btn btn-primary">
+      <Link href="/chat">Chat</Link>
+    </div>
+    <div class="w-25 btn btn-primary">
       <Link href="/">Tic Tac Toe</Link>
     </div>
   </div>

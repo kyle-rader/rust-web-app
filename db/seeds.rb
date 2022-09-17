@@ -2,8 +2,8 @@
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 
 accounts = Account.create([
-    { email: "kylewrader@gmail.com", password: "astrongpassword", status: 2, display_name: 'mcyamaha' },
-    { email: "user1@gmail.com", password: "astrongpassword", status: 2, display_name: 'user1' },
-    { email: "user2@gmail.com", password: "astrongpassword", status: 2, display_name: 'user2' },
-    { email: "user3@gmail.com", password: "astrongpassword", status: 2, display_name: 'user3' },
+    { email: "kylewrader@gmail.com", password: "astrongpassword", status: 2, display_name: 'Mcyamaha' },
+    { email: "user1@gmail.com", password: "astrongpassword", status: 2, display_name: 'User1' },
+    { email: "user2@gmail.com", password: "astrongpassword", status: 2, display_name: 'User2' },
+    { email: "user3@gmail.com", password: "astrongpassword", status: 2, display_name: 'User3' },
 ])
