@@ -7,6 +7,7 @@ class ChatChannel < ApplicationCable::Channel
 
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
+    logger.info "chat_channel unsubscribed for #{current_user.display_name}"
   end
 
   def receive(data)
