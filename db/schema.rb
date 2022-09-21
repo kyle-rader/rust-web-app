@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_15_015149) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_20_071017) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
@@ -45,6 +45,19 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_15_015149) do
     t.citext "display_name", null: false
     t.index ["display_name"], name: "index_accounts_on_display_name", unique: true
     t.index ["email"], name: "index_accounts_on_email", unique: true
+  end
+
+  create_table "accounts_player_groups", id: false, force: :cascade do |t|
+    t.bigint "account_id"
+    t.bigint "player_group_id"
+    t.index ["account_id"], name: "index_accounts_player_groups_on_account_id"
+    t.index ["player_group_id"], name: "index_accounts_player_groups_on_player_group_id"
+  end
+
+  create_table "player_groups", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "account_login_change_keys", "accounts", column: "id"
