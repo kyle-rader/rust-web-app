@@ -2,7 +2,7 @@
 
 > *For some definition of simple*
 
-This repo provides a modern web application template that uses [Rails] for you classic MVC server-client relationship and [SvelteJS] for interactive JS components.
+This repo provides a modern web application template that uses [Rails] for your classic MVC server-client relationship and [SvelteJS] for interactive JS components.
 
 ## Dev Setup
 Either Linux, WSL (Windows Subsystem for Linux), or Mac will work best.
@@ -10,6 +10,9 @@ Either Linux, WSL (Windows Subsystem for Linux), or Mac will work best.
 ### Tools
 
 * [Git](https://git-scm.com/)
+* Libraries:
+  * `libyaml` - needed for Ruby (`brew install libyaml`)
+  * `libpq` - needed for postgres (`brew install libpq`)
 * [Ruby](https://www.ruby-lang.org/en/) (`3.2.0-preview1`): _Recommended_ via [rbenv](https://github.com/rbenv/rbenv)
 * [NodeJS](https://nodejs.org/en/) (LTS `16.15.1`): _Recommended_ via [nvm](https://github.com/nvm-sh/nvm)
 * [Docker](https://www.docker.com/products/docker-desktop/) (If using WSL on Windows, install will default to the WSL2 engine - use this)
@@ -32,7 +35,7 @@ Either Linux, WSL (Windows Subsystem for Linux), or Mac will work best.
 
 1. Install the Rails gem globally.
     ```
-    bundle install rails
+    gem install rails
     ```
 
 1. Install ruby dependencies
@@ -45,6 +48,12 @@ Either Linux, WSL (Windows Subsystem for Linux), or Mac will work best.
     ```
     sudo apt install libpq-dev
     ```
+
+    On Mac, you can
+    ```
+    brew install libpq
+    ```
+    and note that it's a keg-only and doesn't link, it will output the export line you can append to a profile to add the libpq bin dir to your PATH so that the `pg` gem can be built with native extensions.
 
 1. Install JS dependencies
     ```
