@@ -1,14 +1,17 @@
 <nav class="flex mb-4 mt-2 mx-2">
-    <div class="w-1/2 flex flex-row">
+    <div class="flex">
         <a href="/" class="rounded-lg px-4 py-2 hover:bg-blue">Home</a>
         <a href="/privacy" class="rounded-lg px-4 py-2 hover:bg-blue">Privacy</a>
     </div>
-
-    <div class="w-1/2 flex flex-row-reverse">
-    <% unless rodauth.logged_in? %>
+    <div class="flex-grow">
+    </div>
+    <div class="flex">
+    <% if rodauth.logged_in? %>
+        <a href="<%= account_path %>" class="rounded-lg px-4 py-2 hover:bg-blue">Account</a>
+        <a href="/logout" class="rounded-lg px-4 py-2 hover:bg-blue">Logout</a>
+    <% else %>
         <a href="<%= rodauth.login_path %>" class="rounded-lg px-4 py-2 hover:bg-blue">Log in</a>
         <a href="<%= rodauth.create_account_path %>" class="rounded-lg px-4 py-2 hover:bg-blue">Register</a>
-    <% else %>
-        <a href="/logout" class="rounded-lg px-4 py-2 hover:bg-blue">Logout</a>
     <% end %>
+    </div>
 </nav>
