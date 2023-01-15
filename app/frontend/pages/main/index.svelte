@@ -10,7 +10,7 @@
   </p>
 
   <h1 class="text-xl mt-4 p-2">Mini Apps</h1>
-  <div class="flex flex-wrap gap-4">
+  <div class="flex flex-wrap gap-4 mx-2 sm:mx-4">
     <div class="w-25 btn btn-primary">
       <Link href="/chat">Chat</Link>
     </div>
