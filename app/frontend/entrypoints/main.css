@@ -45,4 +45,5 @@ div#root {
     .code {
         @apply rounded-md bg-dark0 p-2;
     }
+
 }

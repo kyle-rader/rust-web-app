@@ -1,8 +1,21 @@
-<div class="mx-6">
-    <h2 class="text-lg mb-4 text-center">Account Settings</h2>
-    <div class="flex flex-col gap-4 text-center items-center">
-        <a class="rounded-lg bg-blue p-2 w-full sm:w-1/2" href="<%= rodauth.change_password_path %>">Change Password</a>
-        <a class="rounded-lg bg-blue p-2 w-full sm:w-1/2" href="<%= rodauth.change_login_path %>">Change Email</a>
-        <a class="rounded-lg bg-orange p-2 w-full sm:w-1/2" href="<%= rodauth.close_account_path %>">Close Account</a>
+<div class="mx-auto w-10/12 sm:w-1/2 md:w-1/3 lg:w-1/4 flex flex-col gap-4">
+    <h2 class="text-lg">
+        <i class="fa fa-user"></i>
+        Account Settings
+    </h2>
+    <div class="flex flex-col gap-2 text-center items-center">
+        <a class="rounded-lg bg-blue p-2 w-full" href="">Change Display Name</a>
+        <a class="rounded-lg bg-blue p-2 w-full" href="<%= rodauth.change_login_path %>">Change Email</a>
+        <a class="rounded-lg bg-blue p-2 w-full" href="<%= rodauth.change_password_path %>">Change Password</a>
+    </div>
+
+    <h2 class="text-lg">
+        <i class="fa fa-user"></i>
+        Privacy Settings
+    </h2>
+    <div class="flex flex-col gap-2 text-center items-center">
+        <a class="rounded-lg bg-blue p-2 w-full" href="">Export Data</a>
+        <a class="rounded-lg bg-orange p-2 w-full" href="">Delete Data</a>
+        <a class="rounded-lg bg-red p-2 w-full" href="<%= rodauth.close_account_path %>">Close Account</a>
     </div>
 </div>
