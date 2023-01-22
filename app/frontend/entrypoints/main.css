@@ -9,20 +9,40 @@ div#root {
     min-height: 100vh;
 }
 
+@layer base {
+    h1 {
+        @apply text-2xl;
+    }
+
+    h2 {
+        @apply text-xl;
+    }
+
+    h3 {
+        @apply text-lg;
+    }
+}
+
+@layer utilities {
+    .form-width {
+        @apply mx-auto w-11/12 sm:w-8/12 md:w-7/12 lg:w-1/2 xl:w-4/12;
+    }
+}
+
 @layer components {
     .btn {
-        @apply rounded-lg p-2 hover:cursor-pointer hover:font-bold;
+        @apply rounded-lg p-2 hover:cursor-pointer;
     }
 
     .btn-primary {
-        @apply bg-blue;
+        @apply bg-blue-dark hover:bg-blue;
     }
 
-    .btn-warning {
-        @apply bg-orange-dark hover:bg-orange-light;
+    .btn-orange {
+        @apply bg-orange-dark hover:bg-orange;
     }
 
-    .btn-danger {
+    .btn-red {
         @apply bg-red-dark hover:bg-red-light;
     }
 
@@ -45,5 +65,4 @@ div#root {
     .code {
         @apply rounded-md bg-dark0 p-2;
     }
-
 }

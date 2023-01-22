@@ -10,6 +10,9 @@ class RodauthMain < Rodauth::Rails::Auth
     # http://rodauth.jeremyevans.net/documentation.html
     create_account_route "register"
 
+    # Customize form labels
+    login_label "Email"
+
     # ==> General
     # The secret key used for hashing public-facing tokens for various features.
     # Defaults to Rails `secret_key_base`, but you can use your own secret key.
@@ -23,12 +26,16 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Store account status in an integer column without foreign key constraint.
     account_status_column :status
+
     # Store password hash in a column instead of a separate table.
     account_password_hash_column :password_hash
+    
     # Set password when creating account instead of when verifying.
     verify_account_set_password? false
+    
     # Redirect back to originally requested location after authentication.
     login_return_to_requested_location? true
+    
     # Do not AutoLogin on creation
     create_account_autologin? false
 

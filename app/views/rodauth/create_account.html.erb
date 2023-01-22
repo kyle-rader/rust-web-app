@@ -1,14 +1,21 @@
-<div class="w-80 mx-auto">
+<div class="form-width">
   <%= render layout: 'layouts/unless_logged_in' do %>
     <%= form_with url: rodauth.create_account_path, method: :post, data: { turbo: false } do |form| %>
       <div class="grid grid-cols-1 gap-2">
-        <h1 class="text-xl text-center">Register</h1>
-        <%= form.label "login", "Email", class: "form-label" %>
+        <h1 class="text-center">Register</h1>
+
+        <%= form.label "display_name", "Display Name", class: "form-label" %>
+        <%= form.text_field "display_name", placeholder: "Your public display name", value: "", id: "display_name", required: true, class: "form-field-text" %>
+        <%= content_tag(:span, rodauth.field_error("display_name"), class: "invalid-feedback", id: "display_name_error_message") if rodauth.field_error("display_name") %>
+        <p class="text-sm"><i class="fa fa-eye"></i> Your display name is visible to other players.</p>
+
+        <%= form.label "login", rodauth.login_label, class: "form-label mt-4" %>
         <%= form.email_field rodauth.login_param, placeholder: "email", value: params[rodauth.login_param], id: "login", autocomplete: "email", required: true, class: "form-field-text #{"is-invalid" if rodauth.field_error(rodauth.login_param)}", aria: ({ invalid: true, describedby: "login_error_message" } if rodauth.field_error(rodauth.login_param)) %>
         <%= content_tag(:span, rodauth.field_error(rodauth.login_param), class: "invalid-feedback", id: "login_error_message") if rodauth.field_error(rodauth.login_param) %>
+        <p class="text-sm"><i class="fa fa-eye-slash"></i> Your email is not visible to other players.</p>
 
         <% if rodauth.require_login_confirmation? %>
-          <%= form.label "login-confirm", "Confirm Email", class: "form-label" %>
+          <%= form.label "login-confirm", rodauth.login_confirm_label, class: "form-label" %>
           <%= form.email_field rodauth.login_confirm_param, placeholder: "the same email ", value: params[rodauth.login_confirm_param], id: "login-confirm", autocomplete: "email", required: true, class: "form-field-text #{"is-invalid" if rodauth.field_error(rodauth.login_confirm_param)}", aria: ({ invalid: true, describedby: "login-confirm_error_message" } if rodauth.field_error(rodauth.login_confirm_param)) %>
           <%= content_tag(:span, rodauth.field_error(rodauth.login_confirm_param), class: "invalid-feedback", id: "login-confirm_error_message") if rodauth.field_error(rodauth.login_confirm_param) %>
         <% end %>
@@ -16,11 +23,11 @@
         <hr class="mt-2"/>
 
         <% if rodauth.create_account_set_password? %>
-          <%= form.label "password", rodauth.password_label, class: "form-label" %>
+          <%= form.label "password", rodauth.password_label, class: "form-label mt-4" %>
           <%= form.password_field rodauth.password_param, placeholder: "a strong password", value: "", id: "password", autocomplete: rodauth.password_field_autocomplete_value, required: true, class: "form-field-text #{"is-invalid" if rodauth.field_error(rodauth.password_param)}", aria: ({ invalid: true, describedby: "password_error_message" } if rodauth.field_error(rodauth.password_param)) %>
           <%= content_tag(:span, rodauth.field_error(rodauth.password_param), class: "invalid-feedback", id: "password_error_message") if rodauth.field_error(rodauth.password_param) %>
 
-          <p class="text-sm">Your password must be at least <%= rodauth.password_minimum_length %> chars long.</p>
+          <p class="text-sm">Your password must be at least <%= rodauth.password_minimum_length %> characters long.</p>
 
           <% if rodauth.require_password_confirmation? %>
             <%= form.label "password-confirm", rodauth.password_confirm_label, class: "form-label" %>
@@ -29,14 +36,7 @@
           <% end %>
         <% end %>
 
-        <hr class="mt-2"/>
-
-        <%= form.label "display_name", "Display Name", class: "form-label" %>
-        <%= form.text_field "display_name", placeholder: "Your public display name", value: "", id: "display_name", required: true, class: "form-field-text" %>
-        <%= content_tag(:span, rodauth.field_error("display_name"), class: "invalid-feedback", id: "display_name_error_message") if rodauth.field_error("display_name") %>
-        <p class="text-sm">Your display name is public and visible to other players.</p>
-
-        <%= form.submit rodauth.create_account_button, class: "btn btn-primary w-full mt-2" %>
+        <%= form.submit rodauth.create_account_button, class: "btn btn-primary w-full mt-4" %>
 
       </div>
     <% end %>

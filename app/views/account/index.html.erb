@@ -1,4 +1,4 @@
-<div class="mx-auto w-11/12 sm:w-8/12 md:w-7/12 lg:w-1/2 xl:w-5/12 flex flex-col gap-6">
+<div class="form-width flex flex-col gap-6">
 
     <div class="flex flex-col gap-2 items-center">
         <h2 class="text-2xl">
@@ -9,7 +9,7 @@
             <label class="flex-none w-full pb-1 text-left">Display Name</label>
             <small class="flex-none w-full text-left mb-1"><i class="fa fa-eye"></i> Visible to other players.</small>
             <div class="font-mono bg-dark1 flex-grow text-left p-2 pl-2 rounded-l-lg"><%= current_account.display_name %></div>
-            <a class="rounded-r-lg bg-blue-dark hover:bg-blue p-2" href=""><i class="fad fa-pencil px-1 align-text-top"></i> Edit (TODO)</a>
+            <a class="rounded-r-lg bg-blue-dark hover:bg-blue p-2" href="<%= %>"><i class="fad fa-pencil px-1 align-text-top"></i> Edit</a>
         </div>
         <div class="w-full flex flex-row flex-wrap">
             <label class="flex-none w-full pb-1 text-left">Email</label>

@@ -5,4 +5,8 @@ class AccountController < ApplicationController
     render
   end
 
+  def change_display_name
+    render
+  end
+
 end

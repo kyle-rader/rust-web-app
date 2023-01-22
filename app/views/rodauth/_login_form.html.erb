@@ -1,4 +1,4 @@
-<div class="w-80 mx-auto">
+
   <%= form_with url: rodauth.login_path, method: :post, data: { turbo: false } do |form| %>
     <div class="grid grid-cols-1 gap-2">
       <% if rodauth.skip_login_field_on_login? %>
@@ -28,4 +28,3 @@
 
     </div>
   <% end %>
-</div>

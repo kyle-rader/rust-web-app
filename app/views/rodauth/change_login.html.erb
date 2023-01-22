@@ -1,7 +1,7 @@
-<div class="w-80 mx-auto">
+<div class="form-width">
   <%= form_with url: rodauth.change_login_path, method: :post, data: { turbo: false } do |form| %>
     <div class="grid grid-cols-1 gap-2">
-      <h1 class="text-xl text-center">Change Login Email</h1>
+      <h1 class="text-xl text-center">Change Email</h1>
       <div class="grid grid-cols-1 gap-2">
         <%= form.label "login", rodauth.login_label, class: "form-label" %>
         <%= form.email_field rodauth.login_param, value: params[rodauth.login_param], id: "login", placeholder: "new email", required: true, class: "form-field-text #{"is-invalid" if rodauth.field_error(rodauth.login_param)}", aria: ({ invalid: true, describedby: "login_error_message" } if rodauth.field_error(rodauth.login_param)) %>
