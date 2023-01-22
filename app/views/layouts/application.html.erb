@@ -8,9 +8,10 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%= stylesheet_link_tag "fa/fa-all.min.css" %>
+    
     <%= vite_client_tag %>
     <%= vite_stylesheet_tag "main" %>
-    <%= vite_stylesheet_tag "fa-all.min.css" %>
     
     <% if @inertia_app %>
       <%= vite_javascript_tag @inertia_app %>
