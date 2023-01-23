@@ -12,6 +12,7 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Customize form labels
     login_label "Email"
+    verify_login_change_button "Verify Email"
 
     # ==> General
     # The secret key used for hashing public-facing tokens for various features.
