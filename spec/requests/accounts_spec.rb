@@ -22,6 +22,12 @@ RSpec.describe "Accounts", type: :request do
     end
   end
 
+  describe "Change DisplayName" do
+    it "requires a password" do
+      post "/change-display-name"
+    end
+  end
+
   def create_account(email, password, display_name)
     post "/register", as: :json, params: {
       login: email,

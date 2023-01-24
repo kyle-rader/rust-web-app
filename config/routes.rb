@@ -4,6 +4,6 @@ Rails.application.routes.draw do
 
   get 'chat', to: 'chat#index'
 
-  get 'account', to: 'account#index'
-  get 'change-display-name', to: 'account#change-display'
+  get 'account', to: 'accounts#index'
+  get 'change-display-name', to: 'accounts#change_display_name_get'
 end
