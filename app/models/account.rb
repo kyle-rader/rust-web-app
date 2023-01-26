@@ -4,5 +4,6 @@ class Account < ApplicationRecord
 
   has_and_belongs_to_many :player_groups
 
-  # validates :display_name, presence: true
+  validates :email, presence: true
+  validates :display_name, presence: true
 end
