@@ -22,4 +22,10 @@ RSpec.describe Account, type: :model do
     subject.save
     expect { Account.create(email: 'alice@gmail.com', password: 'abadpassword', display_name: 'bob42') }.to raise_error(ActiveRecord::RecordNotUnique)
   end
+
+  it "validates precense of display_name" do
+    subject.save
+    subject.display_name = nil
+    expect { subject.save }.to raise_error(ActiveRecord::NotNullViolation)
+  end
 end
