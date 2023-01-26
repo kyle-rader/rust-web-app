@@ -23,8 +23,9 @@ RSpec.describe "Accounts", type: :request do
   end
 
   describe "Change DisplayName" do
-    it "requires a password" do
-      post "/change-display-name"
+    it "requires authentication" do
+      post "/change-display-name", params: { :account => { :display_name => "foobar", :password => "abadpassword" }}
+      assert_redirected_to '/login'
     end
   end
 

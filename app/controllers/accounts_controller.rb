@@ -9,4 +9,9 @@ class AccountsController < ApplicationController
     render
   end
 
+  def change_display_name_post
+    display_name_params = params.require(:account).permit(:display_name, :password)
+    # current_account.update display_name_params
+  end
+
 end

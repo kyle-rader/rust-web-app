@@ -6,4 +6,5 @@ Rails.application.routes.draw do
 
   get 'account', to: 'accounts#index'
   get 'change-display-name', to: 'accounts#change_display_name_get'
+  post 'change-display-name', to: 'accounts#change_display_name_post'
 end
