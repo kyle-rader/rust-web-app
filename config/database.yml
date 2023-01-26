@@ -23,14 +23,14 @@ default: &default
 
 development:
   <<: *default
-  database: simple_app_development
+  database: automata_games_development
   url: postgres://postgres:password@localhost:5432
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user running Rails.
-  #username: simple_app
+  #username: automata
 
   # The password associated with the postgres role (username).
   #password:
@@ -58,7 +58,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: simple_app_test
+  database: automata_games_test
   url: postgres://postgres:password@localhost:5432
 
 # As with config/credentials.yml, you never want to store sensitive information,
@@ -83,6 +83,5 @@ test:
 #
 production:
   <<: *default
-  database: simple_app_production
-  username: simple_app
-  password: <%= ENV["SIMPLE_APP_DATABASE_PASSWORD"] %>
+  database: automata_games_production
+  url: <%= ENV["DATABASE_URL"] %>
