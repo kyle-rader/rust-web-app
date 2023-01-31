@@ -9,7 +9,12 @@ module ApplicationCable
     private
 
     def find_verified_user
-      id = cookies.encrypted['_automata_games_session']['account_id']
+      return reject_unauthorized_connection unless cookies && cookies.encrypted
+      session = cookies.encrypted['_automata_games_session']
+
+      return reject_unauthorized_connection unless session
+
+      id = session['account_id']
       if id && verified_user = Account.find_by(id: id)
         verified_user
       else
