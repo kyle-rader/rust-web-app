@@ -9,6 +9,8 @@
         <%= content_tag(:span, rodauth.field_error("display_name"), class: "invalid-feedback", id: "display_name_error_message") if rodauth.field_error("display_name") %>
         <p class="text-sm"><i class="fa fa-eye"></i> Your display name is visible to other players.</p>
 
+        <hr class="mt-2"/>
+        
         <%= form.label "login", rodauth.login_label, class: "form-label mt-4" %>
         <%= form.email_field rodauth.login_param, placeholder: "email", value: params[rodauth.login_param], id: "login", autocomplete: "email", required: true, class: "form-field-text #{"is-invalid" if rodauth.field_error(rodauth.login_param)}", aria: ({ invalid: true, describedby: "login_error_message" } if rodauth.field_error(rodauth.login_param)) %>
         <%= content_tag(:span, rodauth.field_error(rodauth.login_param), class: "invalid-feedback", id: "login_error_message") if rodauth.field_error(rodauth.login_param) %>

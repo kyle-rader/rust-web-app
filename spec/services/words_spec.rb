@@ -9,6 +9,7 @@ RSpec.describe "Words" do
 
   it { expect(subject("foo")).to be true }
   it { expect(subject("FOo")).to be true }
+  it { expect(subject("FOOBAR")).to be true }
   it { expect(subject("foo bar")).to be true }
   it { expect(subject(" foo bar  ")).to be true }
   it { expect(subject("foo-bar")).to be true }
