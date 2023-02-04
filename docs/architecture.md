@@ -47,10 +47,10 @@ sequenceDiagram
 
 This classic back and forth between the client and server allows the creation of interactive applications, where most interaction is either, a new GET request, and the server re-renders the whole new page and sends it back, or you POST from a form, and the response is again, an entire render of the page. Each render is handled by the server, and can query the database, get whatever data is needed, and then dynamically generate the html response using ERB templates.
 
-This is nice because each time you navigate, your browser can handle your history and and data needed can be fetched for the render. What this leaves out, is interaction *within the page/application*. How are we going to build real-time games if the browser has to reload the whole page with every click of a tile or button? (Spoiler we don't).
+There are several nice aspects to this flow. Web browsers have been working with this flow for decades. Your browser can handle your history during page navigation. Any data needed as a part of rendering the page, is accessible from the controller doing the rendering. What this leaves out is interaction *within the page/application*. How are we going to build real-time games if the browser has to reload the whole page with every click of a tile or button? (Spoiler we won't).
 
-## Interactive web pages on the client: [Svelte]
-Enter Javascript/Typescript. Once we get an html response, that HTML can include a `<script>` tag telling the browser to download a script and run it. This let's us set up, all kinds of things - arbitrary code running in your browser!
+## [Svelte]: Interactiion in the Browser
+Enter Javascript. Once we get an html response, that HTML can include a `<script>` tag telling the browser to download a script and run it within the sandbox of the browser. This let's us do all kinds of things, you have arbitrary code running in your browser! Browsers are almost like mini operating systems at this point. There's a ton of great info on what browsers can do on <abbr title="Mozilla Developer Network">[MDM]</abbr>
 
 ### JS Frameworks
 The code that you can download and run in the browser has evolved to the point that, like Rails, we have entire frameworks, for JS code running in the browser, handling things like "client-side" routing, and editing of the [DOM] (Document Object Model). These are things like ReactJS, AngularJS, VueJS, EmberJS, etc. You write a bunch of code, which relies on a runtime framework to operate and your web page must download your code + the framework. They are "big" (ish). Then it all runs at runtime, so you have to write a lot of tests, and do a lot of QA.
