@@ -1,6 +1,15 @@
 # How does this all work?
 
-## [Rails] (aka Ruby on Rails)
+## Credits
+Many thanks to [this great blog post](https://dev.to/buhrmi/setting-up-a-new-rails-7-app-with-vite-inertia-and-svelte-c9e) by [Stefan Buhrmester](https://dev.to/buhrmi) for providing a great guide on the initial use of Rails + Svelte with Vite + InertiaJS. For a step by step guide on starting this architecture from scratch, read that blog post! (It does not cover adding Rodauth-Rails or any account management.)
+
+## The Goal
+Provide a high level understanding of the major components of this web application architecture so the read knows where to look next to learn more about any given part.
+
+## The Audience
+This guide assumes the reader knows little about web application development and will cover some history and context that someone with experience in this area can freely skip.
+
+## [Rails]: The Web Framework
 Our main web application framework. Rails is a large opinionated, MVC, web framework for Ruby. Rails handles a number of choices and problems. Some of the important ones to note are
    * The [Puma web server](https://puma.io/puma/) (this is almost entirely opaque to us at present)
    * Database schema management ([migrations](https://guides.rubyonrails.org/active_record_migrations.html))
