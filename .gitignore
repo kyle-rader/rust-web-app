@@ -42,3 +42,6 @@ dev.env
 
 # RSpec testing
 spec/examples.txt
+
+# Doc Mermaid local edit file
+docs/diagram.mmd
