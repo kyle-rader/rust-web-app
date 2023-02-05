@@ -1,10 +1,50 @@
-# How does this all work?
-
-## The Goal
+# The Goal
 Provide a high level understanding of the major components of this web application architecture so the reader knows where to look next to learn more about any given part.
 
-## The Audience
+# The Audience
 This guide assumes the reader knows little about web application development and will cover some history and context that someone with experience in this area can freely skip.
+
+# Diagrams
+We use the [C4 Model](https://c4model.com/) approach to diagramming software architecture.
+
+**<abbr title="Automata Games">AG</abbr>** is shorthand for **Automata Games**.
+
+## Level 1: Context of the System
+
+```mermaid
+C4Context
+    title AutomataGames System Architecture Level 1: Context
+    Person(ubob, "Bob", "An AG account holder")
+    System_Ext(namecheap, "Name Cheap", "Domain Name Provider: Resolves to Heroku")
+    System_Ext(hk, "Heroku", "Cloud Provider hosting AG")
+    
+    System(ag, "Automata Games", "Online Multiplayer Gaming Platform")
+
+    System_Ext(sendgrid, "SendGrid", "Email as a Service")
+
+    Rel(ubob, namecheap, "Visits AG", "HTTPS")
+	UpdateRelStyle(ubob, namecheap, $offsetY="-30", $offsetX="-30")
+
+    Rel(namecheap, hk, "Resolves to Heroku", "DNS")
+	UpdateRelStyle(namecheap, hk, $offsetY="-10", $offsetX="-75")
+
+    Rel(hk, ag, "Routes to", "HTTPS")
+	UpdateRelStyle(hk, ag, $offsetY="-30", $offsetX="-25")
+
+    Rel(ag, sendgrid, "Sends Emails", "ActionMailer configured to use Send Grid")
+	UpdateRelStyle(ag, sendgrid, $offsetY="10", $offsetX="32")
+
+    UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
+```
+
+### [Name Cheap]
+NameCheap is our DNS provider. This is where `automata.games`, our <abbr title="Top level Domain">TLD</abbr>, is registered.
+
+### [Heroku]
+Heroku is our cloud provider. It is where we deploy and run our application + managed resources our application needs like databases.
+
+### [SendGrid]
+SendGrid is our email as a service provider. Other services can be used like MailGun, but SendGrid has a good low-level free tier which is best for us at this stage. Plus, it's owned by Twilio, the dominant provider of text messaging as a service, which is pretty good, if we want to expand to SMS in the future.
 
 ## [Rails]: The Web Framework
 [Rails] is a large opinionated, <abbr title="Model View Controller">MVC</abbr> (Model View Controller), web framework for Ruby. Rails handles a number of choices and problems. Some of the important ones to note are:
@@ -82,3 +122,6 @@ Many thanks to [this great blog post](https://dev.to/buhrmi/setting-up-a-new-rai
 [SendGrid]:https://sendgrid.com/
 [MDM]:https://developer.mozilla.org/en-US/
 [DOM]:https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
+[Name Cheap]:https://www.namecheap.com/
+[Heroku]:https://dashboard.heroku.com/apps/automata-games
+[SendGrid]:https://app.sendgrid.com/guide
