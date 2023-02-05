@@ -1,0 +1,18 @@
+@startuml
+database PostgresQL as pg
+participant Server as s
+participant Client as c
+
+c -> s: GET https://automata.games
+s -> c: 200 text/html (homepage)
+|||
+c -> s: GET /main.css
+s -> c: 200 text/css
+|||
+c -> s: GET /login
+s -> c: 200 text/html Login page
+|||
+c -> s: POST /login (form data)
+s <-> pg: Find User
+s -> c: 200 text/html Some Page
+@enduml

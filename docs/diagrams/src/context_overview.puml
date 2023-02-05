@@ -10,7 +10,7 @@ System_Ext(sendgrid, "SendGrid", "Email as a Service")
 Rel_D(ubob, namecheap, "Visits AG", "HTTPS")
 Rel(namecheap, hk, "Resolves to Heroku", "DNS")
 Rel(hk, ag, "Routes to", "HTTPS")
-Rel(ag, sendgrid, "Sends Emails", "email")
-Rel(sendgrid, ubob, "Sends Mail")
-
+Rel(ag, sendgrid, "Sends Emails", "ActionMailer")
+Rel(sendgrid, ubob, "Sends Mail", "email")
+Rel(ag, ubob, "Web Page", "HTML")
 @enduml

@@ -38,24 +38,7 @@ SendGrid is our email as a service provider. Other services can be used like Mai
 
 All of this comes together in a unified web server that handles web requests and sends back html, css, and javascript. Rails' main focus is still on the classic client/server relationship looking something like this:
 
-```mermaid
-sequenceDiagram
-   participant S as Server
-   participant C as Client
-   C-->>S: GET https://automata.games
-   Note over S: Route / to ApplicationController index
-   Note over S: Render entire homepage
-   S->>C: 200 text/html Landing Page!
-   C->>S: GET /public/main.css
-   Note over S: Load file from disk
-   S->>C: 200 text/css Styles!
-   C->>S: GET /login
-   Note over S: Route to /login Rodauth Controller
-   Note over S: Render entire login page
-   S->>C: 200 text/html
-   C-->>S: Get /public/main.css
-   S-->>C: 304
-```
+![Classic Rails](diagrams/out/classic_rails/classic_rails.svg)
 
 This classic back and forth between the client and server allows the creation of interactive applications, where most interaction is either a new GET request, and the server re-renders the whole new page and sends it back, or you POST from a form, and the response is again, an entire render of the page. Each render is handled by the server and can query the database, get whatever data is needed, and then dynamically generate the html response using ERB templates.
 
