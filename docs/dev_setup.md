@@ -16,7 +16,7 @@
 * [NodeJS](https://nodejs.org/en/) (LTS `16.15.1`): _Recommended_ via [nvm](https://github.com/nvm-sh/nvm)
 * [Docker](https://www.docker.com/products/docker-desktop/) (If using WSL on Windows, install will default to the WSL2 engine - use this)
 * The [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#install-the-heroku-cli) - used as our local process runner.
-
+* [PlantUML via VSCode extension](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml). This is used to render the doc diagrams into SVGs that can be included in markdown docs. This has it's own reqs to install PlantUML and Graphviz (See extension page for setup steps on Mac or Windows, unsure if Linux works.)
 ## Setup
 1. Clone the repo.
 

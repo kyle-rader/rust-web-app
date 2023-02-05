@@ -10,32 +10,7 @@ We use the [C4 Model](https://c4model.com/) approach to diagramming software arc
 **<abbr title="Automata Games">AG</abbr>** is shorthand for **Automata Games**.
 
 ## Level 1: Context of the System
-
-```mermaid
-C4Context
-    title AutomataGames System Architecture Level 1: Context
-    Person(ubob, "Bob", "An AG account holder")
-    System_Ext(namecheap, "Name Cheap", "Domain Name Provider: Resolves to Heroku")
-    System_Ext(hk, "Heroku", "Cloud Provider hosting AG")
-    
-    System(ag, "Automata Games", "Online Multiplayer Gaming Platform")
-
-    System_Ext(sendgrid, "SendGrid", "Email as a Service")
-
-    Rel(ubob, namecheap, "Visits AG", "HTTPS")
-	UpdateRelStyle(ubob, namecheap, $offsetY="-30", $offsetX="-30")
-
-    Rel(namecheap, hk, "Resolves to Heroku", "DNS")
-	UpdateRelStyle(namecheap, hk, $offsetY="-10", $offsetX="-75")
-
-    Rel(hk, ag, "Routes to", "HTTPS")
-	UpdateRelStyle(hk, ag, $offsetY="-30", $offsetX="-25")
-
-    Rel(ag, sendgrid, "Sends Emails", "ActionMailer configured to use Send Grid")
-	UpdateRelStyle(ag, sendgrid, $offsetY="10", $offsetX="32")
-
-    UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
-```
+![AG Level 1 Architecture](diagrams/out/context_overview/ag_level1.svg)
 
 ### [Name Cheap]
 NameCheap is our DNS provider. This is where `automata.games`, our <abbr title="Top level Domain">TLD</abbr>, is registered.
