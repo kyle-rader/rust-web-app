@@ -15,4 +15,5 @@ Rel(puma, pg, "Stores Data app data with", "sql")
 Rel(puma, redis, "Caching, Web Sockets, Create Jobs", "redis query")
 Rel(jobs, redis, "Read job data", "redis query")
 Rel(bob, spa1, "Interacts within browser", "svelte components")
+Rel_R(spa1, puma, "Fetches Data", "https/websockets")
 @enduml
