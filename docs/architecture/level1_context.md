@@ -2,7 +2,7 @@
 
 This guide is the 10K foot view of the system. The focus is on showing Automata Games and how it, as a system, interacts with other systems.
 
-![AG Level 1 Architecture](../diagrams/out/context/ag_level1_overview.svg)
+![AG Level 1 Architecture](../diagrams/out/context/ag_level1.svg)
 
 ## [Name Cheap]
 NameCheap is our DNS provider. This is where `automata.games`, our <abbr title="Top level Domain">TLD</abbr>, is registered.
