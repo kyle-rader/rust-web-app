@@ -1,7 +1,7 @@
 @startuml ag_level1
 !include <C4/C4_Container>
 title Automata Games Level 1 Architecture
-Person(ubob, "Bob", "An AG account holder")
+Person(ubob, "Bob", "An Account Holder")
 System_Ext(namecheap, "Name Cheap", "Domain Name Provider: Resolves to Heroku")
 System_Ext(hk, "Heroku", "Cloud Provider hosting AG")
 System(ag, "Automata Games", "Online Multiplayer Gaming Platform")

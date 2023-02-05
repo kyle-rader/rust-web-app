@@ -21,6 +21,11 @@ Heroku is our cloud provider. It is where we deploy and run our application + ma
 ### [SendGrid]
 SendGrid is our email as a service provider. Other services can be used like MailGun, but SendGrid has a good low-level free tier which is best for us at this stage. Plus, it's owned by Twilio, the dominant provider of text messaging as a service, which is pretty good, if we want to expand to SMS in the future.
 
+## Level 2: Containers
+This diagram zooms in one level to the `Automata Games` system from the diagram above, and ignores NameCheap and Heroku as they are mostly opaque to the system itself.
+
+![Automata Games Containers Architecture](diagrams/out/containers_overview/ag_level2.svg)
+
 ## [Rails]: The Web Framework
 [Rails] is a large opinionated, <abbr title="Model View Controller">MVC</abbr> (Model View Controller), web framework for Ruby. Rails handles a number of choices and problems. Some of the important ones to note are:
    * The [Puma web server](https://puma.io/puma/) (this is almost entirely opaque to us at present)
