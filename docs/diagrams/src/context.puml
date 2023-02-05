@@ -1,6 +1,6 @@
 @startuml ag_level1
 !include <C4/C4_Container>
-title Automata Games Level 1 Architecture
+title Lvl1 System Context for Automata Games
 Person(ubob, "Bob", "An Account Holder")
 System_Ext(namecheap, "Name Cheap", "Domain Name Provider: Resolves to Heroku")
 System_Ext(hk, "Heroku", "Cloud Provider hosting AG")
@@ -10,7 +10,7 @@ System_Ext(sendgrid, "SendGrid", "Email as a Service")
 Rel_D(ubob, namecheap, "Visits AG", "HTTPS")
 Rel(namecheap, hk, "Resolves to Heroku", "DNS")
 Rel(hk, ag, "Routes to", "HTTPS")
-Rel(ag, sendgrid, "Sends Emails", "ActionMailer")
+Rel(ag, sendgrid, "Sends Emails", "Rails ActionMailer")
 Rel(sendgrid, ubob, "Sends Mail", "email")
 Rel(ag, ubob, "Web Page", "HTML")
 @enduml

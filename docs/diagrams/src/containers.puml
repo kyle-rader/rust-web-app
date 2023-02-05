@@ -1,6 +1,6 @@
 @startuml ag_level2
 !include <C4/C4_Container>
-title Automata Games Container Architecture
+title System Containers Within Automata Games
 Person(bob, "Bob", "An Account Holder")
 System_Boundary(ag, "Automata Games") {
 	Container(puma, "Rails Web Server", "puma", "Handles web requests")
