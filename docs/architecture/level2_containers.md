@@ -37,14 +37,41 @@ Enter Javascript. Once we get an HTML response, that HTML can include a `<script
 ### JS Frameworks `[background]`
 The code that you can download and run in the browser has evolved to the point that, like Rails, we have entire frameworks, for JS code running in the browser, handling things like "client-side" routing, and editing of the [DOM] (Document Object Model). These are things like ReactJS, AngularJS, VueJS, EmberJS, etc. You write a bunch of code, which relies on a runtime framework to operate and your web page must download your code + the framework. They are "big" (ish). Then it all runs at runtime, so you have to write a lot of tests, and do a lot of QA.
 
-## [Svelte] is a *Compiler*
+## [Svelte] is a *Compiler* `[svelte background]`
 
 Unlike most JS frameworks, [Svelte] is a compiler. Given a `component.svelte` "component file", it will compile behavior, view, and optionally style, into raw vanilla JS that can directly update the DOM based on interaction or reaction to events. This results in *tiny* Javascript assets. They are faster to download because of their size. They are faster to run because they don't need to maintain a "virtual [DOM]" like most frameworks. It just updates the [DOM].
 
 Because it's compiling as a build step to produce the JS that actually gets loaded by the browser, we also get more error checking and strictness than we otherwise would using JS, which is a big step forward for safety and developer experience.
 
-### TODO: Diagram using Svelte with interactive local clicks, not reloading from the server.
+## How does [Svelte] (or any <abbr title="Single Page Application">SPA</abbr>) augment the experience with Rails?
 
+An <abbr title="Single Page Application">SPA</abbr> is usually loaded after a normal html response from Rails, where the HTML includes a script tag for a JS script which could be a large minified bundle of JS which loads the SPA app on download, and from there on takes over the interaction of the browser.
+
+This takeover usually includes:
+* Preventing default click events so the JS can handle them instead of submitting a request to the server.
+* Controlling URL routing, locally in the browser.
+* Interacting with the server via <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> requests or web sockets instead of full http requests.
+* Sometimes maintaining a Virtual/Shadow DOM, and running a rendering engine that handles updates to the DOM (But we don't do this with Svelte).
+
+So with an SPA, our relationship starts to look more like this:
+![Rails with an SPA](../diagrams/out/rails_spa/overview.svg)
+
+## [IntertiaJS]: Using Server Side Routing in our SPA!
+
+In Automata, we're using [IntertiaJs], which provides a small layer of logic on both the front end SPA, and the Rails server for communicating over https specifically to handle routing. This means we can implement all our routing for the front-end SPA in our normal server side routing logic, the same way we do for all non-SPA style pages within the Rails app!
+
+Inertia does this by using a header `x-inertia` to indicate a request is an inertia request, and that the server can respond with instructions to render a front-end component or page, and with data! 
+
+This approach has some nice benefits:
+* the browser maintain URL history normally we need not do anything special
+* No front end routing library needed, making our front end lighter weight
+* Page navigation is still very fast, because the responses from the server only contain data and the name of the page to be rendering.
+* Because we are using Svelte - the re-rendering is also happening faster than a normal front end framework using React, etc.
+
+This changes our interaction to this:
+![Rails with an InertiaJS SPA](../diagrams/out/rails_spa/inertiajs.svg)
+
+## [Back to Architecture](../architecture.md)
 
 [Rails]:https://rubyonrails.org/
 [Sidekiq]:https://sidekiq.org/
@@ -52,6 +79,7 @@ Because it's compiling as a build step to produce the JS that actually gets load
 [Svelte]:https://svelte.dev/
 [TailWindCSS]: https://tailwindcss.com/
 [Vite]: https://vitejs.dev/
+[IntertiaJs]:https://inertiajs.com/
 [ActiveRecord]:https://guides.rubyonrails.org/active_record_basics.html
 [ActiveJob]:https://guides.rubyonrails.org/active_job_basics.html
 [ActionCable]:https://guides.rubyonrails.org/action_cable_overview.html
