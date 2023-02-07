@@ -69,6 +69,7 @@ This approach has some nice benefits:
 * Because we are using Svelte - the re-rendering is also happening faster than a normal front end framework using React, etc.
 
 This changes our interaction to this:
+
 ![Rails with an InertiaJS SPA](../diagrams/out/rails_spa/inertiajs.svg)
 
 ## [Back to Architecture](../architecture.md)
