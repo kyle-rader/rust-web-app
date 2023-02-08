@@ -1,5 +1,11 @@
-[/**/*.rb]
-charset = utf-8
+[**]
 end_of_line = lf
+charset = utf-8
+indent_style = tab
+
+[/**/*.rb]
 indent_size = 2
+
+[**.md]
+indent_size = 3
 indent_style = space

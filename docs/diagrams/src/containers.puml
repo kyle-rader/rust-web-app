@@ -1,0 +1,19 @@
+@startuml ag_level2
+!include <C4/C4_Container>
+title System Containers Within Automata Games
+Person(bob, "Bob", "An Account Holder")
+System_Boundary(ag, "Automata Games") {
+	Container(puma, "Rails Web Server", "puma", "Handles web requests")
+	Container(jobs, "Rails Job Worker(s)", "sidekiq", "Executes Jobs")
+	ContainerDb(pg, "Postgres DB", "Main application data store")
+	ContainerDb(redis, "Redis", "Caching, Jobs Data, and cross process web socket channels")
+	Container(spa1, "Svelte SPA", "JS client app for games")
+}
+
+Rel(bob, puma, "Visits", "https")
+Rel(puma, pg, "Stores Data app data with", "sql")
+Rel(puma, redis, "Caching, Web Sockets, Create Jobs", "redis query")
+Rel(jobs, redis, "Read job data", "redis query")
+Rel(bob, spa1, "Interacts within browser", "svelte components")
+Rel_R(spa1, puma, "Fetches Data", "https/websockets")
+@enduml
