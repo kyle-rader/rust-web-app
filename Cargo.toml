@@ -1,2 +1,3 @@
 [workspace]
-members = ["crates/*"]
+members = ["server", "frontend"]
+resolver = "2"
