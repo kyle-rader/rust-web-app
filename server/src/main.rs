@@ -1,4 +1,4 @@
-use axum::{http::StatusCode, routing::get, Router};
+use axum::{http::StatusCode, routing::get, Json, Router};
 use tokio::signal;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
@@ -16,7 +16,9 @@ async fn main() -> anyhow::Result<()> {
         .init();
 
     // Build server
-    let app = Router::new().route("/", get(root));
+    let app = Router::new()
+        .route("/", get(root))
+        .route("/api/status", get(api_status));
 
     // run app with hyper
     let addr = "127.0.0.1:3000";
@@ -33,6 +35,24 @@ async fn main() -> anyhow::Result<()> {
 
 async fn root() -> (StatusCode, &'static str) {
     (StatusCode::OK, "Hello, World!")
+}
+
+#[derive(serde::Serialize)]
+enum ApiStatus {
+    Ok,
+    Degraded,
+    ThisIsFine,
+}
+
+#[derive(serde::Serialize)]
+struct ApiStatusResponse {
+    status: ApiStatus,
+}
+
+async fn api_status() -> Json<ApiStatusResponse> {
+    Json(ApiStatusResponse {
+        status: ApiStatus::Ok,
+    })
 }
 
 async fn shutdown_signal() {
