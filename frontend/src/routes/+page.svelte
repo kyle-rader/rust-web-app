@@ -1,2 +1,14 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import logo from '../lib/images/logo.png';
+</script>
+
+<h1 class="container center">Automata Games</h1>
+<img src={logo} alt="Automata Games Logo" class="container center" />
+
+<style>
+	img {
+		display: block;
+		margin: 20px auto;
+		width: 250px;
+	}
+</style>

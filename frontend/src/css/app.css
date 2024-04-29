@@ -1,0 +1,97 @@
+@import 'reset.css';
+@import 'colors.css';
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+body {
+	background-color: var(--background);
+	color: var(--foreground);
+	font-family: 'Roboto Slab', sans-serif;
+}
+
+.container {
+	margin: 0 auto;
+	padding: 15px 10px 0px 10px;
+}
+
+.center {
+	text-align: center;
+}
+
+code {
+	font-family: 'Consolas', Consolas, monospace;
+	display: inline-block;
+	background-color: var(--dark1);
+	color: var(--light0);
+	padding: 0.4rem;
+	border-radius: 0.5rem;
+	margin: 0.5rem;
+}
+
+/* Responsive Headers */
+@media screen and (max-width: 600px) {
+	h1 {
+		font-size: 24px;
+	}
+
+	h2 {
+		font-size: 20px;
+	}
+
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-size: 16px;
+	}
+}
+
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+	h1 {
+		font-size: 32px;
+	}
+
+	h2 {
+		font-size: 28px;
+	}
+
+	h3 {
+		font-size: 24px;
+	}
+
+	h4,
+	h5,
+	h6 {
+		font-size: 20px;
+	}
+}
+
+@media screen and (min-width: 1025px) {
+	h1 {
+		font-size: 40px;
+	}
+
+	h2 {
+		font-size: 36px;
+	}
+
+	h3 {
+		font-size: 32px;
+	}
+
+	h4 {
+		font-size: 28px;
+	}
+
+	h5 {
+		font-size: 24px;
+	}
+
+	h6 {
+		font-size: 20px;
+	}
+}
+
+/* Links */
+a {
+	color: var(--blue);
+	text-decoration: none;
+}
