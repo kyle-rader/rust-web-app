@@ -1,6 +1,5 @@
 use axum::{http::StatusCode, routing::get, Router};
 use tokio::signal;
-use tracing::instrument::WithSubscriber;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
