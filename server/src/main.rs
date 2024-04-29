@@ -1,6 +1,7 @@
 use axum::{http::StatusCode, routing::get, Router};
 use tokio::signal;
-use tracing_subscriber::fmt;
+use tracing::instrument::WithSubscriber;
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -11,7 +12,9 @@ async fn main() -> anyhow::Result<()> {
     println!("{startup_msg}");
 
     // initialize tracing
-    fmt::init();
+    tracing_subscriber::registry()
+        .with(tracing_subscriber::fmt::layer().without_time())
+        .init();
 
     // Build server
     let app = Router::new().route("/", get(root));
@@ -20,11 +23,12 @@ async fn main() -> anyhow::Result<()> {
     let addr = "127.0.0.1:3000";
     let listener = tokio::net::TcpListener::bind(addr).await?;
 
-    println!("Server running on: http://{}", addr);
+    println!("🛫 Server running on: http://{}", addr);
     axum::serve(listener, app)
         .with_graceful_shutdown(shutdown_signal())
         .await?;
 
+    println!("🛬 Goodbye!");
     Ok(())
 }
 
@@ -55,5 +59,5 @@ async fn shutdown_signal() {
         _ = terminate => {},
     }
 
-    println!("💤 Shutting down...");
+    println!("⚠️ Shutting down...");
 }
