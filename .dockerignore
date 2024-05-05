@@ -1,0 +1,20 @@
+# flyctl launch added from .gitignore
+# Mac Files
+**/.DS_Store
+
+# Rust Files
+**/target
+**/.data
+
+# flyctl launch added from frontend/.gitignore
+frontend/**/.DS_Store
+frontend/**/node_modules
+frontend/build
+frontend/.svelte-kit
+frontend/package
+frontend/**/.env
+frontend/**/.env.*
+!frontend/**/.env.example
+frontend/**/vite.config.js.timestamp-*
+frontend/**/vite.config.ts.timestamp-*
+fly.toml
