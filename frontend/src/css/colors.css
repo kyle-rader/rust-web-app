@@ -12,8 +12,8 @@
 	--light3: #bdae93;
 	--light4: #a89984;
 
-	--background: var(--dark0);
-	--foreground: var(--light0);
+	--bg: var(--dark0);
+	--fg: var(--light0);
 
 	--red-bright: #fb4934;
 	--green-bright: #b8bb26;

@@ -3,20 +3,41 @@
 	import '../css/app.css';
 </script>
 
-<nav>
-	<a href="/">Home</a>
-	<a href="/about">About</a>
+<div class="app">
+	<nav>
+		<a href="/">Home</a>
+		<a href="/about">About</a>
 
-	<a href="/login">Login</a>
-	<a href="/register">Register</a>
-</nav>
+		<a href="/login">Login</a>
+		<a href="/register">Register</a>
+	</nav>
 
-<slot />
+	<!-- Slot for the page content -->
+	<div class="body">
+		<slot />
+	</div>
+
+	<footer>
+		<p>© 2024 Automata Games</p>
+	</footer>
+</div>
 
 <style>
+	.app {
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
+
 	nav {
 		display: flex;
 		justify-content: space-around;
+	}
+
+	footer {
+		text-align: center;
+		padding: 20px;
+		margin-top: auto;
 	}
 
 	a {

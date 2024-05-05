@@ -5,7 +5,15 @@
 		<link rel="icon" href="%sveltekit.assets%/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		%sveltekit.head%
+
 	</head>
+	<!-- Base colors included in html to avoid background color change on initial page load.-->
+		<style>
+			:root {
+				background-color: #282828;
+				color: #fbf1c7;
+			}
+		</style>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>

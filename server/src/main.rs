@@ -1,6 +1,8 @@
-use axum::{http::StatusCode, routing::get, Json, Router};
+use axum::{routing::get, Json, Router};
 use tokio::signal;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+
+mod assets;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -15,10 +17,13 @@ async fn main() -> anyhow::Result<()> {
         .with(tracing_subscriber::fmt::layer().without_time())
         .init();
 
+    assets::print_assets();
+
     // Build server
     let app = Router::new()
-        .route("/", get(root))
-        .route("/api/status", get(api_status));
+        .route("/api/status", get(api_status))
+        .route("/", get(assets::handler))
+        .route("/*file", get(assets::handler));
 
     // run app with hyper
     let addr = "127.0.0.1:3000";
@@ -33,15 +38,10 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-async fn root() -> (StatusCode, &'static str) {
-    (StatusCode::OK, "Hello, World!")
-}
-
 #[derive(serde::Serialize)]
 enum ApiStatus {
+    #[serde(rename = "ok ✅")]
     Ok,
-    Degraded,
-    ThisIsFine,
 }
 
 #[derive(serde::Serialize)]
