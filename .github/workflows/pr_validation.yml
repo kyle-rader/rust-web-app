@@ -1,0 +1,50 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Build front end Svelte app
+  build_client:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+
+      - name: npm install
+        run: npm install
+
+      - name: install playwright
+        run: npx playwright install
+
+      - name: npm test
+        run: npm test
+
+  # Build Rust server
+  build_server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: actions/setup-rust@v1
+
+      - name: cargo build
+        working-directory: server
+        run: cargo build --release
+
+      - name: cargo test
+        working-directory: server
+        run: cargo test --release
