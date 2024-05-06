@@ -1,5 +1,8 @@
 use axum::{routing::get, Json, Router};
 use tokio::signal;
+use tower_http::trace::TraceLayer;
+use tracing::info;
+use tracing_subscriber::filter::EnvFilter;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 mod assets;
@@ -9,24 +12,28 @@ const DEFAULT_ADDR: &str = "127.0.0.1";
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    // initialize tracing
+    tracing_subscriber::registry()
+        .with(
+            EnvFilter::try_from_default_env()
+                .unwrap_or_else(|_| "server=trace,tower_http=trace,axum::rejection=trace".into()),
+        )
+        .with(tracing_subscriber::fmt::layer().without_time().compact())
+        .init();
+
     #[cfg(debug_assertions)]
     let startup_msg = "🐛 (debug) Starting automata server";
     #[cfg(not(debug_assertions))]
     let startup_msg = "🚀 (release) Starting automata server";
-    println!("{startup_msg}");
-
-    // initialize tracing
-    tracing_subscriber::registry()
-        .with(tracing_subscriber::fmt::layer().without_time())
-        .init();
+    info!("{startup_msg}");
 
     assets::print_assets();
 
-    // Build server
     let app = Router::new()
         .route("/api/status", get(api_status))
         .route("/", get(assets::handler))
-        .route("/*file", get(assets::handler));
+        .route("/*file", get(assets::handler))
+        .layer(TraceLayer::new_for_http());
 
     // get port from env or use default
     let port = std::env::var("PORT").unwrap_or(DEFAULT_PORT.to_string());
@@ -37,12 +44,12 @@ async fn main() -> anyhow::Result<()> {
     let listener = tokio::net::TcpListener::bind(&address).await?;
 
     // Start server
-    println!("🛫 Server running on: http://{}", address);
+    info!("🛫 Server running on: http://{}", address);
     axum::serve(listener, app)
         .with_graceful_shutdown(shutdown_signal())
         .await?;
 
-    println!("🛬 Goodbye!");
+    info!("🛬 Goodbye!");
     Ok(())
 }
 

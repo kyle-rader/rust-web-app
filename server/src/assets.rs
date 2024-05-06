@@ -5,7 +5,7 @@ use axum::{
     response::IntoResponse,
 };
 use rust_embed::RustEmbed;
-use tracing::info;
+use tracing::{debug, info};
 
 const INDEX: &str = "index.html";
 
@@ -20,7 +20,7 @@ pub fn print_assets() {
 }
 
 pub async fn handler(req: Request) -> Result<impl IntoResponse, StatusCode> {
-    info!("{:?}: {:?}", req.method(), req.uri());
+    debug!("{:?}: {:?}", req.method(), req.uri());
 
     let path = req.uri().path();
     let path = if path == "/" {
