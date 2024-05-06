@@ -39,3 +39,213 @@
 	--aqua-faded: #427b58;
 	--orange-faded: #af3a03;
 }
+
+/* Generate bg- classes */
+.bg-dark0 {
+	background-color: var(--dark0);
+}
+
+.bg-dark1 {
+	background-color: var(--dark1);
+}
+
+.bg-dark2 {
+	background-color: var(--dark2);
+}
+
+.bg-dark3 {
+	background-color: var(--dark3);
+}
+
+.bg-dark4 {
+	background-color: var(--dark4);
+}
+
+.bg-light0 {
+	background-color: var(--light0);
+}
+
+.bg-light1 {
+	background-color: var(--light1);
+}
+
+.bg-light2 {
+	background-color: var(--light2);
+}
+
+.bg-light3 {
+	background-color: var(--light3);
+}
+
+.bg-light4 {
+	background-color: var(--light4);
+}
+
+.bg-red-bright {
+	background-color: var(--red-bright);
+}
+
+.bg-green-bright {
+	background-color: var(--green-bright);
+}
+
+.bg-yellow-bright {
+	background-color: var(--yellow-bright);
+}
+
+.bg-blue-bright {
+	background-color: var(--blue-bright);
+}
+
+.bg-purple-bright {
+	background-color: var(--purple-bright);
+}
+
+.bg-aqua-bright {
+	background-color: var(--aqua-bright);
+}
+
+.bg-orange-bright {
+	background-color: var(--orange-bright);
+}
+
+.bg-red {
+	background-color: var(--red);
+}
+
+.bg-green {
+	background-color: var(--green);
+}
+
+.bg-yellow {
+	background-color: var(--yellow);
+}
+
+.bg-blue {
+	background-color: var(--blue);
+}
+
+.bg-purple {
+	background-color: var(--purple);
+}
+
+.bg-aqua {
+	background-color: var(--aqua);
+}
+
+.bg-orange {
+	background-color: var(--orange);
+}
+
+.bg-red-faded {
+	background-color: var(--red-faded);
+}
+
+.bg-green-faded {
+	background-color: var(--green-faded);
+}
+
+.bg-yellow-faded {
+	background-color: var(--yellow-faded);
+}
+
+.bg-blue-faded {
+	background-color: var(--blue-faded);
+}
+
+.bg-purple-faded {
+	background-color: var(--purple-faded);
+}
+
+.bg-aqua-faded {
+	background-color: var(--aqua-faded);
+}
+
+.bg-orange-faded {
+	background-color: var(--orange-faded);
+}
+
+/* Generate color classes */
+.color-red-bright {
+	color: var(--red-bright);
+}
+
+.color-green-bright {
+	color: var(--green-bright);
+}
+
+.color-yellow-bright {
+	color: var(--yellow-bright);
+}
+
+.color-blue-bright {
+	color: var(--blue-bright);
+}
+
+.color-purple-bright {
+	color: var(--purple-bright);
+}
+
+.color-aqua-bright {
+	color: var(--aqua-bright);
+}
+
+.color-orange-bright {
+	color: var(--orange-bright);
+}
+
+.color-red {
+	color: var(--red);
+}
+
+.color-green {
+	color: var(--green);
+}
+
+.color-yellow {
+	color: var(--yellow);
+}
+
+.color-blue {
+	color: var(--blue);
+}
+
+.color-purple {
+	color: var(--purple);
+}
+
+.color-aqua {
+	color: var(--aqua);
+}
+
+.color-orange {
+	color: var(--orange);
+}
+
+.color-red-faded {
+	color: var(--red-faded);
+}
+
+.color-green-faded {
+	color: var(--green-faded);
+}
+
+.color-yellow-faded {
+	color: var(--yellow-faded);
+}
+
+.color-blue-faded {
+	color: var(--blue-faded);
+}
+
+.color-purple-faded {
+	color: var(--purple-faded);
+}
+
+.color-aqua-faded {
+	color: var(--aqua-faded);
+}
+
+.color-orange-faded {
+	color: var(--orange-faded);
+}

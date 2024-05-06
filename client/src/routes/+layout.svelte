@@ -5,11 +5,10 @@
 
 <div class="app">
 	<nav>
-		<a href="/">Home</a>
-		<a href="/about">About</a>
-
-		<a href="/login">Login</a>
-		<a href="/register">Register</a>
+		<a href="/" class="bg-green">Home</a>
+		<a href="/about" class="bg-blue">About</a>
+		<a href="/login" class="bg-orange">Login</a>
+		<a href="/register" class="bg-aqua">Register</a>
 	</nav>
 
 	<!-- Slot for the page content -->
@@ -41,20 +40,35 @@
 	}
 
 	a {
-		color: var(--blue);
-		background-color: var(--dark1);
 		padding: 0.5rem 1rem;
 		width: 100%;
 		text-align: center;
-		border-style: groove;
-		border-color: var(--dark2);
-		border-width: 2px;
 		transition: 0.3s;
+		color: var(--dark1);
 	}
 
-	a:hover {
-		color: var(--blue-bright);
-		background-color: var(--dark2);
-		transition: 0.3s;
+	@media (hover: hover) {
+		a::before {
+			content: '- ';
+		}
+		a::after {
+			content: ' -';
+		}
+
+		a::before,
+		a::after {
+			opacity: 0;
+			transition: 0.3s;
+		}
+
+		a:hover::before,
+		a:hover::after {
+			opacity: 100;
+		}
+
+		a:hover {
+			background-color: var(--light2);
+			color: var(--dark2);
+		}
 	}
 </style>
