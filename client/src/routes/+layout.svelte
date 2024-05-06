@@ -40,7 +40,7 @@
 	}
 
 	a {
-		padding: 0.5rem 1rem;
+		padding: 12px 1rem;
 		width: 100%;
 		text-align: center;
 		transition: 0.3s;
