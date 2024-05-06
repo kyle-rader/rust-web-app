@@ -1,8 +1,14 @@
 # Docker-Compose definition for a locally mapped Postgres database and Redis database
 
-version: '3.1'
-
 services:
+  server:
+    build: .
+    environment:
+      DATABASE_URL: postgres://pgdev:pgdev@db:5432/pgdev
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
   db:
     image: postgres
     environment:

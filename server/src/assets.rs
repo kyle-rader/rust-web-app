@@ -10,7 +10,7 @@ use tracing::{debug, info};
 const INDEX: &str = "index.html";
 
 #[derive(RustEmbed)]
-#[folder = "../frontend/build/"]
+#[folder = "../client/build/"]
 struct Assets;
 
 pub fn print_assets() {
