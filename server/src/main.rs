@@ -5,6 +5,7 @@ use tracing::info;
 use tracing_subscriber::filter::EnvFilter;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
+#[cfg(feature = "embed_assets")]
 mod assets;
 
 const DEFAULT_PORT: u16 = 3000;
@@ -27,13 +28,17 @@ async fn main() -> anyhow::Result<()> {
     let startup_msg = "🚀 (release) Starting automata server";
     info!("{startup_msg}");
 
+    #[cfg(feature = "embed_assets")]
     assets::print_assets();
 
-    let app = Router::new()
-        .route("/api/status", get(api_status))
+    let app = Router::new().route("/api/status", get(api_status));
+
+    #[cfg(feature = "embed_assets")]
+    let app = app
         .route("/", get(assets::handler))
-        .route("/*file", get(assets::handler))
-        .layer(TraceLayer::new_for_http());
+        .route("/*file", get(assets::handler));
+
+    let app = app.layer(TraceLayer::new_for_http());
 
     // get port from env or use default
     let port = std::env::var("PORT").unwrap_or(DEFAULT_PORT.to_string());
