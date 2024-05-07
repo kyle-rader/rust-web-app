@@ -21,7 +21,7 @@ COPY server /app/server
 
 # Build the server
 RUN cd server && \
-  cargo build --release
+  cargo build --release --features embed_assets
 
 # Start fresh image to reduce size
 FROM alpine:latest
