@@ -1,0 +1,10 @@
+[alias]
+quick_dev = [
+  "watch",
+  "-q",
+  "-c",
+  "-w",
+  "tests/",
+  "-x",
+  "test --features quick_dev quick_dev -- --nocapture",
+]

@@ -3,8 +3,6 @@ name = "server"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 tracing = "0.1.40"
 anyhow = "1.0.82"
@@ -22,7 +20,12 @@ tokio = { version = "1.37.0", features = [
 ] }
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 diesel = { version = "2.1.6", features = ["postgres"] }
+serde_json = "1.0.117"
 
 [features]
 default = []
 embed_assets = []
+quick_dev = []
+
+[dev-dependencies]
+httpc-test = { version = "0.1.9", features = ["colored", "color-output"] }

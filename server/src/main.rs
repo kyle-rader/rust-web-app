@@ -7,31 +7,20 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[cfg(feature = "embed_assets")]
 mod assets;
+mod web;
 
 const DEFAULT_PORT: u16 = 3000;
 const DEFAULT_ADDR: &str = "127.0.0.1";
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    // initialize tracing
-    tracing_subscriber::registry()
-        .with(
-            EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "server=trace,tower_http=trace,axum::rejection=trace".into()),
-        )
-        .with(tracing_subscriber::fmt::layer().without_time().compact())
-        .init();
-
-    #[cfg(debug_assertions)]
-    let startup_msg = "🐛 (debug) Starting automata server";
-    #[cfg(not(debug_assertions))]
-    let startup_msg = "🚀 (release) Starting automata server";
-    info!("{startup_msg}");
+    init_tracing();
+    welcome_message();
 
     #[cfg(feature = "embed_assets")]
     assets::print_assets();
 
-    let app = Router::new().route("/api/status", get(api_status));
+    let app = Router::new().nest_service("/api", web::get_routes());
 
     #[cfg(feature = "embed_assets")]
     let app = app
@@ -58,21 +47,22 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-#[derive(serde::Serialize)]
-enum ApiStatus {
-    #[serde(rename = "ok ✅")]
-    Ok,
+fn init_tracing() {
+    tracing_subscriber::registry()
+        .with(
+            EnvFilter::try_from_default_env()
+                .unwrap_or_else(|_| "server=trace,tower_http=trace,axum::rejection=trace".into()),
+        )
+        .with(tracing_subscriber::fmt::layer().without_time().compact())
+        .init();
 }
 
-#[derive(serde::Serialize)]
-struct ApiStatusResponse {
-    status: ApiStatus,
-}
-
-async fn api_status() -> Json<ApiStatusResponse> {
-    Json(ApiStatusResponse {
-        status: ApiStatus::Ok,
-    })
+fn welcome_message() {
+    #[cfg(debug_assertions)]
+    let startup_msg = "🐛 (debug) Starting automata server";
+    #[cfg(not(debug_assertions))]
+    let startup_msg = "🚀 (release) Starting automata server";
+    info!("{startup_msg}");
 }
 
 async fn shutdown_signal() {
