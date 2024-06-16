@@ -8,3 +8,5 @@ quick_dev = [
   "-x",
   "test --features quick_dev quick_dev -- --nocapture",
 ]
+
+live_reload = ["watch", "-q", "-c", "-w", "src/", "-x", "run"]
