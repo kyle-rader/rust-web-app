@@ -1,4 +1,4 @@
-use axum::{routing::get, Json, Router};
+use axum::Router;
 use tokio::signal;
 use tower_http::trace::TraceLayer;
 use tracing::info;
