@@ -1,8 +1,15 @@
 {
-  "cSpell.words": ["flyctl", "Gruv", "onclick", "rsplit", "superfly"],
+  "cSpell.words": [
+    "endregion",
+    "flyctl",
+    "Gruv",
+    "onclick",
+    "rsplit",
+    "superfly"
+  ],
   "rust-analyzer.linkedProjects": [
     // "./server/Cargo.toml",
   ],
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": null,
+  "editor.defaultFormatter": null
 }

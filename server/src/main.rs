@@ -1,5 +1,6 @@
 use axum::Router;
 use tokio::signal;
+use tower_cookies::CookieManagerLayer;
 use tower_http::trace::TraceLayer;
 use tracing::info;
 use tracing_subscriber::filter::EnvFilter;
@@ -7,6 +8,7 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[cfg(feature = "embed_assets")]
 mod assets;
+mod model;
 mod web;
 
 const DEFAULT_PORT: u16 = 3000;
@@ -20,14 +22,16 @@ async fn main() -> anyhow::Result<()> {
     #[cfg(feature = "embed_assets")]
     assets::print_assets();
 
-    let app = Router::new().nest_service("/api", web::get_routes());
+    let app = Router::new().nest_service("/api", web::get_routes().await?);
 
     #[cfg(feature = "embed_assets")]
     let app = app
         .route("/", get(assets::handler))
         .route("/*file", get(assets::handler));
 
-    let app = app.layer(TraceLayer::new_for_http());
+    let app = app
+        .layer(TraceLayer::new_for_http())
+        .layer(CookieManagerLayer::new());
 
     // get port from env or use default
     let port = std::env::var("PORT").unwrap_or(DEFAULT_PORT.to_string());

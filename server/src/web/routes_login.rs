@@ -1,7 +1,10 @@
 use axum::{http::StatusCode, response::IntoResponse, routing::post, Json};
 use serde::Deserialize;
 use serde_json::{json, Value};
+use tower_cookies::{Cookie, Cookies};
 use tracing::debug;
+
+use crate::web;
 
 pub fn get_routes() -> axum::Router {
     axum::Router::new().route("/login", post(api_login))
@@ -24,7 +27,10 @@ struct PayloadLogin {
     password: String,
 }
 
-async fn api_login(payload: Json<PayloadLogin>) -> Result<Json<Value>, ErrorLogin> {
+async fn api_login(
+    cookies: Cookies,
+    payload: Json<PayloadLogin>,
+) -> Result<Json<Value>, ErrorLogin> {
     debug!("API_LOGIN: {:?}", payload);
 
     // TODO: Create real login logic with DB
@@ -33,6 +39,7 @@ async fn api_login(payload: Json<PayloadLogin>) -> Result<Json<Value>, ErrorLogi
     }
 
     // TODO: Create Session and set Cookies
+    cookies.add(Cookie::new(web::AUTH_TOKEN, "user1.exp.sign"));
 
     // Create success body
     Ok(Json(json!({

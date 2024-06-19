@@ -18,5 +18,16 @@ async fn quick_dev() -> anyhow::Result<()> {
     .print()
     .await?;
 
+    hc.do_post(
+        "/api/lobby",
+        json!({
+            "name": "Cool lobby",
+            "visibility": "Public"
+        }),
+    )
+    .await?
+    .print()
+    .await?;
+
     Ok(())
 }
