@@ -39,7 +39,7 @@ async fn api_login(
     }
 
     // TODO: Create Session and set Cookies
-    cookies.add(Cookie::new(web::AUTH_TOKEN, "user1.exp.sign"));
+    cookies.add(Cookie::new(web::AUTH_HEADER, "user1.exp.sign"));
 
     // Create success body
     Ok(Json(json!({

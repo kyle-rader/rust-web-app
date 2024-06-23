@@ -8,6 +8,7 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[cfg(feature = "embed_assets")]
 mod assets;
+mod middleware;
 mod model;
 mod web;
 
@@ -22,14 +23,20 @@ async fn main() -> anyhow::Result<()> {
     #[cfg(feature = "embed_assets")]
     assets::print_assets();
 
-    let app = Router::new().nest_service("/api", web::get_routes().await?);
+    let app = Router::new();
 
     #[cfg(feature = "embed_assets")]
     let app = app
         .route("/", get(assets::handler))
         .route("/*file", get(assets::handler));
 
+    let routes_api = web::get_routes_api()
+        .await?
+        .route_layer(axum::middleware::from_fn(middleware::auth::require_auth));
+
     let app = app
+        .merge(web::get_routes_public().await?)
+        .nest("/api", routes_api)
         .layer(TraceLayer::new_for_http())
         .layer(CookieManagerLayer::new());
 

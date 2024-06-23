@@ -1,12 +1,12 @@
 [alias]
 quick_dev = [
-  "watch",
-  "-q",
-  "-c",
-  "-w",
-  "tests/",
-  "-x",
-  "test --features quick_dev quick_dev -- --nocapture",
+    "watch",
+    "-q",
+    "-c",
+    "-w",
+    "examples/quick_dev.rs",
+    "-x",
+    "run -q --example quick_dev",
 ]
 
 live_reload = ["watch", "-q", "-c", "-w", "src/", "-x", "run"]

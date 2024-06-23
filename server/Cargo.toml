@@ -23,11 +23,11 @@ serde_json = "1.0.117"
 
 # Async Runtime
 tokio = { version = "1.37.0", features = [
-  "fs",
-  "macros",
-  "rt-multi-thread",
-  "signal",
-  "tracing",
+    "fs",
+    "macros",
+    "rt-multi-thread",
+    "signal",
+    "tracing",
 ] }
 
 # DB ORM
@@ -41,4 +41,4 @@ quick_dev = []
 
 [dev-dependencies]
 # Used for quick_dev tests
-httpc-test = { version = "0.1.9", features = ["colored", "color-output"] }
+httpc-test = { version = "0.1.9", features = ["color-output"] }

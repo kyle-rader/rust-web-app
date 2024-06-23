@@ -8,6 +8,7 @@ use crate::model::lobby::{ErrorLobby, Lobby, LobbyController, LobbyForCreate};
 pub fn get_routes(controller: LobbyController) -> axum::Router {
     axum::Router::new()
         .route("/lobby", post(create_lobby))
+        // .route("/lobbies", get(get_lobbies))
         .with_state(controller)
 }
 
