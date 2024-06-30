@@ -15,6 +15,7 @@ tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 # Web Infra
 axum = { version = "0.7.5", features = ["ws", "macros"] }
 tower-http = { version = "0.5.2", features = ["trace"] }
+tower-cookies = "0.10.0"
 rust-embed = { version = "8.3.0", features = ["mime-guess"] }
 
 # JSON
@@ -32,13 +33,23 @@ tokio = { version = "1.37.0", features = [
 
 # DB ORM
 diesel = { version = "2.1.6", features = ["postgres"] }
-tower-cookies = "0.10.0"
+
+# Authentication & Crypto
+sha2 = "0.10.8"
+rand = "0.8.5"
+openssl = "0.10.64"
+hmac = "0.12.1"
+rsa = "0.9.6"
+jsonwebtoken = "9.3.0"
+
+[profile.dev.package.num-bigint-dig]
+opt-level = 3
 
 [features]
 default = []
 embed_assets = []
-quick_dev = []
 
 [dev-dependencies]
 # Used for quick_dev tests
 httpc-test = { version = "0.1.9", features = ["color-output"] }
+lazy_static = "1.5.0"

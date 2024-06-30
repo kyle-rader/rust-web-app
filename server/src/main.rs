@@ -10,6 +10,7 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 mod assets;
 mod middleware;
 mod model;
+mod service;
 mod web;
 
 const DEFAULT_PORT: u16 = 3000;
