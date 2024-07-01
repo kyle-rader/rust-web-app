@@ -1,6 +1,6 @@
 use std::time::SystemTime;
 
-use jsonwebtoken::{encode, DecodingKey, EncodingKey, Header};
+use jsonwebtoken::{encode, DecodingKey, EncodingKey, Header, Validation};
 use rsa::{
     pkcs1::{EncodeRsaPrivateKey, EncodeRsaPublicKey},
     pkcs8::LineEnding,
@@ -8,10 +8,9 @@ use rsa::{
 };
 use serde::{Deserialize, Serialize};
 
-const ONE_MINUTE_SEC: u64 = 60;
-const ONE_HOUR_SEC: u64 = 3600;
+const EXPIRATION_WITHIN_SEC: u64 = 60 * 5;
+const ONE_HOUR_SEC: u64 = 60 * 60;
 const RSA_BITS: usize = 2048;
-const RSA_ALGORITHM: &str = "RS384";
 
 pub struct Jwt {
     public_key: RsaPublicKey,
@@ -19,23 +18,21 @@ pub struct Jwt {
 
     private_key: RsaPrivateKey,
     encoding_key: EncodingKey,
+
+    validation: Validation,
 }
 
 #[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
 pub struct Claims {
     pub iat: u64,
     pub exp: u64,
-    pub sub: String,
+    pub sub: u64,
     pub display_name: String,
     pub email: String,
 }
 
 impl Claims {
-    pub fn new(
-        sub: impl Into<String>,
-        display_name: impl Into<String>,
-        email: impl Into<String>,
-    ) -> Self {
+    pub fn new(sub: u64, display_name: impl Into<String>, email: impl Into<String>) -> Self {
         let now = SystemTime::now();
         let iat = now
             .duration_since(SystemTime::UNIX_EPOCH)
@@ -50,7 +47,7 @@ impl Claims {
         Self {
             iat,
             exp,
-            sub: sub.into(),
+            sub,
             display_name: display_name.into(),
             email: email.into(),
         }
@@ -75,6 +72,10 @@ impl Jwt {
             .to_pkcs1_pem(LineEnding::LF)
             .expect("Failed to serialize public key as PEM");
 
+        let mut validation = Validation::new(jsonwebtoken::Algorithm::RS384);
+        validation.validate_exp = true;
+        validation.reject_tokens_expiring_in_less_than = EXPIRATION_WITHIN_SEC;
+
         Self {
             public_key,
             decoding_key: DecodingKey::from_rsa_pem(public_pem.as_bytes())
@@ -82,6 +83,7 @@ impl Jwt {
             private_key,
             encoding_key: EncodingKey::from_rsa_pem(private_pem.as_bytes())
                 .expect("Failed to create encoding key from private key"),
+            validation,
         }
     }
 
@@ -91,26 +93,21 @@ impl Jwt {
         Ok(token)
     }
 
-    pub fn verify(&self, token: &str) -> Result<Claims, String> {
-        let decoding_key = &self.decoding_key;
-        let result = jsonwebtoken::decode::<Claims>(
-            token,
-            decoding_key,
-            &jsonwebtoken::Validation::new(jsonwebtoken::Algorithm::RS384),
-        );
-        match result {
-            Ok(token_data) => Ok(token_data.claims),
-            Err(err) => Err(err.to_string()),
-        }
+    pub fn verify(&self, token: &str) -> Result<Claims, jsonwebtoken::errors::Error> {
+        let result = jsonwebtoken::decode::<Claims>(token, &self.decoding_key, &self.validation);
+        Ok(result?.claims)
     }
 }
 
 #[cfg(test)]
 mod tests {
+    use std::time::{SystemTime, UNIX_EPOCH};
+
     use crate::service::jwt::Claims;
 
     use super::Jwt;
 
+    use jsonwebtoken::errors::ErrorKind;
     use lazy_static::lazy_static;
 
     lazy_static! {
@@ -120,16 +117,30 @@ mod tests {
 
     #[test]
     fn round_trip_a_token() {
-        let claims = Claims::new(
-            "someone".to_string(),
-            "Someone".to_string(),
-            "foobar@contoso.com".to_string(),
-        );
+        let claims = Claims::new(1, "Someone".to_string(), "someone@contoso.com".to_string());
 
         let token = JWT.sign(&claims).expect("Failed to sign token");
-
         let verified_claims = JWT.verify(&token).expect("Failed to verify token");
-
         assert_eq!(claims, verified_claims);
+    }
+
+    #[test]
+    fn token_expiring_soon_is_invalid() {
+        let now = SystemTime::now();
+        let iat = now.duration_since(UNIX_EPOCH).unwrap().as_secs();
+        let exp = iat + 10; // expires 10 seconds from now
+        let claims = Claims {
+            iat,
+            exp,
+            sub: 1,
+            display_name: "Someone".to_string(),
+            email: "someone@contoso.com".to_string(),
+        };
+
+        let token = JWT.sign(&claims).expect("Failed to sign token");
+        let result = JWT
+            .verify(&token)
+            .expect_err("Token should be invalid and expiring soon!");
+        assert_eq!(result.kind(), &ErrorKind::ExpiredSignature);
     }
 }
