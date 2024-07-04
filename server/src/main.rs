@@ -1,15 +1,18 @@
-use axum::Router;
+use axum::response::Redirect;
+use axum::routing::get;
+use axum::{middleware, Router};
 use tokio::signal;
 use tower_cookies::CookieManagerLayer;
 use tower_http::trace::TraceLayer;
 use tracing::info;
 use tracing_subscriber::filter::EnvFilter;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+use web::routes;
 
 #[cfg(feature = "embed_assets")]
 mod assets;
-mod middleware;
 mod model;
+mod mw;
 mod service;
 mod web;
 
@@ -31,13 +34,17 @@ async fn main() -> anyhow::Result<()> {
         .route("/", get(assets::handler))
         .route("/*file", get(assets::handler));
 
-    let routes_api = web::get_routes_api()
-        .await?
-        .route_layer(axum::middleware::from_fn(middleware::auth::require_auth));
+    #[cfg(not(feature = "embed_assets"))]
+    let app = app.route("/", get(|| async { Redirect::to(":5173") }));
+
+    let (app_state, api_routes) = routes::get_api_routes().await?;
 
     let app = app
-        .merge(web::get_routes_public().await?)
-        .nest("/api", routes_api)
+        .nest("/api", api_routes)
+        .layer(middleware::from_fn_with_state(
+            app_state,
+            mw::auth::ctx_resolver,
+        ))
         .layer(TraceLayer::new_for_http())
         .layer(CookieManagerLayer::new());
 

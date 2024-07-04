@@ -1,4 +1,4 @@
-use std::time::SystemTime;
+use std::{sync::Arc, time::SystemTime};
 
 use jsonwebtoken::{encode, DecodingKey, EncodingKey, Header, Validation};
 use rsa::{
@@ -8,18 +8,16 @@ use rsa::{
 };
 use serde::{Deserialize, Serialize};
 
+use super::time;
+
 const EXPIRATION_WITHIN_SEC: u64 = 60 * 5;
 const ONE_HOUR_SEC: u64 = 60 * 60;
 const RSA_BITS: usize = 2048;
 
-pub struct Jwt {
-    public_key: RsaPublicKey,
-    decoding_key: DecodingKey,
-
-    private_key: RsaPrivateKey,
-    encoding_key: EncodingKey,
-
-    validation: Validation,
+#[derive(Debug, thiserror::Error)]
+pub enum ErrorJwt {
+    #[error("Failed to generate JWT service: {0}")]
+    Generate(#[from] rsa::errors::Error),
 }
 
 #[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
@@ -33,16 +31,9 @@ pub struct Claims {
 
 impl Claims {
     pub fn new(sub: u64, display_name: impl Into<String>, email: impl Into<String>) -> Self {
-        let now = SystemTime::now();
-        let iat = now
-            .duration_since(SystemTime::UNIX_EPOCH)
-            .expect("Failed to get system time! (Time went backwards?)")
-            .as_secs();
-
-        let exp = (now + std::time::Duration::from_secs(ONE_HOUR_SEC))
-            .duration_since(SystemTime::UNIX_EPOCH)
-            .expect("Failed to get system time! (Time went backwards?)")
-            .as_secs();
+        let now = time::now_unix().unwrap();
+        let iat = now;
+        let exp = now + ONE_HOUR_SEC;
 
         Self {
             iat,
@@ -54,8 +45,28 @@ impl Claims {
     }
 }
 
+pub struct Jwt {
+    public_key: RsaPublicKey,
+    decoding_key: DecodingKey,
+
+    private_key: RsaPrivateKey,
+    encoding_key: EncodingKey,
+
+    validation: Validation,
+}
+
+impl std::fmt::Debug for Jwt {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Jwt")
+            .field("public_key", &self.public_key)
+            .field("private_key", &self.private_key)
+            .field("validation", &self.validation)
+            .finish()
+    }
+}
+
 impl Jwt {
-    pub fn generate() -> Result<Self, rsa::errors::Error> {
+    pub fn generate() -> Result<Self, ErrorJwt> {
         let mut rng = rand::thread_rng();
         let private_key = RsaPrivateKey::new(&mut rng, RSA_BITS)?;
         private_key.validate()?;
@@ -96,6 +107,27 @@ impl Jwt {
     pub fn verify(&self, token: &str) -> Result<Claims, jsonwebtoken::errors::Error> {
         let result = jsonwebtoken::decode::<Claims>(token, &self.decoding_key, &self.validation);
         Ok(result?.claims)
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct JwtController {
+    jwt: Arc<Jwt>,
+}
+
+impl JwtController {
+    pub(crate) fn new() -> Result<Self, ErrorJwt> {
+        Ok(Self {
+            jwt: Arc::new(Jwt::generate()?),
+        })
+    }
+
+    pub fn sign(&self, claims: &Claims) -> Result<String, String> {
+        self.jwt.sign(claims)
+    }
+
+    pub fn verify(&self, token: &str) -> Result<Claims, jsonwebtoken::errors::Error> {
+        self.jwt.verify(token)
     }
 }
 

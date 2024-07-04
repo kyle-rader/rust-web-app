@@ -1,8 +1,4 @@
-use axum::{routing::get, Json};
-
-pub fn get_routes() -> axum::Router {
-    axum::Router::new().route("/status", get(api_status))
-}
+use axum::Json;
 
 #[derive(serde::Serialize)]
 enum ApiStatus {
@@ -11,11 +7,11 @@ enum ApiStatus {
 }
 
 #[derive(serde::Serialize)]
-struct ApiStatusResponse {
+pub struct ApiStatusResponse {
     status: ApiStatus,
 }
 
-async fn api_status() -> Json<ApiStatusResponse> {
+pub async fn api_status() -> Json<ApiStatusResponse> {
     Json(ApiStatusResponse {
         status: ApiStatus::Ok,
     })

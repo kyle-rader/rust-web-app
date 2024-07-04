@@ -4,10 +4,10 @@ use serde_json::json;
 async fn main() -> anyhow::Result<()> {
     let hc = httpc_test::new_client("http://localhost:3000")?;
 
-    hc.do_get("/status").await?.print().await?;
+    hc.do_get("/api/status").await?.print().await?;
 
     let login = hc.do_post(
-        "/login",
+        "/api/login",
         json!({
             "email": "goodguy",
             "password": "password"

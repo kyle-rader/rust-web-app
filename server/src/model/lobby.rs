@@ -41,7 +41,7 @@ pub struct LobbyController {
 }
 
 impl LobbyController {
-    pub async fn new() -> anyhow::Result<Self> {
+    pub async fn new() -> Result<Self, ErrorLobby> {
         let lobbies = Arc::default();
         Ok(Self { lobbies })
     }
@@ -50,7 +50,7 @@ impl LobbyController {
         &self,
         LobbyForCreate { name, visibility }: LobbyForCreate,
     ) -> Result<Lobby, ErrorLobby> {
-        let mut lobbies = self.lobbies.lock().or_else(|_| Err(ErrorLobby::Internal))?;
+        let mut lobbies = self.lobbies.lock().map_err(|_| ErrorLobby::Internal)?;
         let id = lobbies.len() as i32;
         let lobby = Lobby {
             id,
@@ -58,11 +58,11 @@ impl LobbyController {
             visibility,
             created_at: SystemTime::now()
                 .duration_since(UNIX_EPOCH)
-                .or_else(|_| {
+                .map_err(|_| {
                     eprintln!(
                         "Ah! Time Travel! The system time appears to be before the Unix epoch!"
                     );
-                    Err(ErrorLobby::Internal)
+                    ErrorLobby::Internal
                 })?
                 .as_secs(),
         };
