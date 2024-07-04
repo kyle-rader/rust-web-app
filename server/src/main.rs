@@ -35,7 +35,7 @@ async fn main() -> anyhow::Result<()> {
         .route("/*file", get(assets::handler));
 
     #[cfg(not(feature = "embed_assets"))]
-    let app = app.route("/", get(|| async { Redirect::to(":5173") }));
+    let app = app.route("/", get(|| async { Redirect::to("http://localhost:5173") }));
 
     let (app_state, api_routes) = routes::get_api_routes().await?;
 
