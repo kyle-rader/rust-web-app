@@ -1,10 +1,24 @@
+use std::future::Future;
+
 use serde_json::json;
+
+type TestResponse = Result<httpc_test::Response, httpc_test::Error>;
+
+async fn run(action: impl Future<Output = TestResponse>) -> anyhow::Result<()> {
+    Ok(action.await?.print().await?)
+}
+
+macro_rules! run {
+    ($action:expr) => {
+        run($action).await?
+    };
+}
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let hc = httpc_test::new_client("http://localhost:3000")?;
 
-    hc.do_get("/api/status").await?.print().await?;
+    run!(hc.do_get("/api/status"));
 
     let login = hc.do_post(
         "/api/login",
@@ -14,20 +28,17 @@ async fn main() -> anyhow::Result<()> {
         }),
     );
 
-    login.await?.print().await?;
+    run!(login);
 
-    hc.do_post(
+    run!(hc.do_post(
         "/api/lobby",
         json!({
             "name": "Cool lobby",
             "visibility": "Public"
         }),
-    )
-    .await?
-    .print()
-    .await?;
+    ));
 
-    hc.do_get("/api/lobbies").await?.print().await?;
+    run!(hc.do_get("/api/lobbies"));
 
     Ok(())
 }
