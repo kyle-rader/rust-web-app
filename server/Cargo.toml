@@ -43,6 +43,8 @@ rsa = "0.9.6"
 jsonwebtoken = "9.3.0"
 
 async-trait = "0.1.80"
+strum_macros = "0.26.4"
+uuid = { version = "1.9.1", features = ["v4", "fast-rng"] }
 
 [profile.dev.package.num-bigint-dig]
 opt-level = 3

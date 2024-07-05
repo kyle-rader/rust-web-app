@@ -19,7 +19,7 @@ pub async fn require_auth(
     req: Request<Body>,
     next: Next,
 ) -> Result<Response, MainError> {
-    trace!("🔐  Require Auth: ctx: {ctx:#?}");
+    trace!("🔐  Require Auth: ctx: {ctx:?}");
 
     // TODO: Is that really always the error?
     ctx?;
@@ -33,8 +33,6 @@ pub async fn ctx_resolver(
     mut req: Request<Body>,
     next: Next,
 ) -> Result<Response, MainError> {
-    trace!("⚡️ ⚠️  CTX Resolver");
-
     let auth_token = cookies.get(AUTH_HEADER).map(|c| c.value().to_string());
 
     // Compute Result<Ctx, MainError>
@@ -53,9 +51,9 @@ pub async fn ctx_resolver(
     }
 
     if ctx_result.is_ok() {
-        trace!("⚡️ ✅ CTX Resolver: {ctx_result:#?}");
+        trace!("⚡️ ✅ Ctx Resolver: {ctx_result:?}");
     } else {
-        trace!("⚡️ ❌ CTX Resolver: {ctx_result:#?}");
+        trace!("⚡️ ❌ Ctx Resolver: {ctx_result:?}");
     }
 
     // Set Ctx in request
@@ -69,8 +67,6 @@ impl<S: Send + Sync> FromRequestParts<S> for Ctx {
     type Rejection = MainError;
 
     async fn from_request_parts(parts: &mut Parts, _state: &S) -> Result<Self, MainError> {
-        trace!("🏗️  ⚠️  CTX Extractor");
-
         let r = parts.extensions.get::<Result<Ctx, MainError>>();
         let res = match r {
             Some(Ok(ctx)) => Ok(ctx.clone()),
@@ -79,9 +75,9 @@ impl<S: Send + Sync> FromRequestParts<S> for Ctx {
         };
 
         if res.is_ok() {
-            trace!("🏗️  ✅ CTX Extractor: {res:#?}");
+            trace!("🏗️  ✅ Ctx Extractor: {res:?}");
         } else {
-            trace!("🏗️  ❌ CTX Extractor: {res:#?}");
+            trace!("🏗️  ❌ Ctx Extractor: {res:?}");
         }
 
         res

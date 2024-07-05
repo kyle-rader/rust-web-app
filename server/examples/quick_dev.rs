@@ -20,6 +20,14 @@ async fn main() -> anyhow::Result<()> {
 
     run!(hc.do_get("/api/status"));
 
+    run!(hc.do_post(
+        "/api/login",
+        json!({
+            "email": "badguy",
+            "password": "hackerz!"
+        })
+    ));
+
     let login = hc.do_post(
         "/api/login",
         json!({

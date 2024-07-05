@@ -20,7 +20,7 @@ pub async fn api_login(
     cookies: Cookies,
     payload: Json<PayloadLogin>,
 ) -> Result<Json<Value>, MainError> {
-    trace!("API_LOGIN: {:#?}", payload);
+    trace!("API_LOGIN:\n{:#?}", payload);
 
     // TODO: Create real login logic with DB
     if payload.email != "goodguy" || payload.password != "password" {

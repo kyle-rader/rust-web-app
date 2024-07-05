@@ -28,16 +28,37 @@ pub enum MainError {
 
 impl IntoResponse for MainError {
     fn into_response(self) -> axum::response::Response {
-        trace!("MainError IntoResponse: {:?}", self);
-        let status = match self {
-            MainError::LoginFail => StatusCode::UNAUTHORIZED,
-            MainError::AuthFailNoAuthTokenCookie => StatusCode::UNAUTHORIZED,
-            MainError::AuthFailTokenWrongFormat => StatusCode::UNAUTHORIZED,
-            MainError::AuthFailCtxNotInRequest => StatusCode::UNAUTHORIZED,
-            MainError::AccountNotFound => StatusCode::NOT_FOUND,
-            MainError::Internal => StatusCode::INTERNAL_SERVER_ERROR,
-        };
+        let mut response = StatusCode::INTERNAL_SERVER_ERROR.into_response();
+        response.extensions_mut().insert(self);
 
-        status.into_response()
+        response
     }
+}
+
+impl MainError {
+    pub fn client_response(&self) -> (StatusCode, ErrorClient) {
+        match self {
+            Self::LoginFail => (StatusCode::FORBIDDEN, ErrorClient::LoginFail),
+            Self::AuthFailNoAuthTokenCookie
+            | Self::AuthFailTokenWrongFormat
+            | Self::AuthFailCtxNotInRequest => (StatusCode::FORBIDDEN, ErrorClient::NoAuth),
+            Self::AccountNotFound => (StatusCode::BAD_REQUEST, ErrorClient::InvalidParams),
+            Self::Internal => (StatusCode::INTERNAL_SERVER_ERROR, ErrorClient::ServiceError),
+        }
+    }
+}
+
+#[derive(Debug, strum_macros::AsRefStr, thiserror::Error)]
+pub enum ErrorClient {
+    #[error("Login Failed")]
+    LoginFail,
+
+    #[error("Authentication required")]
+    NoAuth,
+
+    #[error("Invalid request parameters")]
+    InvalidParams,
+
+    #[error("Internal server error")]
+    ServiceError,
 }

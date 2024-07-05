@@ -3,10 +3,10 @@ use axum::routing::get;
 use axum::{middleware, Router};
 use tokio::signal;
 use tower_cookies::CookieManagerLayer;
-use tower_http::trace::TraceLayer;
 use tracing::info;
 use tracing_subscriber::filter::EnvFilter;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+
 use web::routes;
 
 #[cfg(feature = "embed_assets")]
@@ -41,12 +41,14 @@ async fn main() -> anyhow::Result<()> {
 
     let app = app
         .nest("/api", api_routes)
+        .layer(middleware::map_response(web::main_response_mapper))
         .layer(middleware::from_fn_with_state(
             app_state,
             mw::auth::ctx_resolver,
         ))
-        .layer(TraceLayer::new_for_http())
-        .layer(CookieManagerLayer::new());
+        // .layer(TraceLayer::new_for_http())
+        .layer(CookieManagerLayer::new())
+        .layer(middleware::map_request(web::main_request_mapper));
 
     // get port from env or use default
     let port = std::env::var("PORT").unwrap_or(DEFAULT_PORT.to_string());
@@ -70,9 +72,9 @@ fn init_tracing() {
     tracing_subscriber::registry()
         .with(
             EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "server=trace,tower_http=trace,axum::rejection=trace".into()),
+                .unwrap_or_else(|_| "server=trace,axum::rejection=trace".into()),
         )
-        .with(tracing_subscriber::fmt::layer().without_time().compact())
+        .with(tracing_subscriber::fmt::layer().compact().without_time())
         .init();
 }
 
