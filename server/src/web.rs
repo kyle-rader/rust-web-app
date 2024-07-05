@@ -1,6 +1,6 @@
 use axum::{
     body::Body,
-    http::{Request, Response},
+    http::{Request, Response, Uri},
     response::IntoResponse,
     Json,
 };
@@ -25,7 +25,7 @@ pub async fn main_request_mapper(req: Request<Body>) -> Request<Body> {
     req
 }
 
-pub async fn main_response_mapper(res: Response<Body>) -> Response<Body> {
+pub async fn main_response_mapper(uri: Uri, res: Response<Body>) -> Response<Body> {
     // Uuid to correlate client and server logs
     let uuid = Uuid::new_v4();
 
@@ -36,14 +36,17 @@ pub async fn main_response_mapper(res: Response<Body>) -> Response<Body> {
     let client_error = service_error
         .map(|e| e.client_response())
         .map(|(status, err_client)| {
+            let uuid = uuid.to_string();
+            let e_type = err_client.as_ref();
+
+            warn!("❌ Client Error: {status} {uuid} {e_type}");
+
             let err_client_body = json!({
             "error": {
                 "type": err_client.as_ref(),
                 "request_id": uuid.to_string(),
                 }
-                });
-
-            warn!("❌ Client Error Body:\n{err_client_body:#?}");
+            });
 
             (status, Json(err_client_body)).into_response()
         });
@@ -57,6 +60,7 @@ pub async fn main_response_mapper(res: Response<Body>) -> Response<Body> {
     } else {
         "🛑"
     };
-    info!("{emoji} {res:#?}\n");
+
+    info!("{emoji} {uri}\n");
     client_error.unwrap_or(res)
 }

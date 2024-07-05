@@ -6,7 +6,7 @@ use axum::{
     response::Response,
 };
 use tower_cookies::{Cookie, Cookies};
-use tracing::trace;
+use tracing::{debug, info, trace};
 
 use crate::{
     service,
@@ -19,7 +19,10 @@ pub async fn require_auth(
     req: Request<Body>,
     next: Next,
 ) -> Result<Response, MainError> {
-    trace!("🔐  Require Auth: ctx: {ctx:?}");
+    match &ctx {
+        Ok(ctx) => debug!("🔐  ✅ Require Auth : {ctx:?}"),
+        Err(e) => info!("🔐  ❌ Require Auth: {e:?}"),
+    }
 
     // TODO: Is that really always the error?
     ctx?;
@@ -50,10 +53,9 @@ pub async fn ctx_resolver(
         cookies.remove(Cookie::from(AUTH_HEADER));
     }
 
-    if ctx_result.is_ok() {
-        trace!("⚡️ ✅ Ctx Resolver: {ctx_result:?}");
-    } else {
-        trace!("⚡️ ❌ Ctx Resolver: {ctx_result:?}");
+    match &ctx_result {
+        Ok(ctx) => debug!("⚡️  ✅ Ctx Resolver : {ctx:?}"),
+        Err(e) => debug!("⚡️  ⚠️  Ctx Resolver: {e:?}"),
     }
 
     // Set Ctx in request
@@ -74,10 +76,9 @@ impl<S: Send + Sync> FromRequestParts<S> for Ctx {
             _ => Err(MainError::AuthFailCtxNotInRequest),
         };
 
-        if res.is_ok() {
-            trace!("🏗️  ✅ Ctx Extractor: {res:?}");
-        } else {
-            trace!("🏗️  ❌ Ctx Extractor: {res:?}");
+        match &res {
+            Ok(ctx) => debug!("👤  ✅ Ctx Extractor: {ctx:?}"),
+            Err(e) => debug!("👤  ❌ Ctx Extractor: {e:?}"),
         }
 
         res

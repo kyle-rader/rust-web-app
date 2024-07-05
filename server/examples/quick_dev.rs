@@ -42,7 +42,15 @@ async fn main() -> anyhow::Result<()> {
         "/api/lobby",
         json!({
             "name": "Cool lobby",
-            "visibility": "Public"
+            "visibility": "public"
+        }),
+    ));
+
+    run!(hc.do_post(
+        "/api/lobby",
+        json!({
+            "name": "Another lobby",
+            "visibility": "private"
         }),
     ));
 

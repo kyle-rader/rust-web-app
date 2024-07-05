@@ -14,6 +14,7 @@ pub enum ErrorLobby {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(rename_all = "lowercase")]
 pub enum Visibility {
     Public,
     Friends,
