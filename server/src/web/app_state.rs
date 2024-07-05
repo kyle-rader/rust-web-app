@@ -1,13 +1,13 @@
 use axum::extract::FromRef;
 
 use crate::{
-    model::{account::AccountController, lobby::LobbyController},
+    model::{lobby::LobbyController, user::ControllerUser},
     service::jwt::JwtController,
 };
 
 #[derive(Clone)]
 pub struct AppState {
-    pub ctl_account: AccountController,
+    pub ctl_account: ControllerUser,
     pub ctl_lobby: LobbyController,
     pub ctl_jwt: JwtController,
 }
@@ -15,7 +15,7 @@ pub struct AppState {
 impl AppState {
     pub async fn new() -> anyhow::Result<Self> {
         Ok(Self {
-            ctl_account: AccountController::new().await?,
+            ctl_account: ControllerUser::default(),
             ctl_lobby: LobbyController::new().await?,
             ctl_jwt: JwtController::new()?,
         })
@@ -23,8 +23,8 @@ impl AppState {
 }
 
 // region: Implement FromRef<AppState> for Sub State Controllers
-impl FromRef<AppState> for AccountController {
-    fn from_ref(app_state: &AppState) -> AccountController {
+impl FromRef<AppState> for ControllerUser {
+    fn from_ref(app_state: &AppState) -> ControllerUser {
         app_state.ctl_account.clone()
     }
 }

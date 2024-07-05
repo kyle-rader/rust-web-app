@@ -13,6 +13,7 @@ use web::routes;
 mod assets;
 mod model;
 mod mw;
+mod schema;
 mod service;
 mod web;
 

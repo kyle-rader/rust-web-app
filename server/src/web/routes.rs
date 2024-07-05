@@ -7,7 +7,7 @@ use axum::{
 use login::api_login;
 
 use crate::{
-    model::account::{Account, AccountController},
+    model::user::{ControllerUser, User},
     web::app_state::AppState,
 };
 
@@ -28,7 +28,7 @@ pub async fn get_api_routes() -> anyhow::Result<(AppState, axum::Router)> {
     let routes_private: Router = Router::new()
         .route("/lobby", post(lobby::create_lobby))
         .route("/lobbies", get(lobby::get_lobbies))
-        .route("/account/me", get(account_me))
+        // .route("/account/me", get(account_me))
         .with_state(app_state.clone())
         .route_layer(middleware::from_fn(crate::mw::auth::require_auth));
 
@@ -36,13 +36,13 @@ pub async fn get_api_routes() -> anyhow::Result<(AppState, axum::Router)> {
     Ok((app_state, router))
 }
 
-async fn account_me(
-    ctx: Ctx,
-    State(ctl_account): State<AccountController>,
-) -> Result<Json<Account>, MainError> {
-    let account = ctl_account
-        .get_account(ctx.account_id)
-        .await
-        .map_err(|_| MainError::AccountNotFound)?;
-    Ok(Json(account))
-}
+// async fn account_me(
+//     ctx: Ctx,
+//     State(ctl_account): State<ControllerUser>,
+// ) -> Result<Json<User>, MainError> {
+//     let account = ctl_account
+//         .get_account(ctx.account_id)
+//         .await
+//         .map_err(|_| MainError::AccountNotFound)?;
+//     Ok(Json(account))
+// }
