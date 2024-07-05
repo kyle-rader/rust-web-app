@@ -18,3 +18,14 @@ pub async fn create_lobby(
         .map_err(|_err| MainError::Internal)?;
     Ok(Json(lobby))
 }
+
+pub async fn get_lobbies(
+    _ctx: Ctx,
+    State(lobbies): State<LobbyController>,
+) -> Result<Json<Vec<Lobby>>, MainError> {
+    let lobbies = lobbies
+        .get_lobbies()
+        .await
+        .map_err(|_err| MainError::Internal)?;
+    Ok(Json(lobbies))
+}
