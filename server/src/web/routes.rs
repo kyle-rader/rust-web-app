@@ -1,17 +1,11 @@
 use axum::{
-    extract::State,
     middleware,
     routing::{get, post},
-    Json, Router,
+    Router,
 };
 use login::api_login;
 
-use crate::{
-    model::user::{ControllerUser, User},
-    web::app_state::AppState,
-};
-
-use super::{ctx::Ctx, error::MainError};
+use crate::web::app_state::AppState;
 
 mod lobby;
 mod login;

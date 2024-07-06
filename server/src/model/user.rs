@@ -1,10 +1,14 @@
 use std::time::SystemTime;
 
-use diesel::{deserialize::Queryable, Connection, Selectable};
+use diesel::{deserialize::Queryable, prelude::Insertable, Connection, Selectable};
 use serde::{Deserialize, Serialize};
 
+use crate::{schema::users, service};
+
+const USER_SALT_LEN: usize = 16;
+
 // region: -- Account Types
-#[derive(Debug, Clone, Serialize, Queryable, Selectable)]
+#[derive(Debug, Clone, Serialize, Queryable, Selectable, Insertable)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct User {
@@ -24,6 +28,15 @@ pub struct UserNewFields {
     pub password: String,
 }
 
+#[derive(Debug, Insertable)]
+#[diesel(table_name = crate::schema::users)]
+struct UserForInsert {
+    email: String,
+    handle: String,
+    password_salt: String,
+    password_hash: String,
+}
+
 // endregion
 
 // region: -- Account Controller
@@ -39,69 +52,14 @@ pub enum ErrorUser {
     NotFound,
 }
 
-#[derive(Default, Clone)]
-pub struct ControllerUser {}
+pub fn create(conn: impl Connection, new_user: UserNewFields) -> Result<User, ErrorUser> {
+    // TODO: Confirm that email is unique
 
-// TODO: Connect to database
-impl ControllerUser {
-    pub async fn create(
-        &self,
-        connection: impl Connection,
-        UserNewFields {
-            email,
-            handle,
-            password,
-        }: UserNewFields,
-    ) -> Result<User, ErrorUser> {
-        // TODO: Confirm that email is unique
+    // TODO: Create real password salt and hash
+    let salt = service::crypto::salt(USER_SALT_LEN);
+    let now = SystemTime::now();
 
-        // TODO: Create real password salt and hash
-        let salt = "salt".to_string();
-        let now = SystemTime::now();
-
-        todo!("Connect to database")
-    }
-
-    pub async fn get_account(&self, id: u64) -> Result<User, ErrorUser> {
-        todo!("Connect to database")
-    }
+    todo!("Connect to database")
 }
 
 // endregion
-
-#[cfg(test)]
-mod tests {
-    use crate::model::user::{ControllerUser, ErrorUser, UserNewFields};
-
-    #[tokio::test]
-    async fn test_create_account() -> anyhow::Result<()> {
-        let new_user = UserNewFields {
-            email: "joe@contoso.com".to_string(),
-            handle: "joe".to_string(),
-            password: "password".to_string(),
-        };
-
-        let account_ctl = ControllerUser::default();
-        todo!("Connect to database")
-        // let account = account_ctl.create().await?;
-
-        // assert_eq!(account.id, 0);
-
-        // // Can get created account:
-        // let account = account_ctl.get_account(0).await?;
-        // assert_eq!(account.id, 0);
-        // assert_eq!(account.email, "joe@contoso.com");
-        // assert_eq!(account.handle, "joe");
-        // assert_eq!(account.password_hash, "passwordsalt");
-        // Ok(())
-    }
-
-    #[tokio::test]
-    async fn get_missing_account() -> anyhow::Result<()> {
-        let account_ctl = ControllerUser::default();
-        let account = account_ctl.get_account(0).await;
-
-        assert!(matches!(account, Err(ErrorUser::NotFound)));
-        Ok(())
-    }
-}

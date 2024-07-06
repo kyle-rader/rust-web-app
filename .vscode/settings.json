@@ -5,6 +5,7 @@
     "Gruv",
     "Hmac",
     "httpc",
+    "Insertable",
     "jsonwebtoken",
     "onclick",
     "pkcs",

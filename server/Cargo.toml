@@ -32,9 +32,8 @@ tokio = { version = "1.37.0", features = [
 ] }
 
 # DB ORM
-diesel = { version = "2.2.1", features = ["postgres"] }
-deadpool = "0.12.1"
-deadpool-diesel = { version = "0.6.1", features = ["postgres", "tracing"] }
+diesel = { version = "2.2.1", features = ["postgres", "r2d2"] }
+diesel_migrations = { version = "2.2.0", features = ["postgres"] }
 
 # Authentication & Crypto
 sha2 = "0.10.8"
@@ -43,10 +42,11 @@ openssl = "0.10.64"
 hmac = "0.12.1"
 rsa = "0.9.6"
 jsonwebtoken = "9.3.0"
-
 async-trait = "0.1.80"
-strum_macros = "0.26.4"
 uuid = { version = "1.9.1", features = ["v4", "fast-rng"] }
+strum_macros = "0.26.4"
+# other dependencies
+
 
 [profile.dev.package.num-bigint-dig]
 opt-level = 3
@@ -59,5 +59,3 @@ embed_assets = []
 # Used for quick_dev tests
 httpc-test = { version = "0.1.9", features = ["color-output"] }
 lazy_static = "1.5.0"
-diesel = { version = "2.2.1", features = ["sqlite"] }
-deadpool-diesel = { version = "0.6.1", features = ["sqlite"] }
