@@ -11,7 +11,8 @@
     "pkcs",
     "pkey",
     "rsplit",
-    "superfly"
+    "superfly",
+    "testcontainers"
   ],
   "rust-analyzer.linkedProjects": [
     // "./server/Cargo.toml",

@@ -1,3 +1,6 @@
+use automata::mw;
+use automata::web::{self, routes};
+
 use axum::response::Redirect;
 use axum::routing::get;
 use axum::{middleware, Router};
@@ -6,16 +9,6 @@ use tower_cookies::CookieManagerLayer;
 use tracing::info;
 use tracing_subscriber::filter::EnvFilter;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
-
-use web::routes;
-
-#[cfg(feature = "embed_assets")]
-mod assets;
-mod model;
-mod mw;
-mod schema;
-mod service;
-mod web;
 
 const DEFAULT_PORT: u16 = 3000;
 const DEFAULT_ADDR: &str = "127.0.0.1";
