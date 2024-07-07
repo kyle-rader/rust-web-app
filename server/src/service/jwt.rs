@@ -1,4 +1,4 @@
-use std::{sync::Arc, time::SystemTime};
+use std::{sync::Arc};
 
 use jsonwebtoken::{encode, DecodingKey, EncodingKey, Header, Validation};
 use rsa::{

@@ -6,7 +6,7 @@ use axum::{
     response::Response,
 };
 use tower_cookies::{Cookie, Cookies};
-use tracing::{debug, info, trace};
+use tracing::{debug, info};
 
 use crate::{
     service,

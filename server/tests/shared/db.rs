@@ -1,5 +1,5 @@
 use diesel::{
-    r2d2::{ConnectionManager, ManageConnection, Pool, PooledConnection},
+    r2d2::{ConnectionManager, Pool, PooledConnection},
     PgConnection,
 };
 use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
@@ -9,9 +9,9 @@ use testcontainers_modules::postgres;
 const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
 pub struct TestDb {
-    pub container: ContainerAsync<postgres::Postgres>,
+    pub _container: ContainerAsync<postgres::Postgres>,
     pub pool: Pool<ConnectionManager<PgConnection>>,
-    pub connection_uri: String,
+    pub _connection_uri: String,
 }
 
 impl TestDb {
@@ -34,9 +34,9 @@ impl TestDb {
         drop(conn);
 
         Ok(TestDb {
-            container,
+            _container: container,
             pool,
-            connection_uri,
+            _connection_uri: connection_uri,
         })
     }
 

@@ -1,12 +1,8 @@
-use diesel::{
-    deserialize::Queryable, prelude::Insertable, r2d2::PooledConnection, Connection, PgConnection,
-    Selectable,
-};
-use diesel::{insert_into, prelude::*};
+use diesel::prelude::*;
+use diesel::{deserialize::Queryable, prelude::Insertable, Selectable};
 use serde::{Deserialize, Serialize};
 use std::time::SystemTime;
 
-use crate::schema::users::id;
 use crate::{schema::users, service};
 
 use super::PooledPgConnection;

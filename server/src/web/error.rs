@@ -1,6 +1,5 @@
 use axum::{http::StatusCode, response::IntoResponse};
 use serde::Serialize;
-use tracing::trace;
 
 #[derive(Debug, Clone, Serialize, thiserror::Error)]
 #[serde(tag = "type", content = "data")]
