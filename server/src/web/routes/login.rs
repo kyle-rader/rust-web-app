@@ -2,7 +2,7 @@ use axum::{extract::State, Json};
 use serde::Deserialize;
 use serde_json::{json, Value};
 use tower_cookies::{Cookie, Cookies};
-use tracing::{debug};
+use tracing::debug;
 
 use crate::{
     service::{self, jwt::Claims},
