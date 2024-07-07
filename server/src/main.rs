@@ -1,6 +1,9 @@
 use automata::mw;
 use automata::web::{self, routes};
 
+#[cfg(feature = "embed_assets")]
+use automata::assets;
+
 use axum::response::Redirect;
 use axum::routing::get;
 use axum::{middleware, Router};
