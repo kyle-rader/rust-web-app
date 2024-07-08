@@ -1,5 +1,5 @@
 [alias]
-quick_dev = [
+quick-dev = [
     "watch",
     "-q",
     "-c",
@@ -9,5 +9,5 @@ quick_dev = [
     "run -q --example quick_dev",
 ]
 
-live_reload = ["watch", "-q", "-c", "-w", "src/", "-x", "run"]
+live-reload = ["watch", "-q", "-c", "-w", "src/", "-x", "run"]
 live-test = ["watch", "-q", "-c", "-w", "src/", "-w", "tests/", "-x", "test"]

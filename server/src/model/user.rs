@@ -1,4 +1,6 @@
 use diesel::prelude::*;
+use diesel::result::Error::DatabaseError;
+use diesel::result::{DatabaseErrorInformation, DatabaseErrorKind};
 use diesel::{deserialize::Queryable, prelude::Insertable, Selectable};
 use serde::{Deserialize, Serialize};
 use sha2::Digest;
@@ -64,22 +66,35 @@ pub enum ErrorUser {
 
     #[error("Account not found")]
     NotFound,
+
+    #[error("Handle already exists")]
+    HandleAlreadyExists,
 }
 
 pub async fn create(
     mut conn: PooledPgConnection,
     fields: UserNewFields,
 ) -> Result<User, ErrorUser> {
-    // TODO: Confirm that email is unique
-
     let user_insert: UserForInsert = fields.into();
-
-    dbg!(&user_insert);
 
     diesel::insert_into(users::table)
         .values(user_insert)
         .get_result::<User>(&mut conn)
-        .map_err(|_| ErrorUser::Internal)
+        .map_err(create_db_error_map)
+}
+
+fn create_db_error_map(error: diesel::result::Error) -> ErrorUser {
+    match error {
+        DatabaseError(DatabaseErrorKind::UniqueViolation, info) => {
+            if let Some(constraint) = info.constraint_name() {
+                if constraint == "users_handle_key" {
+                    return ErrorUser::HandleAlreadyExists;
+                }
+            }
+            ErrorUser::Internal
+        }
+        _ => ErrorUser::Internal,
+    }
 }
 
 // endregion
