@@ -13,7 +13,7 @@ use super::PooledPgConnection;
 const USER_SALT_LEN: usize = 32;
 
 // region: -- Account Types
-#[derive(Debug, Clone, Serialize, Queryable, Selectable)]
+#[derive(Debug, Clone, PartialEq, Serialize, Queryable, Selectable)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct User {
@@ -59,7 +59,7 @@ impl From<UserNewFields> for UserForInsert {
 // endregion
 
 // region: -- Account Controller
-#[derive(Debug, thiserror::Error)]
+#[derive(Debug, thiserror::Error, PartialEq)]
 pub enum ErrorUser {
     #[error("Internal server error")]
     Internal,
@@ -69,6 +69,9 @@ pub enum ErrorUser {
 
     #[error("Handle already exists")]
     HandleAlreadyExists,
+
+    #[error("Email already exists")]
+    EmailAlreadyExists,
 }
 
 pub async fn create(
@@ -85,14 +88,14 @@ pub async fn create(
 
 fn create_db_error_map(error: diesel::result::Error) -> ErrorUser {
     match error {
-        DatabaseError(DatabaseErrorKind::UniqueViolation, info) => {
-            if let Some(constraint) = info.constraint_name() {
-                if constraint == "users_handle_key" {
-                    return ErrorUser::HandleAlreadyExists;
-                }
-            }
-            ErrorUser::Internal
-        }
+        DatabaseError(DatabaseErrorKind::UniqueViolation, info) => info
+            .constraint_name()
+            .map(|constraint| match constraint {
+                "users_email_key" => ErrorUser::EmailAlreadyExists,
+                "users_handle_key" => ErrorUser::HandleAlreadyExists,
+                _ => ErrorUser::Internal,
+            })
+            .unwrap_or(ErrorUser::Internal),
         _ => ErrorUser::Internal,
     }
 }

@@ -49,3 +49,27 @@ async fn create_user_with_existing_handle() -> anyhow::Result<()> {
     assert!(matches!(result, Err(ErrorUser::HandleAlreadyExists)));
     Ok(())
 }
+
+#[tokio::test]
+async fn create_user_with_existing_email() -> anyhow::Result<()> {
+    let db = TestDb::new().await?;
+    let fields = UserNewFields {
+        handle: "bob".into(),
+        email: "bob@contoso.com".into(),
+        password: "password".into(),
+    };
+
+    // Create the first user
+    create(db.conn()?, fields).await?;
+
+    // Create the second user with the same email
+    let fields = UserNewFields {
+        handle: "joe".into(),
+        email: "bob@contoso.com".into(),
+        password: "password".into(),
+    };
+
+    let result = create(db.conn()?, fields).await;
+    assert_eq!(result, Err(ErrorUser::EmailAlreadyExists));
+    Ok(())
+}
