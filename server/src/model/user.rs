@@ -1,7 +1,9 @@
 use diesel::prelude::*;
+use diesel::result::DatabaseErrorKind;
 use diesel::result::Error::DatabaseError;
-use diesel::result::{DatabaseErrorInformation, DatabaseErrorKind};
 use diesel::{deserialize::Queryable, prelude::Insertable, Selectable};
+use once_cell::sync::Lazy;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use sha2::Digest;
 use std::time::SystemTime;
@@ -11,6 +13,10 @@ use crate::{schema::users, service};
 use super::PooledPgConnection;
 
 const USER_SALT_LEN: usize = 32;
+static EMAIL_REGEX: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+        .expect("Failed to compile email regex")
+});
 
 // region: -- Account Types
 #[derive(Debug, Clone, PartialEq, Serialize, Queryable, Selectable)]
@@ -72,6 +78,9 @@ pub enum ErrorUser {
 
     #[error("Email already exists")]
     EmailAlreadyExists,
+
+    #[error("Email is invalid and must be in the format '[letters|numbers|symbols]@[letters|numbers].[letters]'")]
+    InvalidEmail,
 }
 
 pub async fn create(
@@ -80,10 +89,20 @@ pub async fn create(
 ) -> Result<User, ErrorUser> {
     let user_insert: UserForInsert = fields.into();
 
+    valid_email(&user_insert.email)?;
+
     diesel::insert_into(users::table)
         .values(user_insert)
         .get_result::<User>(&mut conn)
         .map_err(create_db_error_map)
+}
+
+fn valid_email(email: &str) -> Result<(), ErrorUser> {
+    if EMAIL_REGEX.is_match(email) {
+        Ok(())
+    } else {
+        Err(ErrorUser::InvalidEmail)
+    }
 }
 
 fn create_db_error_map(error: diesel::result::Error) -> ErrorUser {
