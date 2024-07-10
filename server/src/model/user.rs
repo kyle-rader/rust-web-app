@@ -81,20 +81,37 @@ pub enum ErrorUser {
 
     #[error("Email is invalid and must be in the format '[letters|numbers|symbols]@[letters|numbers].[letters]'")]
     InvalidEmail,
+
+    #[error(transparent)]
+    Password(#[from] ErrorPassword),
+}
+
+#[derive(Debug, thiserror::Error, PartialEq)]
+pub enum ErrorPassword {
+    #[error("Password must be at least 12 characters long")]
+    TooShort,
 }
 
 pub async fn create(
     mut conn: PooledPgConnection,
     fields: UserNewFields,
 ) -> Result<User, ErrorUser> {
+    valid_password(&fields.password)?;
     let user_insert: UserForInsert = fields.into();
-
     valid_email(&user_insert.email)?;
 
     diesel::insert_into(users::table)
         .values(user_insert)
         .get_result::<User>(&mut conn)
         .map_err(create_db_error_map)
+}
+
+fn valid_password(password: &str) -> Result<(), ErrorPassword> {
+    if password.len() >= 12 {
+        Ok(())
+    } else {
+        Err(ErrorPassword::TooShort)
+    }
 }
 
 fn valid_email(email: &str) -> Result<(), ErrorUser> {
@@ -123,7 +140,7 @@ fn create_db_error_map(error: diesel::result::Error) -> ErrorUser {
 
 #[cfg(test)]
 mod tests {
-    use crate::model::user::USER_SALT_LEN;
+    use crate::model::user::{valid_password, ErrorPassword, USER_SALT_LEN};
 
     use super::{UserForInsert, UserNewFields};
 
@@ -141,5 +158,10 @@ mod tests {
         assert_eq!(user_insert.email, "john89@contoso.com");
         assert_eq!(user_insert.password_salt.len(), USER_SALT_LEN);
         assert_ne!(user_insert.password_hash, Vec::<u8>::new());
+    }
+
+    #[test]
+    fn password_too_short() {
+        assert_eq!(valid_password("1234567890"), Err(ErrorPassword::TooShort));
     }
 }

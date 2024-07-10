@@ -1,6 +1,6 @@
 use std::time::{Duration, SystemTime};
 
-use automata::model::user::{create, ErrorUser, UserNewFields};
+use automata::model::user::{create, ErrorPassword, ErrorUser, UserNewFields};
 
 use crate::shared::db::TestDb;
 use crate::shared::time::assert_within;
@@ -9,9 +9,9 @@ use crate::shared::time::assert_within;
 async fn create_user() -> anyhow::Result<()> {
     let db = TestDb::new().await?;
     let fields = UserNewFields {
-        handle: "john22".to_string(),
-        email: "john@contoso.com".to_string(),
-        password: "password".to_string(),
+        handle: "john22".into(),
+        email: "john@contoso.com".into(),
+        password: "password1234".into(),
     };
 
     let now = SystemTime::now();
@@ -32,7 +32,7 @@ async fn create_user_with_existing_handle() -> anyhow::Result<()> {
     let fields = UserNewFields {
         handle: "best_handle".into(),
         email: "bob@contoso.com".into(),
-        password: "password".into(),
+        password: "password1234".into(),
     };
 
     // Create the first user
@@ -42,7 +42,7 @@ async fn create_user_with_existing_handle() -> anyhow::Result<()> {
     let fields = UserNewFields {
         handle: "best_handle".into(),
         email: "joe@contoso.com".into(),
-        password: "password".into(),
+        password: "password1234".into(),
     };
 
     let result = create(db.conn()?, fields).await;
@@ -56,7 +56,7 @@ async fn create_user_with_existing_email() -> anyhow::Result<()> {
     let fields = UserNewFields {
         handle: "bob".into(),
         email: "bob@contoso.com".into(),
-        password: "password".into(),
+        password: "password1234".into(),
     };
 
     // Create the first user
@@ -66,7 +66,7 @@ async fn create_user_with_existing_email() -> anyhow::Result<()> {
     let fields = UserNewFields {
         handle: "joe".into(),
         email: "bob@contoso.com".into(),
-        password: "password".into(),
+        password: "password1234".into(),
     };
 
     let result = create(db.conn()?, fields).await;
@@ -80,10 +80,24 @@ async fn create_user_with_invalid_email() -> anyhow::Result<()> {
     let fields = UserNewFields {
         handle: "bob".into(),
         email: "bob".into(),
-        password: "password".into(),
+        password: "password1234".into(),
     };
 
     let result = create(db.conn()?, fields).await;
     assert_eq!(result, Err(ErrorUser::InvalidEmail));
+    Ok(())
+}
+
+#[tokio::test]
+async fn create_user_with_short_password() -> anyhow::Result<()> {
+    let db = TestDb::new().await?;
+    let fields = UserNewFields {
+        handle: "bob".into(),
+        email: "bob@contoso.com".into(),
+        password: "pass".into(),
+    };
+
+    let result = create(db.conn()?, fields).await;
+    assert_eq!(result, Err(ErrorUser::Password(ErrorPassword::TooShort)));
     Ok(())
 }
