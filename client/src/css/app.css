@@ -8,6 +8,11 @@ body {
 	font-family: 'Roboto Slab', sans-serif;
 }
 
+.roboto,
+.textbox {
+	font-family: 'Roboto Slab', sans-serif;
+}
+
 .container {
 	margin: 0 auto;
 	padding: 15px 10px 0px 10px;
@@ -17,7 +22,8 @@ body {
 	text-align: center;
 }
 
-code {
+code,
+.code {
 	font-family: 'Consolas', Consolas, monospace;
 	display: inline-block;
 	background-color: var(--dark1);
@@ -95,4 +101,33 @@ code {
 a {
 	color: var(--blue);
 	text-decoration: none;
+}
+
+/* Buttons */
+@media (hover: hover) {
+	.button {
+		transition: 0.5s;
+	}
+	.button::before {
+		content: '- ';
+	}
+	.button::after {
+		content: ' -';
+	}
+
+	.button::before,
+	.button::after {
+		opacity: 0;
+		transition: 0.5s;
+	}
+
+	.button:hover::before,
+	.button:hover::after {
+		opacity: 100;
+	}
+
+	.button:hover {
+		background-color: var(--light2) !important;
+		color: var(--dark1) !important;
+	}
 }
