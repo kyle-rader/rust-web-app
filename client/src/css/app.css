@@ -2,29 +2,38 @@
 @import 'colors.css';
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
 
+:root {
+	--roboto: 'Roboto Slab', sans-serif;
+	--consolas: 'Consolas', Consolas, monospace;
+}
+
 body {
-	background-color: var(--background);
+	font-family: var(--roboto);
 	color: var(--foreground);
-	font-family: 'Roboto Slab', sans-serif;
+	background-color: var(--background);
 }
 
-.roboto,
-.textbox {
-	font-family: 'Roboto Slab', sans-serif;
+.roboto {
+	font-family: var(--roboto);
 }
-
-.container {
-	margin: 0 auto;
-	padding: 15px 10px 0px 10px;
+.consolas {
+	font-family: var(--consolas);
 }
 
 .center {
 	text-align: center;
 }
+.left {
+	text-align: left;
+}
+.right {
+	text-align: right;
+}
 
+pre,
 code,
 .code {
-	font-family: 'Consolas', Consolas, monospace;
+	font-family: var(--consolas);
 	display: inline-block;
 	background-color: var(--dark1);
 	color: var(--light0);
@@ -33,7 +42,48 @@ code,
 	margin: 0.5rem;
 }
 
-/* Responsive Headers */
+/* Links */
+a {
+	color: var(--blue);
+	text-decoration: none;
+}
+
+/* Buttons */
+.button,
+input {
+	font-family: var(--roboto);
+}
+
+/* Buttons: Hoverable */
+@media (hover: hover) {
+	.button {
+		transition: 0.3s;
+	}
+	.button::before {
+		content: '- ';
+	}
+	.button::after {
+		content: ' -';
+	}
+
+	.button::before,
+	.button::after {
+		opacity: 0;
+		transition: 0.3s;
+	}
+
+	.button:hover::before,
+	.button:hover::after {
+		opacity: 100;
+	}
+
+	.button:hover {
+		background-color: var(--light2) !important;
+		color: var(--dark1) !important;
+	}
+}
+
+/* Phones */
 @media screen and (max-width: 600px) {
 	h1 {
 		font-size: 24px;
@@ -51,6 +101,7 @@ code,
 	}
 }
 
+/* Tablets */
 @media screen and (min-width: 601px) and (max-width: 1024px) {
 	h1 {
 		font-size: 32px;
@@ -71,6 +122,7 @@ code,
 	}
 }
 
+/* Desktops */
 @media screen and (min-width: 1025px) {
 	h1 {
 		font-size: 40px;
@@ -94,40 +146,5 @@ code,
 
 	h6 {
 		font-size: 20px;
-	}
-}
-
-/* Links */
-a {
-	color: var(--blue);
-	text-decoration: none;
-}
-
-/* Buttons */
-@media (hover: hover) {
-	.button {
-		transition: 0.5s;
-	}
-	.button::before {
-		content: '- ';
-	}
-	.button::after {
-		content: ' -';
-	}
-
-	.button::before,
-	.button::after {
-		opacity: 0;
-		transition: 0.5s;
-	}
-
-	.button:hover::before,
-	.button:hover::after {
-		opacity: 100;
-	}
-
-	.button:hover {
-		background-color: var(--light2) !important;
-		color: var(--dark1) !important;
 	}
 }
