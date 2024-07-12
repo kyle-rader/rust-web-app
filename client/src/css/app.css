@@ -30,6 +30,10 @@ body {
 	text-align: right;
 }
 
+p {
+	margin: 0.5rem 0;
+}
+
 pre,
 code,
 .code {
@@ -52,6 +56,7 @@ a {
 .button,
 input {
 	font-family: var(--roboto);
+	color: var(--dark0);
 }
 
 /* Buttons: Hoverable */
