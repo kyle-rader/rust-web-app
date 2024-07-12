@@ -99,6 +99,10 @@ input {
 	h6 {
 		font-size: 16px;
 	}
+
+	.container {
+		padding: 10px 5px 0px 5px;
+	}
 }
 
 /* Tablets */
@@ -119,6 +123,10 @@ input {
 	h5,
 	h6 {
 		font-size: 20px;
+	}
+
+	.container {
+		padding: 15px 10px 0px 10px;
 	}
 }
 
@@ -146,5 +154,9 @@ input {
 
 	h6 {
 		font-size: 20px;
+	}
+
+	.container {
+		padding: 15px 10px 0px 10px;
 	}
 }

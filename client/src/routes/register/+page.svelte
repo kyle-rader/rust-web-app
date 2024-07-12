@@ -6,15 +6,15 @@
 <div class="container center">
 	<form>
 		<div class="form-item">
-			<label for="handle">Handle</label>
+			<label for="handle">Display Name</label>
 			<input class="textbox" type="text" id="handle" name="handle" required />
-			<small>This is visible to other players</small>
+			<small>👀 Other players will see this.</small>
 		</div>
 
 		<div class="form-item">
 			<label for="email">Email</label>
 			<input class="textbox" type="email" id="email" name="email" required />
-			<small>This will always be private</small>
+			<small>🔒 Other players will not see this.</small>
 		</div>
 
 		<div class="form-item">
@@ -37,6 +37,11 @@
 		</div>
 	</form>
 </div>
+
+<h3 class="container center">Why register?</h3>
+<p class="container center">
+	You will need an account to host multiplayer games or to play solo games.
+</p>
 
 <style>
 	form {
