@@ -5,7 +5,7 @@
 
 <div class="app">
 	<nav>
-		<a href="/" class="bg-green button">Home</a>
+		<a href="/" class="bg-purple button">Home</a>
 		<a href="/about" class="bg-blue button">About</a>
 		<a href="/login" class="bg-orange button">Login</a>
 		<a href="/register" class="bg-aqua button">Register</a>
