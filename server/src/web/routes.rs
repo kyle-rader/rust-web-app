@@ -11,9 +11,7 @@ mod lobby;
 mod login;
 mod status;
 
-pub async fn get_api_routes() -> anyhow::Result<(AppState, axum::Router)> {
-    let app_state = AppState::new().await?;
-
+pub async fn get_api_routes(app_state: &AppState) -> anyhow::Result<axum::Router> {
     let routes_public: Router = Router::new()
         .route("/status", get(status::api_status))
         .route("/login", post(api_login))
@@ -27,7 +25,7 @@ pub async fn get_api_routes() -> anyhow::Result<(AppState, axum::Router)> {
         .route_layer(middleware::from_fn(crate::mw::auth::require_auth));
 
     let router = routes_public.merge(routes_private);
-    Ok((app_state, router))
+    Ok(router)
 }
 
 // async fn account_me(

@@ -8,9 +8,8 @@ use serde::{Deserialize, Serialize};
 use sha2::Digest;
 use std::time::SystemTime;
 
+use crate::db::DbConn;
 use crate::{schema::users, service};
-
-use super::PooledPgConnection;
 
 const USER_SALT_LEN: usize = 32;
 static EMAIL_REGEX: Lazy<Regex> = Lazy::new(|| {
@@ -92,10 +91,7 @@ pub enum ErrorPassword {
     TooShort,
 }
 
-pub async fn create(
-    mut conn: PooledPgConnection,
-    fields: UserNewFields,
-) -> Result<User, ErrorUser> {
+pub async fn create(mut conn: DbConn, fields: UserNewFields) -> Result<User, ErrorUser> {
     valid_password(&fields.password)?;
     let user_insert: UserForInsert = fields.into();
     valid_email(&user_insert.email)?;
@@ -140,6 +136,8 @@ fn create_db_error_map(error: diesel::result::Error) -> ErrorUser {
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use crate::model::user::{valid_password, ErrorPassword, USER_SALT_LEN};
 
     use super::{UserForInsert, UserNewFields};
@@ -163,5 +161,15 @@ mod tests {
     #[test]
     fn password_too_short() {
         assert_eq!(valid_password("1234567890"), Err(ErrorPassword::TooShort));
+    }
+
+    #[test_case("john@contoso.com")]
+    #[test_case("john.doe@contoso.com")]
+    #[test_case("john.doe@contoso.net")]
+    #[test_case("john.doe@contoso.org")]
+    #[test_case("john.doe@contoso.games")]
+    #[test_case("john.doe-1980@contoso.games")]
+    fn is_valid_email(email: &str) {
+        assert!(super::valid_email(email).is_ok());
     }
 }

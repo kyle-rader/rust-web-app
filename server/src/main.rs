@@ -1,4 +1,6 @@
+use automata::db;
 use automata::mw;
+use automata::web::app_state::AppState;
 use automata::web::{self, routes};
 
 #[cfg(feature = "embed_assets")]
@@ -10,6 +12,7 @@ use axum::routing::get;
 use axum::{middleware, Router};
 use tokio::signal;
 use tower_cookies::CookieManagerLayer;
+use tracing::debug;
 use tracing::info;
 use tracing_subscriber::filter::EnvFilter;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
@@ -25,17 +28,32 @@ async fn main() -> anyhow::Result<()> {
     #[cfg(feature = "embed_assets")]
     assets::print_assets();
 
+    debug!("🛠️  Creating Routes...");
     let app = Router::new();
 
+    #[cfg(feature = "embed_assets")]
+    debug!("🛠️  Embedding assets...");
     #[cfg(feature = "embed_assets")]
     let app = app
         .route("/", get(assets::handler))
         .route("/*file", get(assets::handler));
 
     #[cfg(not(feature = "embed_assets"))]
+    debug!("🛠️  No embedded assets: redirect '/' to localhost:5173...");
+
+    #[cfg(not(feature = "embed_assets"))]
     let app = app.route("/", get(|| async { Redirect::to("http://localhost:5173") }));
 
-    let (app_state, api_routes) = routes::get_api_routes().await?;
+    // Create database connection pool
+    let db_pool = db::get_db_pool()?;
+
+    // Run database migrations before starting the server
+    db::run_migrations(db_pool.get()?)?;
+
+    // Create app state (xfer the db_pool into the app state for sharing across routes)
+    let app_state = AppState::new(db_pool).await?;
+
+    let api_routes = routes::get_api_routes(&app_state).await?;
 
     let app = app
         .nest("/api", api_routes)
@@ -44,9 +62,8 @@ async fn main() -> anyhow::Result<()> {
             app_state,
             mw::auth::ctx_resolver,
         ))
-        // .layer(TraceLayer::new_for_http())
-        .layer(CookieManagerLayer::new())
-        .layer(middleware::map_request(web::main_request_mapper));
+        .layer(middleware::map_request(web::main_request_mapper))
+        .layer(CookieManagerLayer::new());
 
     // get port from env or use default
     let port = std::env::var("PORT").unwrap_or(DEFAULT_PORT.to_string());
@@ -57,7 +74,7 @@ async fn main() -> anyhow::Result<()> {
     let listener = tokio::net::TcpListener::bind(&address).await?;
 
     // Start server
-    info!("🛫 Server running on: http://{}", address);
+    info!("🛫 Server running on: http://{}\n", address);
     axum::serve(listener, app)
         .with_graceful_shutdown(shutdown_signal())
         .await?;
@@ -70,7 +87,7 @@ fn init_tracing() {
     tracing_subscriber::registry()
         .with(
             EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "server=trace,axum::rejection=trace".into()),
+                .unwrap_or_else(|_| "server=trace,automata=trace,axum::rejection=trace".into()),
         )
         .with(tracing_subscriber::fmt::layer().compact().without_time())
         .init();

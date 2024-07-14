@@ -1,5 +1,6 @@
 #[cfg(feature = "embed_assets")]
 pub mod assets;
+pub mod db;
 pub mod model;
 pub mod mw;
 pub mod schema;

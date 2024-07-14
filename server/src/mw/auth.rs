@@ -6,7 +6,7 @@ use axum::{
     response::Response,
 };
 use tower_cookies::{Cookie, Cookies};
-use tracing::{debug, info};
+use tracing::{debug, info, trace};
 
 use crate::{
     service,
@@ -21,7 +21,7 @@ pub async fn require_auth(
 ) -> Result<Response, MainError> {
     match &ctx {
         Ok(ctx) => debug!("🔐  ✅ Require Auth : {ctx:?}"),
-        Err(e) => info!("🔐  ❌ Require Auth: {e:?}"),
+        Err(e) => debug!("🔐  ❌ Require Auth: {e:?}"),
     }
 
     // TODO: Is that really always the error?
@@ -54,8 +54,8 @@ pub async fn ctx_resolver(
     }
 
     match &ctx_result {
-        Ok(ctx) => debug!("⚡️  ✅ Ctx Resolver : {ctx:?}"),
-        Err(e) => debug!("⚡️  ⚠️  Ctx Resolver: {e:?}"),
+        Ok(ctx) => trace!("⚡️  ✅ Ctx Resolver : {ctx:?}"),
+        Err(e) => trace!("⚡️  ⚠️  Ctx Resolver: {e:?}"),
     }
 
     // Set Ctx in request
