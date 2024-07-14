@@ -18,7 +18,20 @@ macro_rules! run {
 async fn main() -> anyhow::Result<()> {
     let hc = httpc_test::new_client("http://localhost:3000")?;
 
+    // can get status un-authenticated
     run!(hc.do_get("/api/status"));
+
+    // Cannot get lobbies un-authenticated
+    run!(hc.do_get("/api/lobbies"));
+
+    run!(hc.do_post(
+        "/api/user/register",
+        json!({
+            "display_name": "Good Guy",
+            "email": "goodguy@contoso.com",
+            "password": "password",
+        })
+    ));
 
     run!(hc.do_post(
         "/api/login",

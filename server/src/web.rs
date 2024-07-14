@@ -6,7 +6,7 @@ use axum::{
 };
 use error::MainError;
 use serde_json::json;
-use tracing::{info, warn};
+use tracing::info;
 use uuid::Uuid;
 
 pub mod app_state;
@@ -39,28 +39,30 @@ pub async fn main_response_mapper(uri: Uri, res: Response<Body>) -> Response<Bod
             let uuid = uuid.to_string();
             let e_type = err_client.as_ref();
 
-            warn!("❌ Client Error: {status} {uuid} {e_type}");
+            info!("❌ Client: {e_type} {uuid}");
 
             let err_client_body = json!({
             "error": {
-                "type": err_client.as_ref(),
-                "request_id": uuid.to_string(),
+                "type": e_type,
+                "request_id": uuid,
                 }
             });
 
             (status, Json(err_client_body)).into_response()
         });
 
+    // Log the service error
     if let Some(e) = service_error {
-        warn!("❌ Service Error: {e:#?}");
+        info!("❌ Service: {e}");
     }
 
+    let res = client_error.unwrap_or(res);
     let emoji = if res.status().is_success() {
         "✅"
     } else {
         "🛑"
     };
 
-    info!("{emoji} {uri}\n");
-    client_error.unwrap_or(res)
+    info!("{emoji} {} {uri}\n", res.status());
+    res
 }

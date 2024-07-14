@@ -6,7 +6,7 @@ use axum::{
     response::Response,
 };
 use tower_cookies::{Cookie, Cookies};
-use tracing::{debug, info, trace};
+use tracing::{debug, trace};
 
 use crate::{
     service,
@@ -77,8 +77,8 @@ impl<S: Send + Sync> FromRequestParts<S> for Ctx {
         };
 
         match &res {
-            Ok(ctx) => debug!("👤  ✅ Ctx Extractor: {ctx:?}"),
-            Err(e) => debug!("👤  ❌ Ctx Extractor: {e:?}"),
+            Ok(ctx) => trace!("👤  ✅ Ctx Extractor: {ctx:?}"),
+            Err(e) => trace!("👤  ❌ Ctx Extractor: {e:?}"),
         }
 
         res
