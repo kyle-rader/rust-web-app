@@ -24,6 +24,7 @@ async fn main() -> anyhow::Result<()> {
     // Cannot get lobbies un-authenticated
     run!(hc.do_get("/api/lobbies"));
 
+    // Register a user
     run!(hc.do_post(
         "/api/user/register",
         json!({

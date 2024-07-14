@@ -4,7 +4,7 @@ diesel::table! {
     users (id) {
         id -> Int4,
         #[max_length = 255]
-        handle -> Varchar,
+        display_name -> Varchar,
         #[max_length = 255]
         email -> Varchar,
         #[max_length = 255]

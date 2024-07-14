@@ -9,7 +9,7 @@ use crate::shared::time::assert_within;
 async fn create_user() -> anyhow::Result<()> {
     let db = TestDb::new().await?;
     let fields = UserNewFields {
-        handle: "john22".into(),
+        display_name: "john22".into(),
         email: "john@contoso.com".into(),
         password: "password1234".into(),
     };
@@ -18,7 +18,7 @@ async fn create_user() -> anyhow::Result<()> {
     let user = create(db.conn()?, fields).await?;
 
     assert_eq!(user.id, 1);
-    assert_eq!(user.handle, "john22");
+    assert_eq!(user.display_name, "john22");
     assert_eq!(user.email, "john@contoso.com");
     assert_within(user.created_at, now, Duration::from_secs(5));
     assert_within(user.updated_at, now, Duration::from_secs(5));
@@ -27,10 +27,10 @@ async fn create_user() -> anyhow::Result<()> {
 }
 
 #[tokio::test]
-async fn create_user_with_existing_handle() -> anyhow::Result<()> {
+async fn create_user_with_existing_display_name() -> anyhow::Result<()> {
     let db = TestDb::new().await?;
     let fields = UserNewFields {
-        handle: "best_handle".into(),
+        display_name: "Bob the Builder".into(),
         email: "bob@contoso.com".into(),
         password: "password1234".into(),
     };
@@ -40,13 +40,13 @@ async fn create_user_with_existing_handle() -> anyhow::Result<()> {
 
     // Create the second user with the same handle
     let fields = UserNewFields {
-        handle: "best_handle".into(),
+        display_name: "Bob the Builder".into(),
         email: "joe@contoso.com".into(),
         password: "password1234".into(),
     };
 
     let result = create(db.conn()?, fields).await;
-    assert!(matches!(result, Err(ErrorUser::HandleAlreadyExists)));
+    assert_eq!(result, Err(ErrorUser::DisplayNameAlreadyExists));
     Ok(())
 }
 
@@ -54,7 +54,7 @@ async fn create_user_with_existing_handle() -> anyhow::Result<()> {
 async fn create_user_with_existing_email() -> anyhow::Result<()> {
     let db = TestDb::new().await?;
     let fields = UserNewFields {
-        handle: "bob".into(),
+        display_name: "bob".into(),
         email: "bob@contoso.com".into(),
         password: "password1234".into(),
     };
@@ -64,7 +64,7 @@ async fn create_user_with_existing_email() -> anyhow::Result<()> {
 
     // Create the second user with the same email
     let fields = UserNewFields {
-        handle: "joe".into(),
+        display_name: "joe".into(),
         email: "bob@contoso.com".into(),
         password: "password1234".into(),
     };
@@ -78,7 +78,7 @@ async fn create_user_with_existing_email() -> anyhow::Result<()> {
 async fn create_user_with_invalid_email() -> anyhow::Result<()> {
     let db = TestDb::new().await?;
     let fields = UserNewFields {
-        handle: "bob".into(),
+        display_name: "bob".into(),
         email: "bob".into(),
         password: "password1234".into(),
     };
@@ -92,7 +92,7 @@ async fn create_user_with_invalid_email() -> anyhow::Result<()> {
 async fn create_user_with_short_password() -> anyhow::Result<()> {
     let db = TestDb::new().await?;
     let fields = UserNewFields {
-        handle: "bob".into(),
+        display_name: "bob".into(),
         email: "bob@contoso.com".into(),
         password: "pass".into(),
     };

@@ -5,6 +5,8 @@ use tower_cookies::{Cookie, Cookies};
 use tracing::debug;
 
 use crate::{
+    db::{get_db_conn, DbPool},
+    model::user,
     service::{self, jwt::Claims},
     web::{self, error::MainError},
 };
@@ -17,17 +19,13 @@ pub struct PayloadLogin {
 
 pub async fn api_login(
     State(ctl_jwt): State<service::jwt::JwtController>,
+    State(db_pool): State<DbPool>,
     cookies: Cookies,
     payload: Json<PayloadLogin>,
 ) -> Result<Json<Value>, MainError> {
-    // TODO: Create real login logic with DB
-    if payload.email != "goodguy" || payload.password != "password" {
-        debug!("❌ Login {} ", payload.email);
-        return Err(MainError::LoginFail);
-    }
+    let conn = get_db_conn(&db_pool)?;
 
-    // Create JWT token
-    let claims = Claims::new(1, "goodguy".to_string(), "goodguy@contoso.com".to_string());
+    let claims: Claims = user::login(conn, &payload.email, &payload.password).await?;
 
     let token = ctl_jwt.sign(&claims).map_err(|jwt_error| {
         debug!("❌ Login JWT Signing Error {jwt_error}");
@@ -36,7 +34,7 @@ pub async fn api_login(
 
     cookies.add(Cookie::new(web::AUTH_HEADER, token));
 
-    debug!("✅ Login {}", payload.email);
+    debug!("✅ Login {}", claims.email);
 
     // Create success body
     Ok(Json(json!({

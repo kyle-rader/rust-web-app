@@ -17,12 +17,11 @@ pub enum MainError {
     #[error("Auth Ctx not in request")]
     AuthFailCtxNotInRequest,
 
-    // Account errors
-    #[error("Account not found")]
-    AccountNotFound,
-
     #[error("Internal server error")]
     Internal,
+
+    #[error("Internal server error: {0}")]
+    InternalWithMsg(String),
 }
 
 impl IntoResponse for MainError {
@@ -41,8 +40,9 @@ impl MainError {
             Self::AuthFailNoAuthTokenCookie
             | Self::AuthFailTokenWrongFormat
             | Self::AuthFailCtxNotInRequest => (StatusCode::FORBIDDEN, ErrorClient::NoAuth),
-            Self::AccountNotFound => (StatusCode::BAD_REQUEST, ErrorClient::InvalidParams),
-            Self::Internal => (StatusCode::INTERNAL_SERVER_ERROR, ErrorClient::ServiceError),
+            Self::Internal | Self::InternalWithMsg(_) => {
+                (StatusCode::INTERNAL_SERVER_ERROR, ErrorClient::ServiceError)
+            }
         }
     }
 }

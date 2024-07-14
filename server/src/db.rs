@@ -6,6 +6,8 @@ use diesel::{
 use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 use tracing::{debug, error, info};
 
+use crate::web::error::MainError;
+
 pub type DbPool = Pool<ConnectionManager<PgConnection>>;
 pub type DbConn = PooledConnection<ConnectionManager<PgConnection>>;
 const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
@@ -25,6 +27,11 @@ pub fn get_db_pool() -> anyhow::Result<DbPool> {
         error!("Failed to create pool: {:?}", e);
         anyhow::anyhow!(e)
     })
+}
+
+pub fn get_db_conn(pool: &DbPool) -> Result<DbConn, MainError> {
+    pool.get()
+        .map_err(|e| MainError::InternalWithMsg(e.to_string()))
 }
 
 pub fn run_migrations(mut conn: DbConn) -> anyhow::Result<()> {
