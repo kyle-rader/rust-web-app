@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+echo "Ensure database is running..."
+docker-compose scale db=1
+
+export DATABASE_URL="postgres://pgdev:pgdev@localhost:5432/dev?sslmode=disable"
+
+echo "Start server in live-reload mode..."
+cargo live-reload

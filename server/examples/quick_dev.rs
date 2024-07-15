@@ -22,35 +22,44 @@ async fn main() -> anyhow::Result<()> {
     run!(hc.do_get("/api/status"));
 
     // Cannot get lobbies un-authenticated
-    run!(hc.do_get("/api/lobbies"));
+    // run!(hc.do_get("/api/lobbies"));
 
-    // Register a user
+    // Bad login attempt
+    // run!(hc.do_post(
+    //     "/api/login",
+    //     json!({
+    //         "email": "badguy",
+    //         "password": "hackerz!"
+    //     })
+    // ));
+
+    // Register a user, but too short of a password
+    // run!(hc.do_post(
+    //     "/api/user/register",
+    //     json!({
+    //         "display_name": "Good Guy",
+    //         "email": "goodguy@contoso.com",
+    //         "password": "password",
+    //     })
+    // ));
+
+    // Register a user - good attempt
     run!(hc.do_post(
         "/api/user/register",
         json!({
             "display_name": "Good Guy",
             "email": "goodguy@contoso.com",
-            "password": "password",
+            "password": "password1234",
         })
     ));
 
     run!(hc.do_post(
         "/api/login",
         json!({
-            "email": "badguy",
-            "password": "hackerz!"
-        })
-    ));
-
-    let login = hc.do_post(
-        "/api/login",
-        json!({
-            "email": "goodguy",
-            "password": "password"
+            "email": "goodguy@contoso.com",
+            "password": "password1234"
         }),
-    );
-
-    run!(login);
+    ));
 
     run!(hc.do_post(
         "/api/lobby",

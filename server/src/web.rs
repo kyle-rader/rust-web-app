@@ -37,13 +37,13 @@ pub async fn main_response_mapper(uri: Uri, res: Response<Body>) -> Response<Bod
         .map(|e| e.client_response())
         .map(|(status, err_client)| {
             let uuid = uuid.to_string();
-            let e_type = err_client.as_ref();
+            let err = err_client.to_string();
 
-            info!("❌ Client: {e_type} {uuid}");
+            info!("❌ Client: {uuid} {err}");
 
             let err_client_body = json!({
             "error": {
-                "type": e_type,
+                "msg": err,
                 "request_id": uuid,
                 }
             });

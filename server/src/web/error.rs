@@ -1,6 +1,8 @@
 use axum::{http::StatusCode, response::IntoResponse};
 use serde::Serialize;
 
+use crate::model::user::{self, ErrorUser};
+
 #[derive(Debug, Clone, Serialize, thiserror::Error)]
 #[serde(tag = "type", content = "data")]
 pub enum MainError {
@@ -17,11 +19,14 @@ pub enum MainError {
     #[error("Auth Ctx not in request")]
     AuthFailCtxNotInRequest,
 
-    #[error("Internal server error")]
-    Internal,
-
     #[error("Internal server error: {0}")]
-    InternalWithMsg(String),
+    Internal(String),
+
+    #[error(transparent)]
+    User(#[from] user::ErrorUser),
+
+    #[error("Error: {0}")]
+    ClientError(String),
 }
 
 impl IntoResponse for MainError {
@@ -40,9 +45,12 @@ impl MainError {
             Self::AuthFailNoAuthTokenCookie
             | Self::AuthFailTokenWrongFormat
             | Self::AuthFailCtxNotInRequest => (StatusCode::FORBIDDEN, ErrorClient::NoAuth),
-            Self::Internal | Self::InternalWithMsg(_) => {
-                (StatusCode::INTERNAL_SERVER_ERROR, ErrorClient::ServiceError)
-            }
+            Self::Internal(_) => (StatusCode::INTERNAL_SERVER_ERROR, ErrorClient::ServiceError),
+            Self::User(e) => e.into(),
+            Self::ClientError(e) => (
+                StatusCode::BAD_REQUEST,
+                ErrorClient::BadRequest(e.to_string()),
+            ),
         }
     }
 }
@@ -58,6 +66,29 @@ pub enum ErrorClient {
     #[error("Invalid request parameters")]
     InvalidParams,
 
+    #[error("{0}")]
+    BadRequest(String),
+
     #[error("Internal server error")]
     ServiceError,
+}
+
+impl From<&ErrorUser> for (StatusCode, ErrorClient) {
+    fn from(value: &ErrorUser) -> Self {
+        match value {
+            ErrorUser::DisplayNameAlreadyExists
+            | ErrorUser::EmailAlreadyExists
+            | ErrorUser::InvalidEmail
+            | ErrorUser::InvalidCredentials
+            | ErrorUser::NotFound => (
+                StatusCode::BAD_REQUEST,
+                ErrorClient::BadRequest(value.to_string()),
+            ),
+            ErrorUser::Password(e) => (
+                StatusCode::BAD_REQUEST,
+                ErrorClient::BadRequest(e.to_string()),
+            ),
+            ErrorUser::Db(_) => (StatusCode::INTERNAL_SERVER_ERROR, ErrorClient::ServiceError),
+        }
+    }
 }

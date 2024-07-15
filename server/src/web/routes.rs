@@ -3,18 +3,19 @@ use axum::{
     routing::{get, post},
     Router,
 };
-use login::api_login;
+use user::login;
 
 use crate::web::app_state::AppState;
 
 mod lobby;
-mod login;
 mod status;
+mod user;
 
 pub async fn get_api_routes(app_state: &AppState) -> anyhow::Result<axum::Router> {
     let routes_public: Router = Router::new()
         .route("/status", get(status::api_status))
-        .route("/login", post(api_login))
+        .route("/login", post(user::login))
+        .route("/user/register", post(user::register))
         .with_state(app_state.clone());
 
     let routes_private: Router = Router::new()
@@ -27,14 +28,3 @@ pub async fn get_api_routes(app_state: &AppState) -> anyhow::Result<axum::Router
     let router = routes_public.merge(routes_private);
     Ok(router)
 }
-
-// async fn account_me(
-//     ctx: Ctx,
-//     State(ctl_account): State<ControllerUser>,
-// ) -> Result<Json<User>, MainError> {
-//     let account = ctl_account
-//         .get_account(ctx.account_id)
-//         .await
-//         .map_err(|_| MainError::AccountNotFound)?;
-//     Ok(Json(account))
-// }

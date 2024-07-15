@@ -30,8 +30,7 @@ pub fn get_db_pool() -> anyhow::Result<DbPool> {
 }
 
 pub fn get_db_conn(pool: &DbPool) -> Result<DbConn, MainError> {
-    pool.get()
-        .map_err(|e| MainError::InternalWithMsg(e.to_string()))
+    pool.get().map_err(|e| MainError::Internal(e.to_string()))
 }
 
 pub fn run_migrations(mut conn: DbConn) -> anyhow::Result<()> {

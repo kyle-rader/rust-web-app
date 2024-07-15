@@ -2,11 +2,11 @@ use axum::{extract::State, Json};
 use serde::Deserialize;
 use serde_json::{json, Value};
 use tower_cookies::{Cookie, Cookies};
-use tracing::debug;
+use tracing::{debug, trace};
 
 use crate::{
     db::{get_db_conn, DbPool},
-    model::user,
+    model::user::{self, UserPublic},
     service::{self, jwt::Claims},
     web::{self, error::MainError},
 };
@@ -17,7 +17,7 @@ pub struct PayloadLogin {
     password: String,
 }
 
-pub async fn api_login(
+pub async fn login(
     State(ctl_jwt): State<service::jwt::JwtController>,
     State(db_pool): State<DbPool>,
     cookies: Cookies,
@@ -42,4 +42,19 @@ pub async fn api_login(
           "success": true,
         }
     })))
+}
+
+pub async fn register(
+    State(db_pool): State<DbPool>,
+    Json(fields): Json<user::UserNewFields>,
+) -> Result<Json<UserPublic>, MainError> {
+    trace!("Register: {fields:?}");
+
+    let conn = get_db_conn(&db_pool)?;
+
+    let user = user::create(conn, fields).await?;
+
+    debug!("✅ Register {}", user.email);
+
+    Ok(Json(user.into()))
 }

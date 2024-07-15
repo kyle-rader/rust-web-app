@@ -15,7 +15,7 @@ pub async fn create_lobby(
     let lobby = ctl_lobby
         .create_lobby(lobby_create)
         .await
-        .map_err(|_err| MainError::Internal)?;
+        .map_err(|e| MainError::Internal(e.to_string()))?;
     Ok(Json(lobby))
 }
 
@@ -26,6 +26,6 @@ pub async fn get_lobbies(
     let lobbies = lobbies
         .get_lobbies()
         .await
-        .map_err(|_err| MainError::Internal)?;
+        .map_err(|e| MainError::Internal(e.to_string()))?;
     Ok(Json(lobbies))
 }

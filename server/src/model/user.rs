@@ -7,6 +7,7 @@ use regex::Regex;
 use serde::{Deserialize, Serialize};
 use sha2::Digest;
 use std::time::SystemTime;
+use tracing::trace;
 
 use crate::db::DbConn;
 use crate::service::jwt::Claims;
@@ -40,13 +41,39 @@ pub struct UserNewFields {
     pub password: String,
 }
 
-#[derive(Debug, Insertable)]
+#[derive(Insertable)]
 #[diesel(table_name = crate::schema::users)]
 struct UserForInsert {
     display_name: String,
     email: String,
     password_salt: String,
     password_hash: Vec<u8>,
+}
+
+impl std::fmt::Debug for UserForInsert {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("UserForInsert")
+            .field("display_name", &self.display_name)
+            .field("email", &self.email)
+            .field(
+                "password_salt",
+                &format!(
+                    "{}...",
+                    self.password_salt.chars().take(5).collect::<String>()
+                ),
+            )
+            .field(
+                "password_hash",
+                &format!(
+                    "{}...",
+                    &self.password_hash[0..5]
+                        .iter()
+                        .map(|b| b.to_string())
+                        .collect::<String>()
+                ),
+            )
+            .finish()
+    }
 }
 
 impl From<UserNewFields> for UserForInsert {
@@ -63,13 +90,34 @@ impl From<UserNewFields> for UserForInsert {
         }
     }
 }
+
+#[derive(Debug, Serialize)]
+pub struct UserPublic {
+    pub id: i32,
+    pub display_name: String,
+    pub email: String,
+    pub created_at: SystemTime,
+    pub updated_at: SystemTime,
+}
+
+impl From<User> for UserPublic {
+    fn from(user: User) -> Self {
+        UserPublic {
+            id: user.id,
+            display_name: user.display_name,
+            email: user.email,
+            created_at: user.created_at,
+            updated_at: user.updated_at,
+        }
+    }
+}
 // endregion
 
 // region: -- Account Controller
-#[derive(Debug, thiserror::Error, PartialEq, Clone)]
+#[derive(Debug, thiserror::Error, PartialEq, Clone, Serialize)]
 pub enum ErrorUser {
-    #[error("Internal server error")]
-    Internal,
+    #[error("{0}")]
+    Db(String),
 
     #[error("Account not found")]
     NotFound,
@@ -90,16 +138,19 @@ pub enum ErrorUser {
     Password(#[from] ErrorPassword),
 }
 
-#[derive(Debug, thiserror::Error, PartialEq, Clone)]
+#[derive(Debug, thiserror::Error, PartialEq, Clone, Serialize)]
 pub enum ErrorPassword {
     #[error("Password must be at least 12 characters long")]
     TooShort,
 }
 
 pub async fn create(mut conn: DbConn, fields: UserNewFields) -> Result<User, ErrorUser> {
+    trace!("User Create:\n{fields:#?}");
     valid_password(&fields.password)?;
+    valid_email(&fields.email)?;
+
     let user_insert: UserForInsert = fields.into();
-    valid_email(&user_insert.email)?;
+    trace!("User Insert:\n{user_insert:#?}");
 
     diesel::insert_into(users::table)
         .values(user_insert)
@@ -145,15 +196,14 @@ fn valid_email(email: &str) -> Result<(), ErrorUser> {
 
 fn create_db_error_map(error: diesel::result::Error) -> ErrorUser {
     match error {
-        DatabaseError(DatabaseErrorKind::UniqueViolation, info) => info
-            .constraint_name()
-            .map(|constraint| match constraint {
-                "users_email_key" => ErrorUser::EmailAlreadyExists,
-                "users_display_name_key" => ErrorUser::DisplayNameAlreadyExists,
-                _ => ErrorUser::Internal,
-            })
-            .unwrap_or(ErrorUser::Internal),
-        _ => ErrorUser::Internal,
+        DatabaseError(DatabaseErrorKind::UniqueViolation, info) => match info.constraint_name() {
+            Some("users_email_key") => ErrorUser::EmailAlreadyExists,
+            Some("users_display_name_key") => ErrorUser::DisplayNameAlreadyExists,
+            Some(constraint) => ErrorUser::Db(format!("Unique violation {constraint}")),
+            None => ErrorUser::Db(info.message().to_string()),
+        },
+        DatabaseError(kind, info) => ErrorUser::Db(format!("{kind:?} {}", info.message())),
+        e => ErrorUser::Db(e.to_string()),
     }
 }
 
