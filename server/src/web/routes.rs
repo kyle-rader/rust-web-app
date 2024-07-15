@@ -3,7 +3,6 @@ use axum::{
     routing::{get, post},
     Router,
 };
-use user::login;
 
 use crate::web::app_state::AppState;
 
