@@ -6,7 +6,8 @@ WORKDIR /app
 
 # Install necessary dependencies
 RUN apk update && \
-    apk add --no-cache nodejs npm rust cargo pkgconfig openssl-dev libpq-dev
+    apk add --no-cache \
+    nodejs npm rust cargo pkgconfig openssl-dev libpq-dev
 
 # Copy the client application source code
 COPY client /app/client
@@ -25,7 +26,9 @@ RUN cd server && \
 
 # Start fresh image to reduce size
 FROM alpine:latest
-RUN apk --no-cache add ca-certificates libgcc libstdc++
+RUN apk update && \
+    apk add --no-cache \
+    ca-certificates libgcc libstdc++ libpq-dev postgresql-libs
 
 WORKDIR /root/
 
