@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+
+GIT_ROOT=$(git rev-parse --show-toplevel)
+
+# First build front end
+pushd "$GIT_ROOT/client"
+npm run build
+popd
+
+# Then build server
+pushd "$GIT_ROOT/server"
+cargo clippy --all-targets --all-features -- -D warnings
+cargo test
+
+popd
+
+# Finally build docker image
+docker build -t automata .

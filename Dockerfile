@@ -1,27 +1,27 @@
 # Use a small Linux-based image as the base
-FROM alpine:latest as builder
+FROM alpine:latest AS builder
 
 # Set the working directory
 WORKDIR /app
 
 # Install necessary dependencies
 RUN apk update && \
-  apk add --no-cache nodejs npm rust cargo
+    apk add --no-cache nodejs npm rust cargo pkgconfig openssl-dev libpq-dev
 
 # Copy the client application source code
 COPY client /app/client
 
 # Build the client application
 RUN cd client && \
-  npm install && \
-  npm run build
+    npm install && \
+    npm run build
 
 # Copy the server source code
 COPY server /app/server
 
 # Build the server
 RUN cd server && \
-  cargo build --release --features embed_assets
+    cargo build --release --features embed_assets
 
 # Start fresh image to reduce size
 FROM alpine:latest
