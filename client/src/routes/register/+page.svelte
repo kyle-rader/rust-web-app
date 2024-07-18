@@ -1,26 +1,39 @@
 <script lang="ts">
 	import RegisterForm from './register_form.svelte';
-	import { post } from '$lib/requests.js';
+	import { post } from '$lib/requests';
+	import type { User } from '$lib/types/user';
+	import type { Error } from '$lib/types/error';
 
-	const MinPasswordLength = 12;
-	const RegisterUri = '/api/user/register';
+	let success: User | null = null;
+	let error: Error | null = null;
 
-	let error: String | null = null;
-
-	function register(event: any) {
-		console.log('Got user:', event.detail.user);
+	async function register(event: any) {
+		let res = await post('/api/user/register', event.detail.user);
+		console.log(res);
+		if (res.ok) {
+			success = await res.json();
+			console.log(success);
+		} else {
+			error = await res.json();
+			console.log(error);
+		}
 	}
 </script>
 
-<RegisterForm minPasswordLength={MinPasswordLength} on:submit={register} />
+<h1 class="container center">Register</h1>
 
-<div class="container">
-	<p class="center">
-		<small>Already have an account? <a href="/login">Log in</a></small>
+{#if success}
+	<p class="container center">Successfully registered as {success.display_name}!</p>
+	<p class="container center">
+		Please check your email to verify your account and <a href="/login">log in</a>
 	</p>
+{:else}
+	<RegisterForm on:submit={register} />
+{/if}
 
-	<div class="container center">
-		<h3>Why register?</h3>
-		<p>You will need an account to play solo games or host multiplayer games.</p>
-	</div>
-</div>
+{#if error}
+	<p class="container center">❌ Error: {error.type} {error.msg}</p>
+{/if}
+
+<style>
+</style>
