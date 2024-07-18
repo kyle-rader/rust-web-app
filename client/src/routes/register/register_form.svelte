@@ -3,7 +3,7 @@
 	const dispatch = createEventDispatcher();
 
 	export let minPasswordLength = 12;
-	export let user = {
+	let user = {
 		display_name: '',
 		email: '',
 		password: ''
@@ -25,8 +25,6 @@
 		});
 	}
 </script>
-
-<h1 class="container center">Register</h1>
 
 <div class="container center max-w">
 	<form on:submit={submit}>
@@ -70,9 +68,7 @@
 			{/if}
 		</div>
 		<div class="form-item">
-			<button type="submit" class="button" class:ready disabled={!ready} on:click={submit}>
-				Register
-			</button>
+			<button type="submit" class="button" class:ready disabled={!ready}> Register </button>
 		</div>
 	</form>
 </div>
