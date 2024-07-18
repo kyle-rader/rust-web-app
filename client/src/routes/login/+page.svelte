@@ -8,8 +8,8 @@
 
 		const res = await post('/api/login', { email, password });
 		if (res.ok) {
-			const { token } = await res.json();
-			console.log('Logged in!', token);
+			const claims = await res.json();
+			console.log('Logged in!', claims);
 		} else {
 			console.log('Login failed');
 		}

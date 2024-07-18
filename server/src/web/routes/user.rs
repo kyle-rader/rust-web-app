@@ -1,7 +1,7 @@
 use axum::{extract::State, Json};
 use serde::Deserialize;
 use serde_json::{json, Value};
-use tower_cookies::{Cookie, Cookies};
+use tower_cookies::{cookie::SameSite, Cookie, Cookies};
 use tracing::{debug, trace};
 
 use crate::{
@@ -32,16 +32,16 @@ pub async fn login(
         MainError::LoginFail
     })?;
 
-    cookies.add(Cookie::new(web::AUTH_HEADER, token));
+    let mut auth_cookie = Cookie::new(web::AUTH_HEADER, token);
+    auth_cookie.set_secure(true);
+    auth_cookie.set_same_site(SameSite::Lax);
+
+    cookies.add(auth_cookie);
 
     debug!("✅ Login {}", claims.email);
 
     // Create success body
-    Ok(Json(json!({
-        "result": {
-          "success": true,
-        }
-    })))
+    Ok(Json(json!(claims)))
 }
 
 pub async fn register(
