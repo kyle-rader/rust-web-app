@@ -48,7 +48,7 @@ pub async fn register(
     State(db_pool): State<DbPool>,
     Json(fields): Json<user::UserNewFields>,
 ) -> Result<Json<UserPublic>, MainError> {
-    trace!("Register: {fields:?}");
+    trace!("Register:\n{fields:#?}");
 
     let conn = get_db_conn(&db_pool)?;
 

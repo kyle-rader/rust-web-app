@@ -1,3 +1,4 @@
+use core::fmt;
 use diesel::prelude::*;
 use diesel::result::DatabaseErrorKind;
 use diesel::result::Error::DatabaseError;
@@ -34,11 +35,24 @@ pub struct User {
     pub updated_at: SystemTime,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Deserialize)]
 pub struct UserNewFields {
     pub display_name: String,
     pub email: String,
     pub password: String,
+}
+
+impl fmt::Debug for UserNewFields {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("UserNewFields")
+            .field("display_name", &self.display_name)
+            .field("email", &self.email)
+            .field(
+                "password",
+                &self.password.chars().map(|_| '*').collect::<String>(),
+            )
+            .finish()
+    }
 }
 
 #[derive(Insertable)]
