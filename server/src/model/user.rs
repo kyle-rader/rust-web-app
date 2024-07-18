@@ -98,7 +98,7 @@ impl From<UserNewFields> for UserForInsert {
 
         UserForInsert {
             display_name: fields.display_name,
-            email: fields.email.to_lowercase(),
+            email: fields.email,
             password_salt,
             password_hash,
         }
@@ -211,7 +211,7 @@ fn valid_email(email: &str) -> Result<(), ErrorUser> {
 fn create_db_error_map(error: diesel::result::Error) -> ErrorUser {
     match error {
         DatabaseError(DatabaseErrorKind::UniqueViolation, info) => match info.constraint_name() {
-            Some("users_email_key") => ErrorUser::EmailAlreadyExists,
+            Some("users_email_key") | Some("email_unique_idx") => ErrorUser::EmailAlreadyExists,
             Some("users_display_name_key") => ErrorUser::DisplayNameAlreadyExists,
             Some(constraint) => ErrorUser::Db(format!("Unique violation {constraint}")),
             None => ErrorUser::Db(info.message().to_string()),
@@ -235,7 +235,7 @@ mod tests {
     fn user_fields_into_user_for_insert() {
         let fields = UserNewFields {
             display_name: "john89".into(),
-            email: "JohN89@contoso.com".into(),
+            email: "john89@contoso.com".into(),
             password: "password".into(),
         };
 

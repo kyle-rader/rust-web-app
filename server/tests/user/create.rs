@@ -36,7 +36,7 @@ async fn create_user_with_existing_display_name() -> anyhow::Result<()> {
     };
 
     // Create the first user
-    create(db.conn()?, fields).await?;
+    let _bob = create(db.conn()?, fields).await?;
 
     // Create the second user with the same handle
     let fields = UserNewFields {
@@ -45,8 +45,10 @@ async fn create_user_with_existing_display_name() -> anyhow::Result<()> {
         password: "password1234".into(),
     };
 
-    let result = create(db.conn()?, fields).await;
-    assert_eq!(result, Err(ErrorUser::DisplayNameAlreadyExists));
+    let joe = create(db.conn()?, fields)
+        .await
+        .expect("Joe can be created with same display name");
+    assert_eq!(joe.display_name, "Bob the Builder");
     Ok(())
 }
 
@@ -62,10 +64,10 @@ async fn create_user_with_existing_email() -> anyhow::Result<()> {
     // Create the first user
     create(db.conn()?, fields).await?;
 
-    // Create the second user with the same email
+    // Create the second user with the same email (different case)
     let fields = UserNewFields {
         display_name: "joe".into(),
-        email: "bob@contoso.com".into(),
+        email: "BoB@Contoso.com".into(),
         password: "password1234".into(),
     };
 
