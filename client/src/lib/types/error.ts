@@ -1,4 +1,4 @@
 export interface Error {
-    type: string;
     msg: string;
+    request_id: string;
 }

@@ -42,10 +42,8 @@ pub async fn main_response_mapper(uri: Uri, res: Response<Body>) -> Response<Bod
             info!("❌ Client: {uuid} {err}");
 
             let err_client_body = json!({
-            "error": {
-                "msg": err,
-                "request_id": uuid,
-                }
+             "msg": err,
+             "request_id": uuid,
             });
 
             (status, Json(err_client_body)).into_response()

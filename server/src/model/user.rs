@@ -98,7 +98,7 @@ impl From<UserNewFields> for UserForInsert {
 
         UserForInsert {
             display_name: fields.display_name,
-            email: fields.email,
+            email: fields.email.to_lowercase(),
             password_salt,
             password_hash,
         }
@@ -235,7 +235,7 @@ mod tests {
     fn user_fields_into_user_for_insert() {
         let fields = UserNewFields {
             display_name: "john89".into(),
-            email: "john89@contoso.com".into(),
+            email: "JohN89@contoso.com".into(),
             password: "password".into(),
         };
 

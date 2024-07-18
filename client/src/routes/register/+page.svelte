@@ -11,6 +11,7 @@
 		let res = await post('/api/user/register', event.detail.user);
 		console.log(res);
 		if (res.ok) {
+			error = null;
 			success = await res.json();
 			console.log(success);
 		} else {
@@ -32,7 +33,7 @@
 {/if}
 
 {#if error}
-	<p class="container center">❌ Error: {error.type} {error.msg}</p>
+	<p class="container center">❌ Error: {error.msg}</p>
 {/if}
 
 <style>
