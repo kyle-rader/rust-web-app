@@ -44,7 +44,7 @@ pub async fn ctx_resolver(
         .and_then(|token| {
             ctl_jwt
                 .verify(&token)
-                .map_err(|_jwt_error| MainError::AuthFailTokenWrongFormat)
+                .map_err(|e| MainError::AuthFailToken(e.to_string()))
         })
         .map(|claims| Ctx::new(claims.sub));
 

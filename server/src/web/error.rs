@@ -13,8 +13,8 @@ pub enum MainError {
     #[error("No auth-header cookie found")]
     AuthFailNoAuthTokenCookie,
 
-    #[error("Auth token wrong format")]
-    AuthFailTokenWrongFormat,
+    #[error("Bad auth token: {0}")]
+    AuthFailToken(String),
 
     #[error("Auth Ctx not in request")]
     AuthFailCtxNotInRequest,
@@ -43,7 +43,7 @@ impl MainError {
         match self {
             Self::LoginFail => (StatusCode::FORBIDDEN, ErrorClient::LoginFail),
             Self::AuthFailNoAuthTokenCookie
-            | Self::AuthFailTokenWrongFormat
+            | Self::AuthFailToken(_)
             | Self::AuthFailCtxNotInRequest => (StatusCode::FORBIDDEN, ErrorClient::NoAuth),
             Self::Internal(_) => (StatusCode::INTERNAL_SERVER_ERROR, ErrorClient::ServiceError),
             Self::User(e) => e.into(),
