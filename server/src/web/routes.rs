@@ -14,7 +14,7 @@ pub async fn get_api_routes(app_state: &AppState) -> anyhow::Result<axum::Router
     let routes_public: Router = Router::new()
         .route("/status", get(status::api_status))
         .route("/login", post(user::login))
-        .route("/user/register", post(user::register))
+        .route("/register", post(user::register))
         .with_state(app_state.clone());
 
     let routes_private: Router = Router::new()

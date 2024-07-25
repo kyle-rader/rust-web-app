@@ -1,14 +1,30 @@
 <script lang="ts">
 	// Import global styles
 	import '../css/app.css';
+
+	import { user } from '$lib/stores/user';
+	import { goto } from '$app/navigation';
+
+	function logout() {
+		user.logout();
+		// redirect to Games Page
+		goto('/games');
+	}
 </script>
 
 <div class="app">
 	<nav>
 		<a href="/" class="bg-purple button">Home</a>
-		<a href="/about" class="bg-blue button">About</a>
-		<a href="/login" class="bg-orange button">Login</a>
-		<a href="/register" class="bg-aqua button">Register</a>
+
+		{#if $user !== null}
+			<a href="/games" class="bg-blue button">Games</a>
+			<a href="/profile" class="bg-orange button">Profile</a>
+			<a href="/" class="bg-aqua button" on:click|preventDefault={logout}>Logout</a>
+		{:else}
+			<a href="/about" class="bg-blue button">About</a>
+			<a href="/login" class="bg-orange button">Login</a>
+			<a href="/register" class="bg-aqua button">Register</a>
+		{/if}
 	</nav>
 
 	<!-- Slot for the page content -->

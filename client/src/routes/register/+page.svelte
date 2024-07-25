@@ -8,7 +8,7 @@
 	let error: Error | null = null;
 
 	async function register(event: any) {
-		let res = await post('/api/user/register', event.detail.user);
+		let res = await post('/api/register', event.detail.user);
 		console.log(res);
 		if (res.ok) {
 			error = null;

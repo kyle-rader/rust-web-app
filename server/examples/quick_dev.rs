@@ -35,7 +35,7 @@ async fn main() -> anyhow::Result<()> {
 
     // Register a user, but too short of a password
     // run!(hc.do_post(
-    //     "/api/user/register",
+    //     "/api/register",
     //     json!({
     //         "display_name": "Good Guy",
     //         "email": "goodguy@contoso.com",
@@ -45,7 +45,7 @@ async fn main() -> anyhow::Result<()> {
 
     // Register a user - good attempt
     run!(hc.do_post(
-        "/api/user/register",
+        "/api/register",
         json!({
             "display_name": "Good Guy",
             "email": "goodguy@contoso.com",

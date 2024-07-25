@@ -3,8 +3,8 @@
 
 <h1 class="container center">Automata Games</h1>
 
-<h2>🧩 A Realtime Puzzle Games Platform 🎮</h2>
-<h3>🚧 In Progress 🚧</h3>
+<h2>🧩 A Collaborative Puzzle Games Platform 🎮</h2>
+<h3>... and a work in progress</h3>
 
 <style>
 	h2,

@@ -1,14 +1,24 @@
-use axum::{extract::State, Json};
+use axum::{
+    body::Body,
+    extract::{ws::close_code::STATUS, State},
+    http::{header::SET_COOKIE, HeaderMap, HeaderValue, StatusCode},
+    response::{AppendHeaders, IntoResponse, Redirect, Response},
+    Json,
+};
 use serde::Deserialize;
 use serde_json::{json, Value};
-use tower_cookies::{cookie::SameSite, Cookie, Cookies};
+use tower_cookies::{
+    cookie::{time::Duration, SameSite},
+    Cookie, Cookies,
+};
 use tracing::{debug, trace};
 
 use crate::{
     db::{get_db_conn, DbPool},
     model::user::{self, UserPublic},
+    mw::auth,
     service::{self, jwt::Claims},
-    web::{self, error::MainError},
+    web::{self, error::MainError, AUTH_HEADER},
 };
 
 #[derive(Debug, Deserialize)]
@@ -35,6 +45,8 @@ pub async fn login(
     let mut auth_cookie = Cookie::new(web::AUTH_HEADER, token);
     auth_cookie.set_secure(true);
     auth_cookie.set_same_site(SameSite::Lax);
+    // Set path so that the cookie is sent with every request, not just /api requests
+    auth_cookie.set_path("/");
 
     cookies.add(auth_cookie);
 
