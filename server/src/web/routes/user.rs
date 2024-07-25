@@ -1,24 +1,14 @@
-use axum::{
-    body::Body,
-    extract::{ws::close_code::STATUS, State},
-    http::{header::SET_COOKIE, HeaderMap, HeaderValue, StatusCode},
-    response::{AppendHeaders, IntoResponse, Redirect, Response},
-    Json,
-};
+use axum::{extract::State, Json};
 use serde::Deserialize;
 use serde_json::{json, Value};
-use tower_cookies::{
-    cookie::{time::Duration, SameSite},
-    Cookie, Cookies,
-};
+use tower_cookies::{cookie::SameSite, Cookie, Cookies};
 use tracing::{debug, trace};
 
 use crate::{
     db::{get_db_conn, DbPool},
     model::user::{self, UserPublic},
-    mw::auth,
     service::{self, jwt::Claims},
-    web::{self, error::MainError, AUTH_HEADER},
+    web::{self, error::MainError},
 };
 
 #[derive(Debug, Deserialize)]
