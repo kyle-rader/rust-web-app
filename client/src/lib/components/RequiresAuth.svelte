@@ -5,6 +5,8 @@
 {#if $user !== null}
 	<slot />
 {:else}
-	<h1>Login Required</h1>
-	<p>You must be logged in to view this page.</p>
+	<div class="container center">
+		<h1>Login Required</h1>
+		<p>You must be logged in to view this page.</p>
+	</div>
 {/if}

@@ -3,13 +3,6 @@
 	import '../css/app.css';
 
 	import { user } from '$lib/stores/user';
-	import { goto } from '$app/navigation';
-
-	function logout() {
-		user.logout();
-		// redirect to Games Page
-		goto('/games');
-	}
 </script>
 
 <div class="app">
@@ -19,7 +12,7 @@
 		{#if $user !== null}
 			<a href="/games" class="bg-blue button">Games</a>
 			<a href="/profile" class="bg-orange button">Profile</a>
-			<a href="/" class="bg-aqua button" on:click|preventDefault={logout}>Logout</a>
+			<a href="/logout" class="bg-aqua button">Logout</a>
 		{:else}
 			<a href="/about" class="bg-blue button">About</a>
 			<a href="/login" class="bg-orange button">Login</a>

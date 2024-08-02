@@ -88,6 +88,18 @@ input {
 	}
 }
 
+.button.flat {
+	border: none;
+}
+
+.button.rounded {
+	border-radius: 0.5rem;
+}
+
+.button.padded {
+	padding: 0.5rem 1rem;
+}
+
 /* Phones */
 @media screen and (max-width: 600px) {
 	h1 {

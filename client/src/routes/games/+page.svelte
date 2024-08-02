@@ -1,3 +1,3 @@
 <div class="container center">
-	<h1>Welcome to Games</h1>
+	<h1>Join a Game</h1>
 </div>
