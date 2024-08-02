@@ -10,7 +10,7 @@
 		<a href="/" class="bg-purple button">Home</a>
 
 		{#if $user !== null}
-			<a href="/games" class="bg-blue button">Games</a>
+			<a href="/stats" class="bg-blue button">Stats</a>
 			<a href="/profile" class="bg-orange button">Profile</a>
 			<a href="/logout" class="bg-aqua button">Logout</a>
 		{:else}

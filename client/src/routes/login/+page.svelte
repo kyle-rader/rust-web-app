@@ -9,15 +9,13 @@
 
 	async function login(event: any) {
 		let { email, password } = event.detail;
-		console.log('Logging in', email, password);
 
 		const res = await post('/api/login', { email, password });
 		if (res.ok) {
 			error = null;
 			const user_details: User = await res.json();
-			console.log('Logged in!', user_details);
 			user.login(user_details);
-			goto('/games');
+			goto('/');
 		} else {
 			error = (await res.json()).msg;
 		}

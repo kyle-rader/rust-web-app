@@ -3,13 +3,20 @@
 
 <h1 class="container center">Automata Games</h1>
 
-<h2>🧩 A Collaborative Puzzle Games Platform 🎮</h2>
-<h3>... and a work in progress</h3>
+<div class="container center">
+	<div class="game-option">
+		<h2>Join a Game</h2>
+		<input type="text" placeholder="Game Code" />
+	</div>
+	<div class="game-option">
+		<h2>Host a Game</h2>
+		<button>Create Lobby</button>
+	</div>
+	<div class="game-option">
+		<h2>Play Solo</h2>
+		<button>Choose Game</button>
+	</div>
+</div>
 
 <style>
-	h2,
-	h3 {
-		text-align: center;
-		margin-top: 20px;
-	}
 </style>
