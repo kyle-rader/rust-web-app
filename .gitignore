@@ -4,5 +4,6 @@
 # Rust Files
 target/
 
-# Docker data directory
+# Docker data directories
 .data/
+.docker/
