@@ -5,14 +5,14 @@
 	function logout() {
 		user.logout();
 		// redirect to Games Page
-		goto('/games');
+		goto('/');
 	}
 </script>
 
 <div class="container center">
 	<h2>Confirm Logout</h2>
 	<p>
-		<button class="button flat rounded padded bg-green" on:click={logout}>Really logout</button>
+		<button class="button flat rounded padded bg-red" on:click={logout}>Really logout</button>
 	</p>
 </div>
 
@@ -20,5 +20,6 @@
 	button {
 		margin-top: 1em;
 		font-size: 1em;
+		color: var(--light1);
 	}
 </style>

@@ -166,6 +166,36 @@
 }
 
 /* Generate color classes */
+.color-dark0 {
+	color: var(--dark0);
+}
+.color-dark1 {
+	color: var(--dark1);
+}
+.color-dark2 {
+	color: var(--dark2);
+}
+.color-dark3 {
+	color: var(--dark3);
+}
+.color-dark4 {
+	color: var(--dark4);
+}
+.color-light0 {
+	color: var(--light0);
+}
+.color-light1 {
+	color: var(--light1);
+}
+.color-light2 {
+	color: var(--light2);
+}
+.color-light3 {
+	color: var(--light3);
+}
+.color-light4 {
+	color: var(--light4);
+}
 .color-red-bright {
 	color: var(--red-bright);
 }

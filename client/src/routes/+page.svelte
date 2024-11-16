@@ -3,51 +3,57 @@
 
 <h1 class="container center">Automata Games</h1>
 
-<div class="container center">
+<div class="options center align-middle">
 	<div class="game-option">
 		<h2>Join</h2>
 		<input type="text" placeholder="Game Code" />
+		<button class="button">Join Game</button>
 	</div>
 	<div class="game-option">
 		<h2>Host</h2>
-		<button>Create Lobby</button>
+		<button class="button">Create Lobby</button>
 	</div>
 	<div class="game-option">
 		<h2>Play</h2>
-		<button>Choose Game</button>
+		<button class="button">Choose Game</button>
 	</div>
 </div>
 
 <style>
+	.options {
+		display: flex;
+		justify-content: center;
+	}
+
 	.game-option {
-		display: inline-block;
 		margin: 20px;
 		padding: 20px;
-		border: 1px solid var(--green);
-		border-radius: 10px;
 		width: 200px;
-		max-height: 175px;
+		justify-content: center;
 	}
 
 	input {
-		display: block;
 		text-align: center;
-		width: 150px;
-		margin: 10px auto;
-		padding: 8px;
+		width: 100%;
+		margin: 12px 0 0 0;
+		padding: 8px 0px;
+		border: none;
+		border-radius: 6px;
 		font-size: 20px;
 		font-variant: small-caps;
 	}
+
 	button {
-		background-color: var(--green);
 		border: none;
-		color: white;
-		padding: 15px 32px;
+		color: var(--dark0);
+		background-color: var(--green);
+		width: 100%;
+		margin: 8px 0px;
+		padding: 12px 0px;
+		border-radius: 6px;
 		text-align: center;
 		text-decoration: none;
-		display: inline-block;
-		font-size: 16px;
-		margin: 10px auto;
+		font-size: 18px;
 		cursor: pointer;
 	}
 </style>
