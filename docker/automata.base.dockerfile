@@ -1,4 +1,7 @@
 # Use a small Linux-based image as the base
+# We push this image to
+# https://hub.docker.com/r/kyrader/automata/tags
+
 FROM alpine:latest AS builder
 
 # Set the working directory
