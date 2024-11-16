@@ -1,6 +1,9 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vitest/config';
 
+const server_host = process.env.SERVER_HOST || 'localhost';
+const server_port = process.env.SERVER_PORT || '3000';
+
 export default defineConfig({
 	plugins: [sveltekit()],
 	test: {
@@ -8,7 +11,7 @@ export default defineConfig({
 	},
 	server: {
 		proxy: {
-			'/api': 'http://localhost:3000'
+			'/api': `http://${server_host}:${server_port}`
 		}
 	}
 });

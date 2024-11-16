@@ -1,13 +1,8 @@
-# Use a small Linux-based image as the base
-FROM alpine:latest AS builder
+# Use our base image that has Node, Rust, and Postgres deps installed already
+FROM kyrader/automata:latest AS builder
 
 # Set the working directory
 WORKDIR /app
-
-# Install necessary dependencies
-RUN apk update && \
-    apk add --no-cache \
-    nodejs npm rust cargo pkgconfig openssl-dev libpq-dev
 
 # Copy the client application source code
 COPY client /app/client
@@ -24,7 +19,7 @@ COPY server /app/server
 RUN cd server && \
     cargo build --release --features embed_assets
 
-# Start fresh image to reduce size
+# Start with a fresh image to reduce size
 FROM alpine:latest
 RUN apk update && \
     apk add --no-cache \

@@ -18,7 +18,7 @@ use tracing_subscriber::filter::EnvFilter;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 const DEFAULT_PORT: u16 = 3000;
-const DEFAULT_ADDR: &str = "127.0.0.1";
+const DEFAULT_ADDR: &str = "0.0.0.0";
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {

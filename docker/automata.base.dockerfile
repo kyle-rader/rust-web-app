@@ -8,3 +8,9 @@ WORKDIR /app
 RUN apk update && \
     apk add --no-cache \
     nodejs npm rust cargo pkgconfig openssl-dev libpq-dev
+
+# Install Dev Tools
+RUN cargo install cargo-watch
+RUN cargo install diesel_cli --no-default-features --features postgres
+
+ENV PATH="/root/.cargo/bin:${PATH}"

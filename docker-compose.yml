@@ -1,7 +1,10 @@
-# Docker-Compose definition for a locally mapped Postgres database and Redis database
+# Docker compose for local development and testing of the server and client
+# with a Postgres database.
 
 services:
+  # server tests the production Dockerfile build
   server:
+    profiles: [ prod ]
     build: .
     environment:
       DATABASE_URL: postgres://pgdev:pgdev@db:5432/dev
@@ -9,6 +12,35 @@ services:
       - 3000:3000
     depends_on:
       - db
+
+  # Development server - live reload for back end server
+  # This image will install diesel and run DB setup on launch
+  dev-server:
+    build:
+      context: .
+      dockerfile: docker/dev-server.dockerfile
+    environment:
+      DATABASE_URL: postgres://pgdev:pgdev@db:5432/dev
+    volumes:
+      - ./server:/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+
+  # Development client - live reload for front end client
+  dev-client:
+    build:
+      context: .
+      dockerfile: docker/dev-client.dockerfile
+    environment:
+      - SERVER_HOST=dev-server
+    volumes:
+      - ./client:/app
+    ports:
+      - 5173:5173
+
+  # Postgres database
   db:
     image: postgres
     environment:
