@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ResponsivePad from '$lib/components/utilities/ResponsivePad.svelte';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores/user';
 
@@ -9,6 +10,8 @@
 	}
 </script>
 
+<ResponsivePad />
+
 <div class="container center">
 	<h2>Confirm Logout</h2>
 	<p>
@@ -16,10 +19,11 @@
 	</p>
 </div>
 
-<style>
+<style lang="less">
+	@import '../../css/colors.less';
 	button {
 		margin-top: 1em;
 		font-size: 1em;
-		color: var(--light1);
+		color: @light1;
 	}
 </style>

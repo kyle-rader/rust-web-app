@@ -1,0 +1,95 @@
+@import 'reset';
+@import 'colors';
+@import 'responsive';
+
+@consolas: 'Consolas', Consolas, monospace;
+
+body {
+	font-family: @consolas;
+	color: @fg;
+	background-color: @bg;
+}
+
+.center {
+	text-align: center;
+}
+.left {
+	text-align: left;
+}
+.right {
+	text-align: right;
+}
+
+p {
+	margin: 0.5rem 0;
+}
+
+pre,
+code,
+.code {
+	display: inline-block;
+	background-color: @dark1;
+	color: @light0;
+	padding: 0.4rem;
+	border-radius: 0.5rem;
+	margin: 0.5rem;
+}
+
+/* Links */
+a {
+	color: @blue;
+	text-decoration: none;
+}
+
+/* Buttons */
+.button {
+    font-family: @consolas;
+    color: @light0;
+    background-color: @dark3;
+}
+
+input {
+    font-family: @consolas;
+}
+
+/* Buttons: Hoverable */
+@media (hover: hover) {
+	.button {
+		transition: 0.3s;
+        cursor: pointer;
+	}
+	.button::before {
+		content: '- ';
+	}
+	.button::after {
+		content: ' -';
+	}
+
+	.button::before,
+	.button::after {
+		opacity: 0;
+		transition: 0.3s;
+	}
+
+	.button:hover::before,
+	.button:hover::after {
+		opacity: 100;
+	}
+
+	.button:hover {
+		background-color: @light2 !important;
+		color: @dark1 !important;
+	}
+}
+
+.button.flat {
+	border: none;
+}
+
+.button.rounded {
+	border-radius: 0.5rem;
+}
+
+.button.padded {
+	padding: 0.5rem 1rem;
+}

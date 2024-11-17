@@ -73,7 +73,8 @@
 	</form>
 </div>
 
-<style>
+<style lang="less">
+	@import '../../css/colors.less';
 	form {
 		display: flex;
 		flex-direction: column;
@@ -111,10 +112,10 @@
 		font-size: 1.2rem;
 		border-radius: 0.5rem;
 		border: none;
-		background-color: var(--light2);
+		background-color: @dark3;
 	}
 	.button.ready {
-		background-color: var(--green);
+		background-color: @green;
 	}
 	.button.ready::before {
 		content: '🚀';

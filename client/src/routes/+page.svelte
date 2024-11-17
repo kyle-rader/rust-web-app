@@ -1,11 +1,15 @@
 <script lang="ts">
+	import ResponsivePad from '$lib/components/utilities/ResponsivePad.svelte';
 </script>
+
+<ResponsivePad />
 
 <h1 class="container center">Automata Games</h1>
 
+<p class="center">Solve - Laugh - Learn</p>
+
 <div class="container options center">
 	<div class="option">
-		<h2>Join</h2>
 		<input type="text" placeholder="Game Code" />
 		<button class="button">Join Game</button>
 	</div>
@@ -14,43 +18,19 @@
 		<button class="button">Create Lobby</button>
 	</div>
 	<div class="option">
-		<h2>Play</h2>
+		<h2>Play Solo</h2>
 		<button class="button">Choose Game</button>
 	</div>
 </div>
 
-<style>
-	/* Mobile */
-	@media (max-width: 600px) {
-		.options {
-			width: 95%;
-			margin: auto;
-		}
+<style lang="less">
+	@import '../css/colors.less';
+	@import '../css/vars.less';
 
-		.option {
-			display: block;
-			margin-top: 6px;
-		}
-	}
-
-	/* Tablet */
-	@media (min-width: 601px) and (max-width: 1024px) {
-		.options {
-			width: 50%;
-		}
-		.option {
-			display: inline-block;
-		}
-	}
-
-	/* Desktop */
-	@media (min-width: 1025px) {
-		.options {
-			width: 30%;
-		}
-		.option {
-			display: inline-block;
-		}
+	.options {
+		display: flex;
+		flex-flow: column;
+		margin: auto;
 	}
 
 	button,
@@ -59,16 +39,42 @@
 		text-align: center;
 		border: none;
 		border-radius: 6px;
+		margin-top: 8px;
+		margin: none;
+		box-sizing: border-box;
+		padding: 8px;
+		font-size: 18pt;
 	}
 
 	input {
-		/* font-variant: small-caps; */
+		font-variant: small-caps;
 	}
 
 	button {
-		color: var(--dark0);
-		background-color: var(--green);
+		color: @dark0;
+		background-color: @green-bright;
 		text-decoration: none;
 		cursor: pointer;
+	}
+
+	/* Mobile */
+	@media (max-width: @mobile) {
+		.options {
+			width: 60%;
+		}
+
+		.option {
+			margin-top: 25px;
+		}
+	}
+
+	/* Desktop + Tablet */
+	@media (min-width: @tablet-min) {
+		.options {
+			width: 250px;
+		}
+		.option {
+			margin-top: 30px;
+		}
 	}
 </style>

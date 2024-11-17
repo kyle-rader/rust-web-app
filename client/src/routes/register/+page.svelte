@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ResponsivePad from '$lib/components/utilities/ResponsivePad.svelte';
 	import RegisterForm from './register_form.svelte';
 	import { post } from '$lib/requests';
 	import type { User } from '$lib/types/user';
@@ -21,6 +22,7 @@
 	}
 </script>
 
+<ResponsivePad />
 <h1 class="container center">Register</h1>
 
 {#if success}

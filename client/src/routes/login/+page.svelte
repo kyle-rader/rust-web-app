@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ResponsivePad from '$lib/components/utilities/ResponsivePad.svelte';
 	import LoginForm from './login_form.svelte';
 	import { post } from '$lib/requests';
 	import type { User } from '$lib/types/user';
@@ -22,6 +23,7 @@
 	}
 </script>
 
+<ResponsivePad />
 <h1 class="container center">Login</h1>
 
 <LoginForm on:login={login} />

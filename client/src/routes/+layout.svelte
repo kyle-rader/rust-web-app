@@ -1,22 +1,20 @@
 <script lang="ts">
-	// Import global styles
-	import '../css/app.css';
-
+	import '../css/app.less';
 	import { user } from '$lib/stores/user';
 </script>
 
 <div class="app">
 	<nav>
-		<a href="/" class="bg-purple button">Home</a>
+		<a href="/" class="bg-dark2 button">Home</a>
 
-		{#if $user !== null}
-			<a href="/stats" class="bg-blue button">Stats</a>
-			<a href="/profile" class="bg-orange button">Profile</a>
-			<a href="/logout" class="bg-aqua button">Logout</a>
+		{#if $user}
+			<a href="/stats" class="bg-dark2 button">Stats</a>
+			<a href="/profile" class="bg-dark2 button">Profile</a>
+			<a href="/logout" class="bg-dark2 button">Logout</a>
 		{:else}
-			<a href="/about" class="bg-blue button">About</a>
-			<a href="/login" class="bg-orange button">Login</a>
-			<a href="/register" class="bg-aqua button">Register</a>
+			<a href="/about" class="bg-dark2 button">About</a>
+			<a href="/register" class="bg-dark2 button">Register</a>
+			<a href="/login" class="bg-dark2 button">Login</a>
 		{/if}
 	</nav>
 
@@ -30,7 +28,8 @@
 	</footer>
 </div>
 
-<style>
+<style lang="less">
+	@import '../css/colors.less';
 	.app {
 		min-height: 100vh;
 		display: flex;
@@ -49,9 +48,11 @@
 	}
 
 	a {
+		color: @light0;
 		padding: 12px 1rem;
 		width: 100%;
 		text-align: center;
 		transition: 0.3s;
+		font-size: 14pt;
 	}
 </style>

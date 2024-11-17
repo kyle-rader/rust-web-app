@@ -1,4 +1,5 @@
 <script lang="ts">
+	import TitlePad from '$lib/components/utilities/ResponsivePad.svelte';
 	// fetch the api status from /api/status
 	async function fetchStatus() {
 		// Sleep for 300ms to simulate a slow API
@@ -18,7 +19,8 @@
 		});
 </script>
 
-<h1 class="container center">About Automata Games</h1>
+<TitlePad />
+<h1 class="container center">About Automata</h1>
 <div class="container">
 	<div class="container">
 		<h2>API Status</h2>
