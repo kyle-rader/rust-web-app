@@ -6,7 +6,7 @@
 
 <h1 class="container center">Automata Games</h1>
 
-<p class="center">Solve - Laugh - Learn</p>
+<p class="center">Laugh - Solve - Learn</p>
 
 <div class="container options center">
 	<div class="option">

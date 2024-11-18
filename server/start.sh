@@ -7,5 +7,5 @@ docker-compose up db -d
 
 export DATABASE_URL="postgres://pgdev:pgdev@localhost:5432/dev?sslmode=disable"
 
-echo "Start server in live-reload mode..."
-exec cargo run live-reload
+echo "Start server in live-run mode..."
+cargo run live-run

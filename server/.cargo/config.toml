@@ -9,5 +9,5 @@ quick-dev = [
     "run -q --example quick_dev",
 ]
 
-live-reload = ["watch", "-q", "-c", "-w", "src/", "-x", "run"]
+live-run = ["watch", "-q", "-c", "-w", "src/", "-x", "run"]
 live-test = ["watch", "-q", "-c", "-w", "src/", "-w", "tests/", "-x", "test"]
