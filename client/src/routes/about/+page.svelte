@@ -2,8 +2,6 @@
 	import TitlePad from '$lib/components/utilities/ResponsivePad.svelte';
 	// fetch the api status from /api/status
 	async function fetchStatus() {
-		// Sleep for 300ms to simulate a slow API
-		await new Promise((resolve) => setTimeout(resolve, 200));
 		const res = await fetch('/api/status');
 		const data = await res.json();
 		return data;

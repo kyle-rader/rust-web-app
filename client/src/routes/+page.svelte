@@ -10,7 +10,7 @@
 
 <div class="container options center">
 	<div class="option">
-		<input type="text" placeholder="Game Code" />
+		<input type="text" placeholder="Code" />
 		<button class="button">Join Game</button>
 	</div>
 	<div class="option">
@@ -27,10 +27,21 @@
 	@import '../css/colors.less';
 	@import '../css/vars.less';
 
+	p {
+		margin-top: 15px;
+	}
+
 	.options {
 		display: flex;
 		flex-flow: column;
+		width: 290px;
 		margin: auto;
+	}
+
+	.option {
+		border: 2px solid @green-bright;
+		box-shadow: @green-bright -2px -2px 0px 2px;
+		padding: 15px;
 	}
 
 	button,
@@ -39,7 +50,6 @@
 		text-align: center;
 		border: none;
 		border-radius: 6px;
-		margin-top: 8px;
 		margin: none;
 		box-sizing: border-box;
 		padding: 8px;
@@ -55,14 +65,11 @@
 		background-color: @green-bright;
 		text-decoration: none;
 		cursor: pointer;
+		margin-top: 12px;
 	}
 
 	/* Mobile */
 	@media (max-width: @mobile) {
-		.options {
-			width: 60%;
-		}
-
 		.option {
 			margin-top: 25px;
 		}
@@ -70,9 +77,6 @@
 
 	/* Desktop + Tablet */
 	@media (min-width: @tablet-min) {
-		.options {
-			width: 250px;
-		}
 		.option {
 			margin-top: 30px;
 		}

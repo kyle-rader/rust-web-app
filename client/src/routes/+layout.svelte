@@ -35,7 +35,7 @@
 					viewBox="0 0 24 24"
 					stroke-width="1.5"
 					stroke="currentColor"
-					class="yellow-bright"
+					class="orange-bright"
 				>
 					<path
 						stroke-linecap="round"
@@ -133,6 +133,19 @@
 	@media (min-width: @tablet-min) {
 		a > svg {
 			width: 25px;
+		}
+
+		a:hover > svg.blue-bright {
+			color: @blue;
+		}
+		a:hover > svg.green-bright {
+			color: @green;
+		}
+		a:hover > svg.orange-bright {
+			color: @orange;
+		}
+		a:hover > svg.aqua {
+			color: @aqua;
 		}
 	}
 </style>
