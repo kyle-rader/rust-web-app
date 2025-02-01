@@ -1,4 +1,5 @@
 use automata::db;
+use automata::env::load_dot_env;
 use automata::mw;
 use automata::web::app_state::AppState;
 use automata::web::{self, routes};
@@ -43,6 +44,9 @@ async fn main() -> anyhow::Result<()> {
 
     #[cfg(not(feature = "embed_assets"))]
     let app = app.route("/", get(|| async { Redirect::to("http://localhost:5173") }));
+
+    // Load env vars from .env file if found
+    load_dot_env()?;
 
     // Create database connection pool
     let db_pool = db::get_db_pool()?;
