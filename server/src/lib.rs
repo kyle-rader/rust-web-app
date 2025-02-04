@@ -2,7 +2,6 @@
 pub mod assets;
 pub mod db;
 pub mod dictionary;
-pub mod env;
 pub mod model;
 pub mod mw;
 pub mod schema;
