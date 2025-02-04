@@ -9,6 +9,7 @@
     "httpc",
     "Insertable",
     "jsonwebtoken",
+    "kyak",
     "onclick",
     "pkcs",
     "pkey",

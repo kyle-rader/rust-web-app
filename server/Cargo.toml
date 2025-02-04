@@ -51,9 +51,12 @@ uuid = { version = "1.9.1", features = ["v4", "fast-rng"] }
 strum_macros = "0.26.4"
 regex = "1.10.5"
 once_cell = "1.19.0"
-# other dependencies
+
+# Trie/Dictionary
+trie-rs = "0.4.2"
 
 [dev-dependencies]
+clap = { version = "4.5.28", features = ["derive", "color"] }
 # Used for quick_dev tests
 httpc-test = { version = "0.1.9", features = ["color-output"] }
 lazy_static = "1.5.0"
