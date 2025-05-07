@@ -13,9 +13,9 @@
 <ResponsivePad />
 
 <div class="container center">
-	<h2>Confirm Logout</h2>
+	<h2>Logout?</h2>
 	<p>
-		<button class="button flat rounded padded bg-red" on:click={logout}>Really logout</button>
+		<button class="button flat rounded padded bg-red" on:click={logout}>Yes, Logout</button>
 	</p>
 </div>
 
