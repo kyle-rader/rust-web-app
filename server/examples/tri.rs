@@ -1,6 +1,5 @@
 use automata::dictionary::words_4;
 use clap::Parser;
-use std::io::{self, BufRead};
 use trie_rs::Trie;
 
 #[derive(Debug, Parser)]

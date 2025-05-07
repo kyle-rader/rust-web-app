@@ -1,5 +1,6 @@
 use trie_rs::Trie;
 
+#[allow(dead_code)]
 mod words;
 
 pub fn words_4() -> Trie<u8> {
