@@ -1,3 +1,5 @@
+use crate::web::ctx::Ctx;
+use axum::extract::FromRef;
 use axum::{extract::State, Json};
 use serde::Deserialize;
 use serde_json::{json, Value};
@@ -53,5 +55,29 @@ pub async fn register(
     let conn = get_db_conn(&db_pool)?;
     let user = user::create(conn, fields).await?;
     debug!("✅ Register {}", user.email);
+    Ok(Json(user.into()))
+}
+
+#[derive(Debug, Deserialize)]
+pub struct PatchEmailPayload {
+    pub email: String,
+}
+
+pub async fn get_account_me(
+    State(db_pool): State<DbPool>,
+    ctx: Ctx,
+) -> Result<Json<UserPublic>, MainError> {
+    let conn = get_db_conn(&db_pool)?;
+    let user = dbg!(user::get_by_id(conn, ctx.account_id as i32).await?);
+    Ok(Json(user.into()))
+}
+
+pub async fn patch_account_me(
+    State(db_pool): State<DbPool>,
+    ctx: Ctx,
+    Json(payload): Json<PatchEmailPayload>,
+) -> Result<Json<UserPublic>, MainError> {
+    let conn = get_db_conn(&db_pool)?;
+    let user = user::update_email(conn, ctx.account_id as i32, &payload.email).await?;
     Ok(Json(user.into()))
 }

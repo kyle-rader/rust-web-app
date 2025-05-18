@@ -20,7 +20,10 @@ pub async fn get_api_routes(app_state: &AppState) -> anyhow::Result<axum::Router
     let routes_private: Router = Router::new()
         .route("/lobby", post(lobby::create_lobby))
         .route("/lobbies", get(lobby::get_lobbies))
-        // .route("/account/me", get(account_me))
+        .route(
+            "/account/me",
+            get(user::get_account_me).patch(user::patch_account_me),
+        )
         .with_state(app_state.clone())
         .route_layer(middleware::from_fn(crate::mw::auth::require_auth));
 

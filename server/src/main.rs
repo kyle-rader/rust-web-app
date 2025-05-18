@@ -36,6 +36,7 @@ async fn main() -> anyhow::Result<()> {
 
     #[cfg(feature = "embed_assets")]
     debug!("🛠️  Embedding assets...");
+
     #[cfg(feature = "embed_assets")]
     let app = app
         .route("/", get(assets::handler))
@@ -44,6 +45,7 @@ async fn main() -> anyhow::Result<()> {
     #[cfg(not(feature = "embed_assets"))]
     debug!("🛠️  No embedded assets: redirect '/' to localhost:5173...");
 
+    // Redirect to localhost:5173 (the default Svelte dev server port)
     #[cfg(not(feature = "embed_assets"))]
     let app = app.route("/", get(|| async { Redirect::to("http://localhost:5173") }));
 

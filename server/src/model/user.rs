@@ -208,6 +208,27 @@ fn valid_email(email: &str) -> Result<(), ErrorUser> {
     }
 }
 
+pub async fn update_email(
+    mut conn: DbConn,
+    user_id: i32,
+    new_email: &str,
+) -> Result<User, ErrorUser> {
+    valid_email(new_email)?;
+    use crate::schema::users::dsl as users_dsl;
+    diesel::update(users_dsl::users.filter(users_dsl::id.eq(user_id)))
+        .set(users_dsl::email.eq(new_email))
+        .get_result::<User>(&mut conn)
+        .map_err(create_db_error_map)
+}
+
+pub async fn get_by_id(mut conn: DbConn, user_id: i32) -> Result<User, ErrorUser> {
+    use crate::schema::users::dsl as users_dsl;
+    users_dsl::users
+        .filter(users_dsl::id.eq(user_id))
+        .get_result::<User>(&mut conn)
+        .map_err(|_| ErrorUser::NotFound)
+}
+
 fn create_db_error_map(error: diesel::result::Error) -> ErrorUser {
     match error {
         DatabaseError(DatabaseErrorKind::UniqueViolation, info) => match info.constraint_name() {
