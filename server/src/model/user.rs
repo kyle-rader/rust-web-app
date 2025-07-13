@@ -277,8 +277,8 @@ mod tests {
     #[test_case("john.doe@contoso.com")]
     #[test_case("john.doe@contoso.net")]
     #[test_case("john.doe@contoso.org")]
-    #[test_case("john.doe@contoso.games")]
-    #[test_case("john.doe-1980@contoso.games")]
+    #[test_case("john.doe@contoso.company")]
+    #[test_case("john.doe-1980@contoso.company")]
     fn is_valid_email(email: &str) {
         assert!(super::valid_email(email).is_ok());
     }
