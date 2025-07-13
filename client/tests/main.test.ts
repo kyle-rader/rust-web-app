@@ -63,15 +63,17 @@ test.describe('Main Application', () => {
 		await expect(page.getByRole('heading', { name: 'RustWebApp' })).toBeVisible();
 		
 		// Check tagline
-		await expect(page.getByText('Laugh - Solve - Learn')).toBeVisible();
+		await expect(page.getByText('Build - Deploy - Scale')).toBeVisible();
 		
 		// Check main action buttons
-		await expect(page.getByRole('button', { name: 'Join Game' })).toBeVisible();
-		await expect(page.getByRole('button', { name: 'Create Lobby' })).toBeVisible();
-		await expect(page.getByRole('button', { name: 'Choose Game' })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Get Started' })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'View Docs' })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Browse Examples' })).toBeVisible();
 		
-		// Check input field
-		await expect(page.getByPlaceholder('Code')).toBeVisible();
+		// Check that all sections are present
+		await expect(page.getByRole('heading', { name: 'Quick Start' })).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'Documentation' })).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'Examples' })).toBeVisible();
 	});
 
 	test('navigation to login page', async ({ page }) => {

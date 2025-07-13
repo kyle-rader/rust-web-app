@@ -5,7 +5,7 @@
 
 	function logout() {
 		user.logout();
-		// redirect to Games Page
+		// redirect to Home Page
 		goto('/');
 	}
 </script>

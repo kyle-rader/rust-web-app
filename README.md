@@ -1,10 +1,23 @@
 # RustWebApp
 
-Welcome to Juras... I mean RustWebApp! A multiplayer puzzle games platform.
+Welcome to RustWebApp! An early-stage but solid template repository for building modern web applications using Rust on the server and SvelteJS on the frontend with an islands architecture.
+
+# Architecture
+
+This template implements a modern web application architecture with:
+
+- **Backend**: Rust with Axum web framework, providing high-performance API endpoints
+- **Frontend**: SvelteJS with TypeScript, offering reactive UI components
+- **Database**: PostgreSQL with Diesel ORM for type-safe database operations
+- **Authentication**: JWT-based authentication system
+- **Deployment**: Docker containerization with Fly.io deployment support
+- **Development**: Hot reload for both frontend and backend development
+
+The template follows an islands architecture pattern, allowing for server-side rendering with selective client-side hydration where needed.
 
 # Developer Setup
 
-RustWebApp can be developed locally on your host of choice, or, entirely on Docker. We minimally use Docker to run local development databases.
+This template provides a solid foundation for building web applications with Rust backend and SvelteJS frontend. While still in early development, it includes the essential components needed to get started. It can be developed locally on your host of choice, or entirely on Docker. We minimally use Docker to run local development databases.
 
 > 🪟 **Windows** - I highly recommend using WSL - the Windows Subsystem for Linux, which Docker can also use for it's backend.
 > 
@@ -62,7 +75,27 @@ Hi YOUR_USER_NAME! You've successfully authenticated, but GitHub does not provid
 
 ```shell
 git clone git@github.com:kyle-rader/rustwebapp.git
+cd rustwebapp
 ```
+
+## Quick Start
+
+1. **Clone the repository** (see above)
+2. **Set up your development environment** (see Developer Setup below)
+3. **Start the development servers**:
+   ```shell
+   docker-compose up
+   ```
+4. **Access your application**:
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:3000
+5. **Customize the template**:
+   - Update the application name and branding
+   - Modify the database schema in `server/migrations/`
+   - Add new API endpoints in `server/src/web/routes/`
+   - Create new Svelte components in `client/src/lib/components/`
+
+> ⚠️ **Note**: This template is still in early development. While it provides a solid foundation, you may encounter rough edges or missing features. Contributions and feedback are welcome!
 
 ## Develop
 

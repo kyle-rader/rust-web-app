@@ -12,28 +12,28 @@ describe('Main Page', () => {
 	it('renders the tagline', () => {
 		render(Page);
 		
-		expect(screen.getByText(/laugh - solve - learn/i)).toBeInTheDocument();
+		expect(screen.getByText(/build - deploy - scale/i)).toBeInTheDocument();
 	});
 
-	it('renders the join game section', () => {
+	it('renders the quick start section', () => {
 		render(Page);
 		
-		expect(screen.getByPlaceholderText(/code/i)).toBeInTheDocument();
-		expect(screen.getByRole('button', { name: /join game/i })).toBeInTheDocument();
+		expect(screen.getByRole('heading', { name: /quick start/i })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: /get started/i })).toBeInTheDocument();
 	});
 
-	it('renders the host section', () => {
+	it('renders the documentation section', () => {
 		render(Page);
 		
-		expect(screen.getByRole('heading', { name: /host/i })).toBeInTheDocument();
-		expect(screen.getByRole('button', { name: /create lobby/i })).toBeInTheDocument();
+		expect(screen.getByRole('heading', { name: /documentation/i })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: /view docs/i })).toBeInTheDocument();
 	});
 
-	it('renders the solo play section', () => {
+	it('renders the examples section', () => {
 		render(Page);
 		
-		expect(screen.getByRole('heading', { name: /play solo/i })).toBeInTheDocument();
-		expect(screen.getByRole('button', { name: /choose game/i })).toBeInTheDocument();
+		expect(screen.getByRole('heading', { name: /examples/i })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: /browse examples/i })).toBeInTheDocument();
 	});
 
 	it('includes ResponsivePad component', () => {
@@ -44,22 +44,12 @@ describe('Main Page', () => {
 		expect(responsivePad).toBeInTheDocument();
 	});
 
-	it('has proper form structure for join game', () => {
-		render(Page);
-		
-		const codeInput = screen.getByPlaceholderText(/code/i);
-		const joinButton = screen.getByRole('button', { name: /join game/i });
-		
-		expect(codeInput).toHaveAttribute('type', 'text');
-		expect(joinButton).toBeInTheDocument();
-	});
-
 	it('has accessible button labels', () => {
 		render(Page);
 		
-		expect(screen.getByRole('button', { name: /join game/i })).toBeInTheDocument();
-		expect(screen.getByRole('button', { name: /create lobby/i })).toBeInTheDocument();
-		expect(screen.getByRole('button', { name: /choose game/i })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: /get started/i })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: /view docs/i })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: /browse examples/i })).toBeInTheDocument();
 	});
 
 	it('renders all three main options', () => {
@@ -70,16 +60,17 @@ describe('Main Page', () => {
 		expect(options).toHaveLength(3);
 		
 		// Check for specific buttons
-		expect(screen.getByRole('button', { name: /join game/i })).toBeInTheDocument();
-		expect(screen.getByRole('button', { name: /create lobby/i })).toBeInTheDocument();
-		expect(screen.getByRole('button', { name: /choose game/i })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: /get started/i })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: /view docs/i })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: /browse examples/i })).toBeInTheDocument();
 	});
 
-	it('has proper input field for game code', () => {
+	it('has proper section structure', () => {
 		render(Page);
 		
-		const codeInput = screen.getByPlaceholderText(/code/i);
-		expect(codeInput).toBeInTheDocument();
-		expect(codeInput).toHaveAttribute('type', 'text');
+		// Check that all section headings are present
+		expect(screen.getByRole('heading', { name: /quick start/i })).toBeInTheDocument();
+		expect(screen.getByRole('heading', { name: /documentation/i })).toBeInTheDocument();
+		expect(screen.getByRole('heading', { name: /examples/i })).toBeInTheDocument();
 	});
 }); 

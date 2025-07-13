@@ -32,10 +32,27 @@
 	</div>
 
 	<p>
-		RustWebApp is a game development company that focuses on creating games that are fun and
-		engaging. We believe that games should be accessible to everyone, which is why we strive to
-		create games that are easy to learn and play. Our goal is to create games that bring people
-		together and provide a sense of community.
+		RustWebApp is an early-stage template repository designed to accelerate the development of
+		modern web applications. It combines the performance and safety of Rust on the backend with
+		the reactivity and developer experience of SvelteJS on the frontend.
+	</p>
+
+	<p>
+		This template implements an islands architecture, allowing you to build interactive web
+		applications with server-side rendering and client-side hydration where needed. It includes
+		authentication, database integration, API development, and a complete development
+		environment with Docker support.
+	</p>
+
+	<p>
+		While still in early development, this template provides a solid foundation for building
+		SaaS applications, content management systems, or any other web service. It's designed to
+		get you started quickly while maintaining the flexibility to scale as your needs grow.
+	</p>
+
+	<p>
+		<strong>Note:</strong> This is a work in progress. You may encounter rough edges or missing features,
+		but the core architecture is stable and ready for development.
 	</p>
 </div>
 

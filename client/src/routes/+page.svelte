@@ -6,20 +6,20 @@
 
 <h1 class="container center">RustWebApp</h1>
 
-<p class="center">Laugh - Solve - Learn</p>
+<p class="center">Build - Deploy - Scale</p>
 
 <div class="container options center">
 	<div class="option">
-		<input type="text" placeholder="Code" />
-		<button class="button">Join Game</button>
+		<h2>Quick Start</h2>
+		<button class="button">Get Started</button>
 	</div>
 	<div class="option">
-		<h2>Host</h2>
-		<button class="button">Create Lobby</button>
+		<h2>Documentation</h2>
+		<button class="button">View Docs</button>
 	</div>
 	<div class="option">
-		<h2>Play Solo</h2>
-		<button class="button">Choose Game</button>
+		<h2>Examples</h2>
+		<button class="button">Browse Examples</button>
 	</div>
 </div>
 
