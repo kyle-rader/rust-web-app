@@ -1,12 +1,12 @@
-use automata::db;
-use automata::mw;
-use automata::web::app_state::AppState;
-use automata::web::{self, routes};
+use rustwebapp::db;
+use rustwebapp::mw;
+use rustwebapp::web::app_state::AppState;
+use rustwebapp::web::{self, routes};
 
-#[cfg(feature = "embed_assets")]
-use automata::assets;
 #[cfg(not(feature = "embed_assets"))]
 use axum::response::Redirect;
+#[cfg(feature = "embed_assets")]
+use rustwebapp::assets;
 
 use axum::routing::get;
 use axum::{middleware, Router};
@@ -92,7 +92,7 @@ fn init_tracing() {
     tracing_subscriber::registry()
         .with(
             EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "server=trace,automata=trace,axum::rejection=trace".into()),
+                .unwrap_or_else(|_| "server=trace,rustwebapp=trace,axum::rejection=trace".into()),
         )
         .with(tracing_subscriber::fmt::layer().compact().without_time())
         .init();
@@ -100,9 +100,9 @@ fn init_tracing() {
 
 fn welcome_message() {
     #[cfg(debug_assertions)]
-    let startup_msg = "🐛 (debug) Starting automata server";
+    let startup_msg = "🐛 (debug) Starting rustwebapp server";
     #[cfg(not(debug_assertions))]
-    let startup_msg = "🚀 (release) Starting automata server";
+    let startup_msg = "🚀 (release) Starting rustwebapp server";
     info!("{startup_msg}");
 }
 

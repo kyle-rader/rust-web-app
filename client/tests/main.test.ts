@@ -60,7 +60,7 @@ test.describe('Main Application', () => {
 		await page.goto('/');
 		
 		// Check main heading
-		await expect(page.getByRole('heading', { name: 'Automata Games' })).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'RustWebApp' })).toBeVisible();
 		
 		// Check tagline
 		await expect(page.getByText('Laugh - Solve - Learn')).toBeVisible();
@@ -111,15 +111,15 @@ test.describe('Main Application', () => {
 		
 		// Test on desktop viewport
 		await page.setViewportSize({ width: 1200, height: 800 });
-		await expect(page.getByRole('heading', { name: 'Automata Games' })).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'RustWebApp' })).toBeVisible();
 		
 		// Test on mobile viewport
 		await page.setViewportSize({ width: 375, height: 667 });
-		await expect(page.getByRole('heading', { name: 'Automata Games' })).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'RustWebApp' })).toBeVisible();
 		
 		// Test on tablet viewport
 		await page.setViewportSize({ width: 768, height: 1024 });
-		await expect(page.getByRole('heading', { name: 'Automata Games' })).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'RustWebApp' })).toBeVisible();
 	});
 
 	test('form validation on login page', async ({ page }) => {
@@ -140,7 +140,7 @@ test.describe('Main Application', () => {
 	test('navigation between pages', async ({ page }) => {
 		// Test navigation to different pages
 		await page.goto('/');
-		await expect(page.getByRole('heading', { name: 'Automata Games' })).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'RustWebApp' })).toBeVisible();
 		
 		await page.goto('/login');
 		await expect(page.getByRole('heading', { name: 'Login' })).toBeVisible();

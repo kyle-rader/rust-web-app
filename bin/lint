@@ -16,4 +16,4 @@ cargo test
 popd
 
 # Finally build docker image
-docker build -t automata .
+docker build -t rustwebapp .

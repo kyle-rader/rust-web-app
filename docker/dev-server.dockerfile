@@ -1,4 +1,4 @@
-FROM kyrader/automata:latest
+FROM kyrader/rustwebapp:latest
 
 # This should be mapped as a volume in the docker-compose file
 WORKDIR /app

@@ -1,10 +1,10 @@
-# Automata Games
+# RustWebApp
 
-Welcome to Juras... I mean Automata Games! A multiplayer puzzle games platform.
+Welcome to Juras... I mean RustWebApp! A multiplayer puzzle games platform.
 
 # Developer Setup
 
-Automata can be developed locally on your host of choice, or, entirely on Docker. We minimally use Docker to run local development databases.
+RustWebApp can be developed locally on your host of choice, or, entirely on Docker. We minimally use Docker to run local development databases.
 
 > 🪟 **Windows** - I highly recommend using WSL - the Windows Subsystem for Linux, which Docker can also use for it's backend.
 > 
@@ -20,7 +20,7 @@ Install the following for your platform first.
 
 ### Host Development Tools
 
-These tools are already installed in our [base docker image](./docker/automata.base.dockerfile).
+These tools are already installed in our [base docker image](./docker/rustwebapp.base.dockerfile).
 
 * [Rust](https://rustup.rs/) - the language used for the back end server
 * NodeJS + TypeScript - for the front end client
@@ -61,7 +61,7 @@ Hi YOUR_USER_NAME! You've successfully authenticated, but GitHub does not provid
 ### Clone the repo
 
 ```shell
-git clone git@github.com:kyle-rader/automata.games.git
+git clone git@github.com:kyle-rader/rustwebapp.git
 ```
 
 ## Develop

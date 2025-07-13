@@ -1,6 +1,6 @@
 use std::time::{Duration, SystemTime};
 
-use automata::model::user::{create, ErrorPassword, ErrorUser, UserNewFields};
+use rustwebapp::model::user::{create, ErrorPassword, ErrorUser, UserNewFields};
 
 use crate::shared::db::TestDb;
 use crate::shared::time::assert_within;

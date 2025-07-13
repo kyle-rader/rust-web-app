@@ -4,7 +4,7 @@
 
 <ResponsivePad />
 
-<h1 class="container center">Automata Games</h1>
+<h1 class="container center">RustWebApp</h1>
 
 <p class="center">Laugh - Solve - Learn</p>
 

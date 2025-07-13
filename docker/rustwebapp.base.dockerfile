@@ -1,6 +1,6 @@
 # Use a small Linux-based image as the base
 # We push this image to
-# https://hub.docker.com/r/kyrader/automata/tags
+# https://hub.docker.com/r/kyrader/rustwebapp/tags
 
 FROM alpine:latest AS builder
 

@@ -2,4 +2,4 @@
 
 set -e
 
-docker build -t automata .
+docker build -t rustwebapp .

@@ -6,7 +6,7 @@ describe('Main Page', () => {
 	it('renders the main heading', () => {
 		render(Page);
 		
-		expect(screen.getByRole('heading', { name: /automata games/i })).toBeInTheDocument();
+		expect(screen.getByRole('heading', { name: /rustwebapp/i })).toBeInTheDocument();
 	});
 
 	it('renders the tagline', () => {

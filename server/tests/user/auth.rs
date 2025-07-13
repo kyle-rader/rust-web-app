@@ -1,4 +1,4 @@
-use automata::{
+use rustwebapp::{
     model::user::{self, create, UserNewFields},
     service::jwt::Claims,
 };

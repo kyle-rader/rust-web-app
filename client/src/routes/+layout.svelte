@@ -35,7 +35,7 @@
 	</div>
 
 	<footer>
-		<p>© 2024 Automata Games</p>
+		<p>© 2024 RustWebApp</p>
 	</footer>
 </div>
 

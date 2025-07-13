@@ -1,4 +1,4 @@
-# Testing Guide for Automata Games Client
+# Testing Guide for RustWebApp Client
 
 This document provides a comprehensive guide to testing the SvelteJS frontend application.
 

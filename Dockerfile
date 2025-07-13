@@ -1,5 +1,5 @@
 # Use our base image that has Node, Rust, and Postgres deps installed already
-FROM kyrader/automata:latest AS builder
+FROM kyrader/rustwebapp:latest AS builder
 
 # Set the working directory
 WORKDIR /app

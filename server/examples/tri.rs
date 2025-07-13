@@ -1,5 +1,5 @@
-use automata::dictionary::words_4;
 use clap::Parser;
+use rustwebapp::dictionary::words_4;
 use trie_rs::Trie;
 
 #[derive(Debug, Parser)]
